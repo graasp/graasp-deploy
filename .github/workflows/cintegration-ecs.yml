@@ -15,8 +15,6 @@ on:
       aws-secret-access-key:
         required: true
       aws-region:
-        required: true
-      ecr-registry:
         required: true           
       ecs-cluster:
         required: true
@@ -31,7 +29,6 @@ env:
   ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
   CONTAINER_NAME: ${{ secrets.container-name }}
   ECR_REPOSITORY: ${{ secrets.ecr-repository }}
-  ECR_REGISTRY: ${{ secrets.ecr-registry }}
 
 # This workflow contains three jobs called: test - build - deploy
 jobs:
