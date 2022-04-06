@@ -1,0 +1,32 @@
+name: CI ECS caller workflow
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  #push:
+  #branches:
+  #  - master
+
+  #pull_request:
+  #  branches: [master]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  VERSION: 'latest'
+
+jobs:
+  call-reusable-workflow:
+    name: Graasp test
+    uses: victorggonzalez/workflows/.github/workflows/ecs-cintegration.yml@main
+    with:
+      ecs-task-definition: '.aws/<name>-<environment>.json'
+    secrets:
+      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_<NAME> }}
+      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_<NAME> }}
+      aws-region: ${{ secrets.AWS_REGION_<NAME> }}
+      ecs-cluster: ${{ secrets.ECS_CLUSTER_<NAME>_<ENVIRONMENT> }}
+      ecs-service: ${{ secrets.ECS_SERVICE_<NAME>_<ENVIRONMENT> }}
+      container-name: ${{ secrets.CONTAINER_NAME_<NAME>_<ENVIRONMENT> }}
+      ecr-repository: ${{ secrets.ECR_REPOSITORY_<NAME>_<ENVIRONMENT> }}
