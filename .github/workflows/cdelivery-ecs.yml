@@ -1,0 +1,101 @@
+name: CD reusable workflow for ECS
+
+# Control when the action will run.
+on:
+  # Allow the workflow to be reusable
+  workflow_call:
+    inputs:
+      ecs-task-definition:
+        required: false
+        default: '.aws/demo-ci.json'
+        type: string
+    secrets:
+      aws-access-key-id:
+        required: true
+      aws-secret-access-key:
+        required: true
+      aws-region:
+        required: true           
+      ecs-cluster:
+        required: true
+      ecs-service:
+        required: true
+      container-name:
+        required: true
+      ecr-repository:
+        required: true
+
+env:        
+  ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
+  CONTAINER_NAME: ${{ secrets.container-name }}
+  ECR_REPOSITORY: ${{ secrets.ecr-repository }}
+
+# This workflow contains one job called: build-deploy
+jobs:
+  build-deploy:
+    name: Build image, push to ECR and deploy to prod
+    runs-on: ubuntu-latest
+    outputs: 
+      tag: ${{ steps.tag-number.outputs.tag }}
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+      
+    - name: Set Tag Number
+      id: tag-number
+      run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+      
+    - name: Check Tag Release
+      env:
+          RELEASE_VERSION: ${{ steps.tag-number.outputs.tag }}
+      run: |
+          echo $RELEASE_VERSION
+          echo ${{ steps.vars.outputs.tag }}
+
+    - name: Configure AWS Credentials
+      id: configure-aws
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.aws-access-key-id }}
+        aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
+        aws-region: ${{ secrets.aws-region }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr-build
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, and tag image
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr-build.outputs.registry }}
+        IMAGE_TAG: ${{ steps.tag-number.outputs.tag }}
+      run: |
+        docker buildx build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG . --platform linux/amd64
+
+    - name: Push image to Amazon ECR
+      id: push-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr-build.outputs.registry }}
+        IMAGE_TAG: ${{ steps.tag-number.outputs.tag }}
+      run: |
+        echo $IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr-deploy.outputs.registry }}
+        IMAGE_TAG: ${{ needs.build.outputs.tag }}
+      with:
+          task-definition: ${{ inputs.ecs-task-definition }}
+          container-name: ${{ secrets.container-name }}
+          image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ secrets.ecs-service }}
+          cluster: ${{ secrets.ecs-cluster }}
+          wait-for-service-stability: true       
