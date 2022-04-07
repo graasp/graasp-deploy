@@ -12,7 +12,7 @@ on:
 
 jobs:
   call-reusable-workflow:
-    name: Graasp
+    name: CD caller template
     uses: graasp/graasp-deploy/.github/workflows/cdeployment-s3.yml@7ae32139ebc4e9e69f9d522f8a0f47734505ec64
     with:
       build-folder: 'build'

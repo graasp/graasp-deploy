@@ -12,7 +12,7 @@ on:
 
 jobs:
   call-reusable-workflow:
-    name: Graasp
+    name: CD caller template
     uses: graasp/graasp-deploy/.github/workflows/cdeployment-s3-apps.yml@7ae32139ebc4e9e69f9d522f8a0f47734505ec64
     with:
       build-folder: 'build'
@@ -23,6 +23,6 @@ jobs:
       aws-region: ${{ secrets.AWS_REGION_<NAME> }}
       aws-s3-bucket-name: ${{ secrets.AWS_S3_BUCKET_NAME_<NAME>_TEST }}
       app-id: ${{ secrets.APP_ID }}
-      graasp-domain-TEST: ${{ secrets.GRAASP_DOMAIN_TEST }}
+      graasp-domain-test: ${{ secrets.GRAASP_DOMAIN_TEST }}
       cloudfront-distribution: ${{ secrets.CLOUDFRONT_DISTRIBUTION_<NAME>_TEST }}
 
