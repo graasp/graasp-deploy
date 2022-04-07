@@ -18,8 +18,8 @@ env:
 
 jobs:
   call-reusable-workflow:
-    name: Graasp test
-    uses: victorggonzalez/workflows/.github/workflows/ecs-cintegration.yml@main
+    name: Caller template
+    uses: graasp/graasp-deploy/.github/workflows/cintegration-ecs.yml@7ae32139ebc4e9e69f9d522f8a0f47734505ec64
     with:
       ecs-task-definition: '.aws/<name>-dev.json'
     secrets:
