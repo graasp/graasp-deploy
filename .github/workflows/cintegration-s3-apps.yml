@@ -33,7 +33,7 @@ env:
   BUILD_FOLDER: '${{ inputs.build-folder }}'
   VERSION: '${{ inputs.version }}'
 
-# This workflow contains three jobs called: test - build - deploy
+# This workflow contains three jobs called: test, build and deploy
 jobs:
   test:
     name: Test
@@ -92,7 +92,7 @@ jobs:
 
   deploy: 
     needs: build
-    name: Deploy to Dev environment
+    name: Deploy to dev environment
     runs-on: ubuntu-latest
     steps:
     - name: Configure AWS credentials
