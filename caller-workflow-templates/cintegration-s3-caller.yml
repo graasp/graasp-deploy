@@ -23,11 +23,12 @@ jobs:
       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_<NAME> }}
       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_<NAME> }}
       aws-region: ${{ secrets.AWS_REGION_<NAME> }}
-      aws-s3-bucket-name: ${{ secrets.AWS_S3_BUCKET_NAME_<NAME>_<ENVIRONMENT> }}
-      cloudfront-distribution: ${{ secrets.CLOUDFRONT_DISTRIBUTION_<NAME>_<ENVIRONMENT> }}
-      api-host: ${{ secrets.GRAASP_API_HOST_<ENVIRONMENT> }}
-      port: ${{ secrets.PORT_<NAME>_<ENVIRONMENT> }}
+      aws-s3-bucket-name: ${{ secrets.AWS_S3_BUCKET_NAME_<NAME>_DEV }}
+      cloudfront-distribution: ${{ secrets.CLOUDFRONT_DISTRIBUTION_<NAME>_DEV }}
+      api-host: ${{ secrets.GRAASP_API_HOST_DEV }}
+      port: ${{ secrets.PORT_<NAME>_DEV }}
       show-notifications: true
-      authentication-host: ${{ secrets.GRAASP_AUTH_HOST_<ENVIRONMENT> }}
-      graasp-compose-host: ${{ secrets.GRAASP_COMPOSE_HOST_<ENVIRONMENT> }}
+      authentication-host: ${{ secrets.GRAASP_AUTH_HOST_DEV }}
+      graasp-compose-host: ${{ secrets.GRAASP_COMPOSE_HOST_DEV }}
+
 

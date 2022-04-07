@@ -21,12 +21,12 @@ jobs:
     name: Graasp test
     uses: victorggonzalez/workflows/.github/workflows/ecs-cintegration.yml@main
     with:
-      ecs-task-definition: '.aws/<name>-<environment>.json'
+      ecs-task-definition: '.aws/<name>-dev.json'
     secrets:
       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_<NAME> }}
       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_<NAME> }}
       aws-region: ${{ secrets.AWS_REGION_<NAME> }}
-      ecs-cluster: ${{ secrets.ECS_CLUSTER_<NAME>_<ENVIRONMENT> }}
-      ecs-service: ${{ secrets.ECS_SERVICE_<NAME>_<ENVIRONMENT> }}
-      container-name: ${{ secrets.CONTAINER_NAME_<NAME>_<ENVIRONMENT> }}
-      ecr-repository: ${{ secrets.ECR_REPOSITORY_<NAME>_<ENVIRONMENT> }}
+      ecs-cluster: ${{ secrets.ECS_CLUSTER_<NAME>_DEV }}
+      ecs-service: ${{ secrets.ECS_SERVICE_<NAME>_DEV }}
+      container-name: ${{ secrets.CONTAINER_NAME_<NAME>_DEV }}
+      ecr-repository: ${{ secrets.ECR_REPOSITORY_<NAME>_DEV }}
