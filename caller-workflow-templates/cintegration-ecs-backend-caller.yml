@@ -1,0 +1,81 @@
+name: CD pipeline for ECS backend
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches:
+    - main
+
+  pull_request:
+   branches: [main]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  graasp-deploy-ecs-backend-workflow:
+    name: CI caller template
+    uses: graasp/graasp-deploy/.github/workflows/cintegration-ecs.yml@main
+    with:
+      ecs-task-definition: '.aws/<name>-dev.json'
+    secrets:
+      aws-access-key-id:
+      aws-secret-access-key:
+      aws-region:
+      ecs-cluster:
+      ecs-service:
+      container-name:
+      ecr-repository:
+      container-name-2:
+      container-name-3:
+      container-image-2:
+      container-image-3:
+      apps-jwt-secret:
+      apps-plugin:
+      auth-client-host:
+      auth-token-expiration-in-minutes:
+      auth-token-jwt-secret:
+      avatars-path-prefix:
+      chatbox-plugin:
+      client-host:
+      cookie-domain:
+      cors-origin-regex:
+      database-logs:
+      email-links-host:
+      embedded-link-item-iframely-href-origin:
+      embedded-link-item-plugin:
+      file-storage-root-path:
+      files-path-prefix:
+      hidden-tag-id:
+      hostname:
+      image-classifier-api:
+      jwt-secret:
+      login-item-tag-id:
+      mailer-config-from-email:
+      mailer-config-password:
+      mailer-config-smtp-host:
+      mailer-config-username:
+      node-env:
+      node-env-2:
+      pg-connection-uri:
+      port:
+      public-plugin:
+      public-tag-id:
+      published-tag-id:
+      redis-host:
+      redis-port:
+      redis-username:
+      refresh-token-expiration-in-minutes:
+      refresh-token-jwt-secret:
+      roarr-log:
+      s3-file-item-access-key-id:
+      s3-file-item-bucket:
+      s3-file-item-access-plugin:
+      s3-file-item-region:
+      s3-file-item-secret-access-key:
+      save-actions:
+      secure-session-secret-key:
+      thumbnails-path-prefix:
+      token-based-auth:
+      websockets-plugin:
