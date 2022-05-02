@@ -14,7 +14,7 @@ on:
       aws-secret-access-key:
         required: true
       aws-region:
-        required: true           
+        required: true
       ecs-cluster:
         required: true
       ecs-service:
@@ -31,7 +31,7 @@ on:
         required: true
       container-image-3:
         required: true
-      apps-jwt-secret: 
+      apps-jwt-secret:
         required: true
       apps-plugin:
         required: true
@@ -39,21 +39,21 @@ on:
         required: true
       auth-token-expiration-in-minutes:
         required: true
-      auth-token-jwt-secret: 
+      auth-token-jwt-secret:
         required: true
-      avatars-path-prefix: 
+      avatars-path-prefix:
         required: true
-      chatbox-plugin: 
+      chatbox-plugin:
         required: true
-      client-host: 
+      client-host:
         required: true
       cookie-domain:
         required: true
       cors-origin-regex:
         required: true
-      database-logs: 
+      database-logs:
         required: true
-      email-links-host: 
+      email-links-host:
         required: true
       embedded-link-item-iframely-href-origin:
         required: true
@@ -66,8 +66,6 @@ on:
       hidden-tag-id:
         required: true
       hostname:
-        required: true
-      image-classifier-api:
         required: true
       image-classifier-api:
         required: true
