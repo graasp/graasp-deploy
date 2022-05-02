@@ -1,4 +1,4 @@
-name: CD S3 template caller workflow
+name: CDelivery pipeline for S3
 
 # Controls when the action will run.
 on:
@@ -6,20 +6,18 @@ on:
   workflow_dispatch:
 
 jobs:
-  call-reusable-workflow:
+  graasp-deploy-s3-workflow:
     name: CD caller template
-    uses: graasp/graasp-deploy/.github/workflows/cdelivery-s3.yml@7ae32139ebc4e9e69f9d522f8a0f47734505ec64
+    uses: graasp/graasp-deploy/.github/workflows/cdelivery-s3.yml@main
     with:
       build-folder: 'build'
     secrets:
-      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_<NAME> }}
-      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_<NAME> }}
-      aws-region: ${{ secrets.AWS_REGION_<NAME> }}
-      aws-s3-bucket-name: ${{ secrets.AWS_S3_BUCKET_NAME_<NAME>_PROD }}
-      cloudfront-distribution: ${{ secrets.CLOUDFRONT_DISTRIBUTION_<NAME>_PROD }}
-      api-host: ${{ secrets.GRAASP_API_HOST_PROD }}
-      port: ${{ secrets.PORT_<NAME>_PROD }}
-      show-notifications: true
-      authentication-host: ${{ secrets.GRAASP_AUTH_HOST_PROD }}
-      graasp-compose-host: ${{ secrets.GRAASP_COMPOSE_HOST_PROD }}
-
+      aws-access-key-id:
+      aws-secret-access-key:
+      aws-region:
+      aws-s3-bucket-name:
+      cloudfront-distribution:
+      port:
+      api-host:
+      show-notifications:
+      graasp-compose-host:

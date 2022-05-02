@@ -1,4 +1,4 @@
-name: CD S3-apps template caller workflow
+name: CD pipeline for S3-apps
 
 # Controls when the action will run.
 on:
@@ -13,16 +13,16 @@ on:
 jobs:
   call-reusable-workflow:
     name: CD caller template
-    uses: graasp/graasp-deploy/.github/workflows/cdeployment-s3-apps.yml@7ae32139ebc4e9e69f9d522f8a0f47734505ec64
+    uses: graasp/graasp-deploy/.github/workflows/cdeployment-s3-apps.yml@main
     with:
       build-folder: 'build'
       version: 'latest'
     secrets:
-      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_<NAME> }}
-      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_<NAME> }}
-      aws-region: ${{ secrets.AWS_REGION_<NAME> }}
-      aws-s3-bucket-name: ${{ secrets.AWS_S3_BUCKET_NAME_<NAME>_TEST }}
-      app-id: ${{ secrets.APP_ID }}
-      graasp-domain-test: ${{ secrets.GRAASP_DOMAIN_TEST }}
-      cloudfront-distribution: ${{ secrets.CLOUDFRONT_DISTRIBUTION_<NAME>_TEST }}
+      aws-access-key-id:
+      aws-secret-access-key:
+      aws-region:
+      aws-s3-bucket-name:
+      cloudfront-distribution:
+      app-id:
+      graasp-domain-test:
 

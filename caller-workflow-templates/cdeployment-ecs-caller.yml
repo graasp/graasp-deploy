@@ -1,4 +1,4 @@
-name: CD ECS template caller workflow
+name: CD pipeline for ECS
 
 # Controls when the action will run.
 on:
@@ -14,16 +14,23 @@ env:
   VERSION: 'latest'
 
 jobs:
-  call-reusable-workflow:
+  graasp-deploy-ecs-workflow:
     name: CD caller template
-    uses: graasp/graasp-deploy/.github/workflows/cdeployment-ecs.yml@7ae32139ebc4e9e69f9d522f8a0f47734505ec64
+    uses: graasp/graasp-deploy/.github/workflows/cdeployment-ecs.yml@main
     with:
       ecs-task-definition: '.aws/<name>-test.json'
     secrets:
-      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_<NAME> }}
-      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_<NAME> }}
-      aws-region: ${{ secrets.AWS_REGION_<NAME> }}
-      ecs-cluster: ${{ secrets.ECS_CLUSTER_<NAME>_TEST }}
-      ecs-service: ${{ secrets.ECS_SERVICE_<NAME>_TEST }}
-      container-name: ${{ secrets.CONTAINER_NAME_<NAME>_TEST }}
-      ecr-repository: ${{ secrets.ECR_REPOSITORY_<NAME>_TEST }}
+      aws-access-key-id:
+      aws-secret-access-key:
+      aws-region:
+      ecs-cluster:
+      ecs-service:
+      container-name:
+      ecr-repository:
+      next-public-api-host:
+      next-public-google-analytics-id:
+      next-public-graasp-auth-host:
+      next-public-graasp-perform-host:
+      next-public-graasper-id:
+      next-public-published-tag-id:
+      port:

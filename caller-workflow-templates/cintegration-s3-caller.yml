@@ -1,11 +1,11 @@
-name: CI S3 caller workflow
+name: CI pipeline for S3
 
 # Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-  branches:
-   - main
+    branches:
+    - main
 
   pull_request:
    branches: [main]
@@ -14,21 +14,17 @@ on:
   workflow_dispatch:
 
 jobs:
-  call-reusable-workflow:
+  graasp-deploy-s3-workflow:
     name: CI caller template
-    uses: graasp/graasp-deploy/.github/workflows/cintegration-s3.yml@7ae32139ebc4e9e69f9d522f8a0f47734505ec64
+    uses: graasp/graasp-deploy/.github/workflows/cintegration-s3.yml@main
     with:
       build-folder: 'build'
     secrets:
-      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_<NAME> }}
-      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_<NAME> }}
-      aws-region: ${{ secrets.AWS_REGION_<NAME> }}
-      aws-s3-bucket-name: ${{ secrets.AWS_S3_BUCKET_NAME_<NAME>_DEV }}
-      cloudfront-distribution: ${{ secrets.CLOUDFRONT_DISTRIBUTION_<NAME>_DEV }}
-      api-host: ${{ secrets.GRAASP_API_HOST_DEV }}
-      port: ${{ secrets.PORT_<NAME>_DEV }}
-      show-notifications: true
-      authentication-host: ${{ secrets.GRAASP_AUTH_HOST_DEV }}
-      graasp-compose-host: ${{ secrets.GRAASP_COMPOSE_HOST_DEV }}
-
-
+      aws-access-key-id:
+      aws-secret-access-key:
+      aws-region:
+      aws-s3-bucket-name:
+      cloudfront-distribution:
+      api-host:
+      show-notifications:
+      graasp-compose-host:
