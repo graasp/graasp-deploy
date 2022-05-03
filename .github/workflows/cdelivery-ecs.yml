@@ -1,4 +1,4 @@
-name: CD reusable workflow for ECS
+name: CDelivery reusable workflow for ECS
 
 # Control when the action will run.
 on:
@@ -23,6 +23,22 @@ on:
       container-name:
         required: true
       ecr-repository:
+        required: true
+      next-public-api-host: 
+        required: true
+      next-public-google-analytics-id:
+        required: true
+      next-public-graasp-auth-host: 
+        required: true
+      next-public-graasp-perform-host:
+        required: true
+      next-public-graasper-id:
+        required: true
+      next-public-published-tag-id:
+        required: true
+      next-public-sentry-dsn:
+        required: false
+      port:
         required: true
 
 env:        

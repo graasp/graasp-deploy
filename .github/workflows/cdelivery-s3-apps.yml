@@ -1,4 +1,4 @@
-name: CD reusable workflow for S3 apps
+name: CDelivery reusable workflow for S3 apps
 
 # Control when the action will run.
 on:

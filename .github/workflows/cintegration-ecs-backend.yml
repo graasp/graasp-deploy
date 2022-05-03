@@ -226,7 +226,7 @@ jobs:
         IMAGE_TAG: ${{ needs.build.outputs.tag }}
       with:
           task-definition: ${{ inputs.ecs-task-definition }}
-          container-name: ${{ secrets.container-name-1 }}
+          container-name: ${{ secrets.container-name }}
           image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
           environment-variables: |
             APPS_JWT_SECRET=${{ secrets.apps-jwt-secret }}
