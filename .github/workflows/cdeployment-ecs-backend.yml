@@ -1,0 +1,289 @@
+name: CD reusable workflow for ECS
+
+# Control when the action will run.
+on:
+  # Allow the workflow to be reusable
+  workflow_call:
+    inputs:
+      ecs-task-definition:
+        required: true
+        type: string
+    secrets:
+      aws-access-key-id:
+        required: true
+      aws-secret-access-key:
+        required: true
+      aws-region:
+        required: true           
+      ecs-cluster:
+        required: true
+      ecs-service:
+        required: true
+      ecr-repository:
+        required: true
+      container-name:
+        required: true
+      container-name-2:
+        required: true
+      container-name-3:
+        required: true
+      container-image-2:
+        required: true
+      container-image-3:
+        required: true
+      apps-jwt-secret:
+        required: true
+      apps-plugin:
+        required: true
+      auth-client-host:
+        required: true
+      auth-token-expiration-in-minutes:
+        required: true
+      auth-token-jwt-secret:
+        required: true
+      avatars-path-prefix:
+        required: true
+      chatbox-plugin:
+        required: true
+      client-host:
+        required: true
+      cookie-domain:
+        required: true
+      cors-origin-regex:
+        required: true
+      database-logs:
+        required: true
+      email-links-host:
+        required: true
+      embedded-link-item-iframely-href-origin:
+        required: true
+      embedded-link-item-plugin:
+        required: true
+      file-storage-root-path:
+        required: true
+      files-path-prefix:
+        required: true
+      hidden-tag-id:
+        required: true
+      hostname:
+        required: true
+      image-classifier-api:
+        required: true
+      jwt-secret:
+        required: true
+      login-item-tag-id:
+        required: true
+      mailer-config-from-email:
+        required: true
+      mailer-config-password:
+        required: true
+      mailer-config-smtp-host:
+        required: true
+      mailer-config-username:
+        required: true
+      node-env:
+        required: true
+      node-env-2:
+        required: true
+      pg-connection-uri:
+        required: true
+      port:
+        required: true
+      public-plugin:
+        required: true
+      public-tag-id:
+        required: true
+      published-tag-id:
+        required: true
+      redis-host:
+        required: true
+      redis-port:
+        required: true
+      redis-password:
+        required: false
+      redis-username:
+        required: true
+      refresh-token-expiration-in-minutes:
+        required: true
+      refresh-token-jwt-secret:
+        required: true
+      roarr-log:
+        required: true
+      s3-file-item-access-key-id:
+        required: true
+      s3-file-item-bucket:
+        required: true
+      s3-file-item-access-plugin:
+        required: true
+      s3-file-item-region:
+        required: true
+      s3-file-item-secret-access-key:
+        required: true
+      save-actions:
+        required: true
+      secure-session-secret-key:
+        required: true
+      thumbnails-path-prefix:
+        required: true
+      token-based-auth:
+        required: true
+      websockets-plugin:
+        required: true
+
+env:        
+  ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
+  CONTAINER_NAME: ${{ secrets.container-name }}
+  ECR_REPOSITORY: ${{ secrets.ecr-repository }}
+
+# This workflow contains two jobs called: build-deploy and test
+jobs:
+  build-deploy:
+    name: Build image, push to ECR and deploy
+    runs-on: ubuntu-latest
+    outputs: 
+      tag: ${{ steps.tag-number.outputs.tag }}
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+      
+    - name: Set Tag Number
+      id: tag-number
+      run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+      
+    - name: Check Tag Release
+      env:
+          RELEASE_VERSION: ${{ steps.tag-number.outputs.tag }}
+      run: |
+          echo $RELEASE_VERSION
+          echo ${{ steps.vars.outputs.tag }}
+
+    - name: Configure AWS Credentials
+      id: configure-aws
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.aws-access-key-id }}
+        aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
+        aws-region: ${{ secrets.aws-region }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr-build
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, and tag image
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr-build.outputs.registry }}
+        IMAGE_TAG: ${{ steps.tag-number.outputs.tag }}
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+
+    - name: Push image to Amazon ECR
+      id: push-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr-build.outputs.registry }}
+        IMAGE_TAG: ${{ steps.tag-number.outputs.tag }}
+      run: |
+        echo $IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def-1
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr-deploy.outputs.registry }}
+        IMAGE_TAG: ${{ needs.build.outputs.tag }}
+      with:
+          task-definition: ${{ inputs.ecs-task-definition }}
+          container-name: ${{ secrets.container-name }}
+          image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+          environment-variables: |
+            APPS_JWT_SECRET=${{ secrets.apps-jwt-secret }}
+            APPS_PLUGIN=${{ secrets.apps-plugin }}
+            AUTH_CLIENT_HOST=${{ secrets.auth-client-host }}
+            AUTH_TOKEN_EXPIRATION_IN_MINUTES=${{ secrets.auth-token-expiration-in-minutes }}
+            AUTH_TOKEN_JWT_SECRET=${{ secrets.auth-token-jwt-secret }}
+            AVATARS_PATH_PREFIX=${{ secrets.avatars-path-prefix }}
+            CHATBOX_PLUGIN=${{ secrets.chatbox-plugin }}
+            CLIENT_HOST=${{ secrets.client-host }}
+            COOKIE_DOMAIN=${{ secrets.cookie-domain }}
+            CORS_ORIGIN_REGEX=${{ secrets.cors-origin-regex }}
+            DATABASE_LOGS=${{ secrets.database-logs }}
+            EMAIL_LINKS_HOST=${{ secrets.email-links-host }}
+            EMBEDDED_LINK_ITEM_IFRAMELY_HREF_ORIGIN=${{ secrets.embedded-link-item-iframely-href-origin }}
+            EMBEDDED_LINK_ITEM_PLUGIN=${{ secrets.embedded-link-item-plugin }}
+            FILE_STORAGE_ROOT_PATH=${{ secrets.file-storage-root-path }}
+            FILES_PATH_PREFIX=${{ secrets.files-path-prefix }}
+            HIDDEN_TAG_ID=${{ secrets.hidden-tag-id }}
+            HOSTNAME=${{ secrets.hostname }}
+            IMAGE_CLASSIFIER_API=${{ secrets.image-classifier-api }}
+            JWT_SECRET=${{ secrets.jwt-secret }}
+            LOGIN_ITEM_TAG_ID=${{ secrets.login-item-tag-id }}
+            MAILER_CONFIG_FROM_EMAIL=${{ secrets.mailer-config-from-email }}
+            MAILER_CONFIG_PASSWORD=${{ secrets.mailer-config-password }}
+            MAILER_CONFIG_SMTP_HOST=${{ secrets.mailer-config-smtp-host }}
+            MAILER_CONFIG_USERNAME=${{ secrets.mailer-config-username }}
+            NODE_ENV=${{ secrets.node-env }}
+            PG_CONNECTION_URI=${{ secrets.pg-connection-uri }}
+            PORT=${{ secrets.port }}
+            PUBLIC_PLUGIN=${{ secrets.public-plugin }}
+            PUBLIC_TAG_ID=${{ secrets.public-tag-id }}
+            PUBLISHED_TAG_ID=${{ secrets.published-tag-id }}
+            REDIS_HOST=${{ secrets.redis-host }}
+            REDIS_PASSWORD=${{ secrets.redis-password }}
+            REDIS_PORT=${{ secrets.redis-port }}
+            REDIS_USERNAME=${{ secrets.redis-username }}
+            REFRESH_TOKEN_EXPIRATION_IN_MINUTES=${{ secrets.refresh-token-expiration-in-minutes }}
+            REFRESH_TOKEN_JWT_SECRET=${{ secrets.refresh-token-jwt-secret }}
+            ROARR_LOG=${{ secrets.roarr-log }}
+            S3_FILE_ITEM_ACCESS_KEY_ID=${{ secrets.s3-file-item-access-key-id }}
+            S3_FILE_ITEM_BUCKET=${{ secrets.s3-file-item-bucket }}
+            S3_FILE_ITEM_PLUGIN=${{ secrets.s3-file-item-access-plugin }}
+            S3_FILE_ITEM_REGION=${{ secrets.s3-file-item-region }}
+            S3_FILE_ITEM_SECRET_ACCESS_KEY=${{ secrets.s3-file-item-secret-access-key }}
+            SAVE_ACTIONS=${{ secrets.save-actions }}
+            SECURE_SESSION_SECRET_KEY=${{ secrets.secure-session-secret-key }}
+            THUMBNAILS_PATH_PREFIX=${{ secrets.thumbnails-path-prefix }}
+            TOKEN_BASED_AUTH=${{ secrets.token-based-auth }}
+            WEBSOCKETS_PLUGIN=${{ secrets.websockets-plugin }}
+
+    - name: Modify Amazon ECS task definition with second container
+      id: task-def-2
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+          task-definition: ${{ steps.task-def-1.outputs.task-definition }}
+          container-name: ${{ secrets.container-name-2 }}
+          image: ${{ secrets.container-image-2}}
+          environment-variables: |
+            NODE_ENV=${{ secrets.node-env-2 }}
+
+    - name: Modify Amazon ECS task definition with third container
+      id: task-def-3
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+          task-definition: ${{ steps.task-def-2.outputs.task-definition }}
+          container-name: ${{ secrets.container-name-3 }}
+          image: ${{ secrets.container-image-3 }}
+
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+          task-definition: ${{ steps.task-def-3.outputs.task-definition }}
+          service: ${{ secrets.ecs-service }}
+          cluster: ${{ secrets.ecs-cluster }}
+          wait-for-service-stability: true       
+
+  test:
+    name: Test
+    needs: build-deploy
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # The environment that the job will reference
+    environment: 
+      name: test
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+      
+    - name: Test job
+      run: |
+        echo "This is the test job"
