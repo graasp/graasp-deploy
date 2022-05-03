@@ -38,6 +38,8 @@ on:
         required: false
       hidden-item-tag-id:
         required: false
+      google-key:
+        required: false
 
 env:
   BUILD_FOLDER: '${{ inputs.build-folder }}'
