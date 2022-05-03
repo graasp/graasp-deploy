@@ -107,7 +107,17 @@ jobs:
           task-definition: ${{ inputs.ecs-task-definition }}
           container-name: ${{ secrets.container-name }}
           image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
-
+          environment-variables: |
+            NEXT_PUBLIC_API_HOST=${{ secrets.next-public-api-host }}
+            NEXT_PUBLIC_GOOGLE_ANALYTICS_ID=${{ secrets.next-public-google-analytics-id }}
+            NEXT_PUBLIC_GRAASP_AUTH_HOST=${{ secrets.next-public-graasp-auth-host }}
+            NEXT_PUBLIC_API_HOST=${{ secrets.next-public-api-host }}
+            NEXT_PUBLIC_GRAASP_PERFORM_HOST=${{ secrets.next-public-graasp-perform-host }}
+            NEXT_PUBLIC_GRAASPER_ID=${{ secrets.next-public-graasper-id }}
+            NEXT_PUBLIC_PUBLISHED_TAG_ID=${{ secrets.next-public-published-tag-id }}
+            NEXT_PUBLIC_SENTRY_DSN=${{ secrets.next-public-sentry-dsn }}
+            PORT=${{ secrets.port }}
+            
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
