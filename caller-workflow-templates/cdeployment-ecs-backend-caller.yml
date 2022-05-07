@@ -18,7 +18,7 @@ jobs:
     name: CD caller template
     uses: graasp/graasp-deploy/.github/workflows/cdeployment-ecs.yml@main
     with:
-      ecs-task-definition: '.aws/<name>-test.json'
+      ecs-task-definition: '.aws/<name>-staging.json'
     secrets:
       aws-access-key-id:
       aws-secret-access-key:
@@ -57,7 +57,7 @@ jobs:
       mailer-config-smtp-host:
       mailer-config-username:
       node-env:
-      node-env-2:
+      node-env-container-2:
       pg-connection-uri:
       port:
       public-plugin:

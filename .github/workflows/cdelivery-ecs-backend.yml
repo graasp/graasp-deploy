@@ -83,7 +83,7 @@ on:
         required: true
       node-env:
         required: true
-      node-env-2:
+      node-env-container-2:
         required: true
       pg-connection-uri:
         required: true
@@ -254,7 +254,7 @@ jobs:
           container-name: ${{ secrets.container-name-2 }}
           image: ${{ secrets.container-image-2}}
           environment-variables: |
-            NODE_ENV=${{ secrets.node-env-2 }}
+            NODE_ENV=${{ secrets.node-env-container-2 }}
 
     - name: Modify Amazon ECS task definition with third container
       id: task-def-3

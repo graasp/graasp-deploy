@@ -49,7 +49,7 @@ jobs:
       mailer-config-smtp-host:
       mailer-config-username:
       node-env:
-      node-env-2:
+      node-env-container-2:
       pg-connection-uri:
       port:
       public-plugin:
