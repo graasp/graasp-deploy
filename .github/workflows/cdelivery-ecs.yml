@@ -4,10 +4,11 @@ name: CDelivery reusable workflow for ECS
 on:
   # Allow the workflow to be reusable
   workflow_call:
+    # Define inputs and secrets, which can be passed from the caller workflow
+    # ecs-task-definition: path to task definition json template. 
     inputs:
       ecs-task-definition:
-        required: false
-        default: '.aws/demo-ci.json'
+        required: true
         type: string
     secrets:
       aws-access-key-id:
@@ -49,7 +50,7 @@ env:
 # This workflow contains one job called: build-deploy
 jobs:
   build-deploy:
-    name: Build image, push to ECR and deploy to prod
+    name: Build image, push to ECR and deploy to production environment
     runs-on: ubuntu-latest
     outputs: 
       tag: ${{ steps.tag-number.outputs.tag }}

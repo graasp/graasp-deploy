@@ -4,6 +4,8 @@ name: CD reusable workflow for ECS
 on:
   # Allow the workflow to be reusable
   workflow_call:
+    # Define inputs and secrets, which can be passed from the caller workflow
+    # ecs-task-definition: path to task definition json template. 
     inputs:
       ecs-task-definition:
         required: true
@@ -138,7 +140,7 @@ env:
 # This workflow contains two jobs called: build-deploy and test
 jobs:
   build-deploy:
-    name: Build image, push to ECR and deploy
+    name: Build image, push to ECR and deploy to staging environment
     runs-on: ubuntu-latest
     outputs: 
       tag: ${{ steps.tag-number.outputs.tag }}

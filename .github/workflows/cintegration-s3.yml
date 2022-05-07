@@ -4,7 +4,9 @@ name: CI reusable workflow for S3
 on:
   # Allow the workflow to be reusable
   workflow_call:
+    # Define inputs which can be passed from the caller workflow
     inputs:
+      # Specify build folder, if needed
       build-folder:
         required: false
         default: 'build'
@@ -43,7 +45,6 @@ on:
 
 env:
   BUILD_FOLDER: '${{ inputs.build-folder }}'
-  VERSION: 'latest'
 
 # This workflow contains three jobs called: test, build and deploy
 jobs:

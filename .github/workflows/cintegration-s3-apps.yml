@@ -4,7 +4,9 @@ name: CI reusable workflow for S3 apps
 on:
   # Allow the workflow to be reusable
   workflow_call:
+    # Define inputs which can be passed from the caller workflow
     inputs:
+      # Specify build folder, if needed
       build-folder:
         required: false
         default: 'build'

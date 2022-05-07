@@ -4,7 +4,9 @@ name: CD reusable workflow for S3 apps
 on:
   # Allow the workflow to be reusable
   workflow_call:
+    # Define inputs which can be passed from the caller workflow
     inputs:
+      # Specify build folder, if needed
       build-folder:
         required: false
         default: 'build'
@@ -36,7 +38,7 @@ env:
 # This workflow contains two jobs called: build-deploy and test
 jobs:
   build-deploy:
-    name: Build, sync with S3 and deploy
+    name: Build, sync with S3 and deploy to staging environment
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
