@@ -190,7 +190,7 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr-build.outputs.registry }}
         IMAGE_TAG: ${{ steps.tag-number.outputs.tag }}
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f .stagingcontainer/Dockerfile .
 
     - name: Push image to Amazon ECR
       id: push-image
