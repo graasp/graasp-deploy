@@ -1,30 +1,43 @@
-name: CI pipeline for S3
+name: CI pipeline for S3 deployments
 
-# Controls when the action will run.
+# Control when the action will run.
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
+  # Triggers the workflow on push events only for the main branch
   push:
     branches:
     - main
 
+  # Triggers the workflow on closed pull request events only for the main branch
   pull_request:
-   branches: [main]
+    branches: [main]
+    types: [closed]
 
-  # Allows you to run this workflow manually from the Actions tab
+  # Allows to run the workflow manually from the Actions tab
   workflow_dispatch:
 
+# This workflow is made up of one job that calls the reusable workflow in graasp-deploy
 jobs:
   graasp-deploy-s3-workflow:
+    # Replace by repository name
     name: CI caller template
     uses: graasp/graasp-deploy/.github/workflows/cintegration-s3.yml@main
+    # Replace input build-folder if needed
     with:
       build-folder: 'build'
+    # Insert required secrets based on repository with the following format: ${{ secrets.SECRET_NAME }}
     secrets:
       aws-access-key-id:
       aws-secret-access-key:
       aws-region:
       aws-s3-bucket-name:
-      cloudfront-distribution:
+      cloudfront-distribution-id:
       api-host:
+      port:
       show-notifications:
+      authentication-host:
       graasp-compose-host:
+      graasp-perform-host:
+      graasp-analyzer-host:
+      ga-measurement-id:
+      hidden-item-tag-id:
+      google-key:
