@@ -54,7 +54,7 @@ on:
 env:
   BUILD_FOLDER: '${{ inputs.build-folder }}'
 
-# This workflow is made up of two jobs that run sequentially, called tebuild-deploy and test
+# This workflow is made up of two jobs that run sequentially, called build-deploy and test
 jobs:
   # Build, sync with S3 and deploy to staging environment
   build-deploy:
