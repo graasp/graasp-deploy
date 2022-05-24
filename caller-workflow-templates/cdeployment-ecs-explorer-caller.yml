@@ -1,24 +1,28 @@
-name: CDelivery pipeline for ECS
+name: Continuous Deployment pipeline for ECS explorer
 
 # Controls when the action will run.
 on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+# This workflow is made up of one job that calls the reusable workflow in graasp-deploy
 jobs:
   graasp-deploy-ecs-workflow:
+    # Replace with repository name
     name: CD caller template
-    uses: graasp/graasp-deploy/.github/workflows/cdelivery-ecs.yml@main
+    uses: graasp/graasp-deploy/.github/workflows/cdeployment-ecs-explorer.yml@main
+    # Replace input ecs-task-definition with template file. Format: '.aws/<name>-prod.json'.
     with:
-      ecs-task-definition: '.aws/<name>-prod.json'
+      ecs-task-definition:
+    # Insert required secrets based on repository with the following format: ${{ secrets.SECRET_NAME }}
     secrets:
       aws-access-key-id:
       aws-secret-access-key:
       aws-region:
       ecs-cluster:
       ecs-service:
-      container-name:
       ecr-repository:
+      container-name-explorer:
       next-public-api-host:
       next-public-google-analytics-id:
       next-public-graasp-auth-host:

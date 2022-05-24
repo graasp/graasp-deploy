@@ -56,7 +56,7 @@ env:
   CONTAINER_NAME: ${{ secrets.container-name-explorer }}
   ECR_REPOSITORY: ${{ secrets.ecr-repository }}
 
-# This workflow contains is made up of two jobs that run sequentially, called: build-deploy and test
+# This workflow is made up of two jobs that run sequentially, called: build-deploy and test
 jobs:
   # Build image, push to ECR and deploy to staging environment
   build-deploy:
