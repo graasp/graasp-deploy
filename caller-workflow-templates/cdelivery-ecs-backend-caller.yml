@@ -1,28 +1,35 @@
-name: CDelivery pipeline for ECS backend
+name: Continuous Delivery pipeline for ECS backend
 
 # Controls when the action will run.
 on:
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  # Triggers the workflow on push tag event
+  push:
+    tags:
+      - v*
 
+# This workflow is made up of one job that calls the reusable workflow in graasp-deploy
 jobs:
   graasp-deploy-ecs-backend-workflow:
+    # Replace with repository name
     name: CD caller template
-    uses: graasp/graasp-deploy/.github/workflows/cdelivery-ecs.yml@main
+    uses: graasp/graasp-deploy/.github/workflows/cdelivery-ecs-backend.yml@main
+    # Replace input ecs-task-definition with template file. Format: '.aws/<name>-stage.json'. Replace tag.
     with:
-      ecs-task-definition: '.aws/<name>-prod.json'
+      ecs-task-definition:
+      tag:
+    # Insert required secrets based on repository with the following format: ${{ secrets.SECRET_NAME }}
     secrets:
       aws-access-key-id:
       aws-secret-access-key:
       aws-region:
       ecs-cluster:
       ecs-service:
-      container-name:
       ecr-repository:
-      container-name-2:
-      container-name-3:
-      container-image-2:
-      container-image-3:
+      container-name-graasp:
+      container-name-iframely:
+      container-name-classifier:
+      container-image-iframely:
+      container-image-classifier:
       apps-jwt-secret:
       apps-plugin:
       auth-client-host:
