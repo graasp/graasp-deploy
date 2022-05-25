@@ -1,0 +1,26 @@
+name: Continuous Deployment pipeline for S3-apps
+
+# Controls when the action will run.
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# This workflow is made up of one job that calls the reusable workflow in graasp-deploy
+jobs:
+  graasp-deploy-s3-apps-workflow:
+    # Replace with repository name
+    name: CD caller template
+    uses: graasp/graasp-deploy/.github/workflows/cdeployment-s3-apps.yml@main
+    # Replace input build-folder or version if needed.
+    with:
+      build-folder: 'build'
+      version: 'latest'
+    # Insert required secrets based on repository with the following format: ${{ secrets.SECRET_NAME }}
+    secrets:
+      aws-access-key-id:
+      aws-secret-access-key:
+      aws-region:
+      aws-s3-bucket-name:
+      cloudfront-distribution-id:
+      app-id:
+      graasp-domain:

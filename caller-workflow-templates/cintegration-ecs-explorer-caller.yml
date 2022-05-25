@@ -1,0 +1,42 @@
+name: CI pipeline for ECS
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow on push events only for the main branch
+  push:
+    branches:
+    - main
+
+  # Triggers the workflow on closed pull request events only for the main branch
+  pull_request:
+    branches: [main]
+    types: [closed]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# This workflow is made up of one job that calls the reusable workflow in graasp-deploy
+jobs:
+  graasp-deploy-ecs-workflow:
+    # Replace by repository name
+    name: CI caller template
+    uses: graasp/graasp-deploy/.github/workflows/cintegration-ecs-explorer.yml@main
+    # Replace input ecs-task-definition with template file. Format: '.aws/<name>-dev.json'
+    with:
+      ecs-task-definition:
+    # Insert required secrets based on repository with the following format: ${{ secrets.SECRET_NAME }}
+    secrets:
+      aws-access-key-id:
+      aws-secret-access-key:
+      aws-region:
+      ecs-cluster:
+      ecs-service:
+      container-name-explorer:
+      ecr-repository:
+      next-public-api-host:
+      next-public-google-analytics-id:
+      next-public-graasp-auth-host:
+      next-public-graasp-perform-host:
+      next-public-graasper-id:
+      next-public-published-tag-id:
+      port:

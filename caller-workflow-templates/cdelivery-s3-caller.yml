@@ -1,0 +1,36 @@
+name: Continuous Delivery pipeline for S3 deployments
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow on push tag event
+  push:
+    tags:
+      - v*
+
+# This workflow is made up of one job that calls the reusable workflow in graasp-deploy
+jobs:
+  graasp-deploy-s3-workflow:
+    # Replace with repository name
+    name: CD caller template
+    uses: graasp/graasp-deploy/.github/workflows/cdelivery-s3.yml@main
+    # Replace input build-folder if needed. Replace tag.
+    with:
+      build-folder: 'build'
+      tag:
+    # Insert required secrets based on repository with the following format: ${{ secrets.SECRET_NAME }}
+    secrets:
+      aws-access-key-id:
+      aws-secret-access-key:
+      aws-region:
+      aws-s3-bucket-name:
+      cloudfront-distribution-id:
+      api-host:
+      port:
+      show-notifications:
+      authentication-host:
+      graasp-compose-host:
+      graasp-perform-host:
+      graasp-analyzer-host:
+      ga-measurement-id:
+      hidden-item-tag-id:
+      google-key:
