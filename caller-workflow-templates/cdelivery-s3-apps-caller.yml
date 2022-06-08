@@ -2,10 +2,9 @@ name: Continuous Delivery pipeline for S3-apps
 
 # Controls when the action will run.
 on:
-  # Triggers the workflow on push tag event
-  push:
-    tags:
-      - v*
+  # Triggers the workflow on repository-dispatch event
+  repository_dispatch:
+    types: [staging-deployment]
 
 # This workflow is made up of one job that calls the reusable workflow in graasp-deploy
 jobs:
@@ -17,7 +16,7 @@ jobs:
     with:
       build-folder: 'build'
       version: 'latest'
-      tag:
+      tag: ${{ github.event.client_payload.tag }}
     # Insert required secrets based on repository with the following format: ${{ secrets.SECRET_NAME }}
     secrets:
       aws-access-key-id:
