@@ -1,0 +1,63 @@
+# This workflow takes the latest YYYYMMddhhmm-stagingVersions.json file inside the release-versions folder 
+# and triggers all the cdelivery workflows in the different repositories. 
+name: Deploy new stack to staging environment
+
+# Controls when the action will run.
+on:
+  workflow_dispatch:
+
+jobs:
+  generate-matrix:
+    name: Generate matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    # The environment that the job will reference
+    environment: 
+      name: staging
+    steps:
+    # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Get latest versions file
+      id: latest-file
+      run: |
+        cd ./release-versions
+        LATEST_FILE_NAME=$(ls -Ar | head -n 1)
+        echo ::set-output name=latest::${LATEST_FILE_NAME}
+
+    # Load latest json from a file
+    - name: Generate matrix
+      env:
+        LATEST_FILE_NAME: ${{ steps.latest-file.outputs.latest }}
+      id: set-matrix
+      # Set output variable and remove newline characters
+      run: |
+        cd ./release-versions
+        LATEST_FILE=$(cat $LATEST_FILE_NAME)
+        echo ::set-output name=matrix::${LATEST_FILE//'%'/'%25'}
+
+  dispatch:
+    name: Dispatch Continuous Delivery workflows
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      # Uses fromJson to parse the output and set a matrix variable.
+      matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
+    steps:
+    - name: Set json output
+      id: set-json
+      env:
+        TAG: ${{matrix.tag}}
+      run: |
+        JSON=$(jq --null-input --arg tag "$TAG" '{"tag": $tag}')
+        echo ::set-output name=json::${JSON//'%'/'%25'}
+
+    - name: Repository Dispatch
+      uses: peter-evans/repository-dispatch@v2
+      with:
+        token: ${{ secrets.REPO_ACCESS_TOKEN }}
+        repository: ${{ matrix.repository }}
+        event-type: staging-deployment
+        client-payload: ${{steps.set-json.outputs.json}}
