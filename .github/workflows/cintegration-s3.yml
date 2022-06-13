@@ -49,6 +49,7 @@ on:
 # Set environment variables that are available to the steps of all jobs in the workflow
 env:
   BUILD_FOLDER: '${{ inputs.build-folder }}'
+  NODE_OPTIONS: '--max_old_space_size=8192'
 
 # This workflow is made up of three jobs that run sequentially, called test, build and deploy
 jobs:
