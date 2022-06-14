@@ -1,4 +1,4 @@
-# This workflow takes the latest YYYYMMddhhmm-releaseVersions.json file inside the release-versions folder 
+# This workflow takes the latest YYYYMMddhhmm-release-versions.json file inside the release-versions folder 
 # and triggers all the cdelivery workflows in the different repositories. 
 name: Deploy new stack to production environment
 

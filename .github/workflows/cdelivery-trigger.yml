@@ -1,4 +1,4 @@
-# This workflow takes the latest YYYYMMddhhmm-stagingVersions.json file inside the staging-versions folder 
+# This workflow takes the latest YYYYMMddhhmm-staging-versions.json file inside the staging-versions folder 
 # and triggers all the cdelivery workflows in the different repositories. 
 name: Deploy new stack to staging environment
 
@@ -43,7 +43,7 @@ jobs:
     needs: generate-matrix
     runs-on: ubuntu-latest
     strategy:
-      # Uses fromJson to parse the output and set a matrix variable.
+      # Uses fromJson to parse the output and set a matrix variable
       matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
     steps:
     - name: Set json output
@@ -61,3 +61,14 @@ jobs:
         repository: ${{ matrix.repository }}
         event-type: staging-deployment
         client-payload: ${{steps.set-json.outputs.json}}
+
+  update-current:
+    name: Update currently deployed versions in staging environment
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    steps:
+    - name: Copy deployed YYYYMMddhhmm-staging-versions.json file
+      id: set-current
+      run: |
+        cd ./staging-versions
+        cp $LATEST_FILE_NAME ../deployed/current-staging-versions.json
