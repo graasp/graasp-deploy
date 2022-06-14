@@ -83,6 +83,8 @@ jobs:
       s3-file-item-secret-access-key:
       save-actions:
       secure-session-secret-key:
+      stripe-secret-key:
+      stripe-default-plan-price-id:
       thumbnails-path-prefix:
       token-based-auth:
       websockets-plugin:
