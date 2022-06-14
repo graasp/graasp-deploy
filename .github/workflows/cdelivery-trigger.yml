@@ -1,8 +1,8 @@
-# This workflow takes the latest YYYYMMddhhmm-stagingVersions.json file inside the release-versions folder 
+# This workflow takes the latest YYYYMMddhhmm-stagingVersions.json file inside the staging-versions folder 
 # and triggers all the cdelivery workflows in the different repositories. 
 name: Deploy new stack to staging environment
 
-# Controls when the action will run.
+# Controls when the action will run
 on:
   workflow_dispatch:
 
@@ -23,7 +23,7 @@ jobs:
     - name: Get latest versions file
       id: latest-file
       run: |
-        cd ./release-versions
+        cd ./staging-versions
         LATEST_FILE_NAME=$(ls -Ar | head -n 1)
         echo ::set-output name=latest::${LATEST_FILE_NAME}
 
@@ -34,7 +34,7 @@ jobs:
       id: set-matrix
       # Set output variable and remove newline characters
       run: |
-        cd ./release-versions
+        cd ./staging-versions
         LATEST_FILE=$(cat $LATEST_FILE_NAME)
         echo ::set-output name=matrix::${LATEST_FILE//'%'/'%25'}
 

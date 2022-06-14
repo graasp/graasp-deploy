@@ -1,6 +1,6 @@
-name: Continuous Delivery pipeline for ECS explorer
+name: Deploy to staging environment
 
-# Controls when the action will run.
+# Controls when the action will run
 on:
   # Triggers the workflow on repository-dispatch event
   repository_dispatch:
@@ -11,8 +11,9 @@ jobs:
   graasp-deploy-ecs-workflow:
     # Replace with repository name
     name: CD caller template
+    # Replace 'main' with the hash of a commit, so it points to an specific version of the reusable workflow that is used
     uses: graasp/graasp-deploy/.github/workflows/cdelivery-ecs-explorer.yml@main
-    # Replace input ecs-task-definition with template file. Format: '.aws/<name>-stage.json'. Replace tag.
+    # Replace input ecs-task-definition with template file. Format: '.aws/<name>-stage.json'
     with:
       ecs-task-definition:
       tag: ${{ github.event.client_payload.tag }}

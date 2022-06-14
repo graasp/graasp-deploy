@@ -1,8 +1,8 @@
-# This workflow creates a new YYYYMMddhhmm-stagingVersions.json file inside the release-versions folder 
+# This workflow creates a new YYYYMMddhhmm-stagingVersions.json file inside the staging-versions folder 
 # with the latest tag pushed by the repository that triggered the workflow. 
 name: Update staging versions
 
-# Controls when the action will run.
+# Controls when the action will run
 on:
   # Triggers the workflow on repository_dispatch events but only for the update-staging-version event
   repository_dispatch:
@@ -21,11 +21,11 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v2
 
-    # Get the latest modified file in the release-versions working directory.
+    # Get the latest modified file in the staging-versions working directory.
     - name: Get latest versions file
       id: latest-file
       run: |
-        cd ./release-versions
+        cd ./staging-versions
         LATEST_FILE_NAME=$(ls -Ar | head -n 1)
         echo ::set-output name=latest::${LATEST_FILE_NAME}
 
@@ -43,7 +43,7 @@ jobs:
         FILE_NAME=$(echo "`date +"%Y%m%d%H%M"`"-stagingVersions.json)
         echo "FILE_NAME=$FILE_NAME" >> $GITHUB_ENV
         jq --arg tag "$TAG" --arg repository "$REPOSITORY" \
-        '(.include[] | select(.repository == $repository) | .tag) |= $tag' ./release-versions/$LATEST_FILE_NAME > ./release-versions/$FILE_NAME
+        '(.include[] | select(.repository == $repository) | .tag) |= $tag' ./staging-versions/$LATEST_FILE_NAME > ./staging-versions/$FILE_NAME
     
     # Detect changed files during a Workflow run and commit and push them back to the GitHub repository
     - name: Commit step

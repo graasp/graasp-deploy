@@ -1,6 +1,6 @@
-name: CI reusable workflow that runs CI pipeline for ECS deployments
+name: Reusable workflow that runs Continuous Integration pipeline for ECS deployments
 
-# Control when the action will run.
+# Control when the action will run
 on:
   # Allow the workflow to be reusable
   workflow_call:
@@ -12,7 +12,7 @@ on:
         type: string
     # Define secrets which can be passed from the caller workflow
     secrets:
-      #aws credentials and variables
+      # AWS credentials and variables
       aws-access-key-id:
         required: true
       aws-secret-access-key:
@@ -25,10 +25,10 @@ on:
         required: true
       ecr-repository:
         required: true
-      #container name that will be included in the cluster
+      # container name that will be included in the cluster
       container-name-explorer:
         required: true
-      #environment variables
+      # Environment variables
       next-public-api-host: 
         required: true
       next-public-google-analytics-id:
@@ -51,6 +51,8 @@ env:
   ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
   CONTAINER_NAME: ${{ secrets.container-name-explorer }}
   ECR_REPOSITORY: ${{ secrets.ecr-repository }}
+  # Allows to increase Node's max heap size
+  NODE_OPTIONS: '--max_old_space_size=8192'
 
 # This workflow is made up of three jobs that run sequentially, called test, build and deploy
 jobs:

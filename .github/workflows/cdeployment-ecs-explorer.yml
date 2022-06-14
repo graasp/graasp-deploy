@@ -1,6 +1,6 @@
 name: Reusable workflow that runs Continuous Deployment pipeline for ECS
 
-# Control when the action will run.
+# Control when the action will run
 on:
   # Allow the workflow to be reusable
   workflow_call:
@@ -12,7 +12,7 @@ on:
         type: string
     # Define secrets which can be passed from the caller workflow
     secrets:
-      #aws credentials and variables
+      # AWS credentials and variables
       aws-access-key-id:
         required: true
       aws-secret-access-key:
@@ -28,7 +28,7 @@ on:
       #container name that will be included in the cluster
       container-name-explorer:
         required: true
-      #environment variables
+      # Environment variables
       next-public-api-host: 
         required: true
       next-public-google-analytics-id:
@@ -51,6 +51,8 @@ env:
   ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
   CONTAINER_NAME: ${{ secrets.container-name-explorer}}
   ECR_REPOSITORY: ${{ secrets.ecr-repository }}
+  # Allows to increase Node's max heap size
+  NODE_OPTIONS: '--max_old_space_size=8192'
 
 # This workflow is made up of one job called: build-deploy
 jobs:
@@ -65,6 +67,7 @@ jobs:
     # Define job output that is available to all downstream jobs that depend on this job
     outputs: 
       tag: ${{ steps.tag-number.outputs.tag }}
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it

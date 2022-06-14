@@ -2,7 +2,7 @@
 # with the repository name and the latest tag pushed from the caller repository. 
 name: Push new tag to graasp-deploy repository
 
-# Controls when the action will run.
+# Controls when the action will run
 on:
   # Triggers the workflow on push tag events.
   push:
@@ -33,7 +33,7 @@ jobs:
         JSON=$(jq --null-input --arg repository "$REPOSITORY" --arg tag "$TAG" '{"repository": $repository, "tag": $tag}')
         echo ::set-output name=json::${JSON//'%'/'%25'}
 
-    # trigger an 'on: repository_dispatch' workflow to run in graasp-deploy repository
+    # Trigger an 'on: repository_dispatch' workflow to run in graasp-deploy repository
     - name: Repository Dispatch
       uses: peter-evans/repository-dispatch@v2
       with:

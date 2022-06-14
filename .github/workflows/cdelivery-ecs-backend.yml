@@ -1,6 +1,6 @@
 name: Reusable workflow that runs Continuous Delivery pipeline for ECS
 
-# Control when the action will run.
+# Control when the action will run
 on:
   # Allow the workflow to be reusable
   workflow_call:
@@ -16,7 +16,7 @@ on:
         type: string
     # Define secrets which can be passed from the caller workflow
     secrets:
-      #aws credentials and variables
+      # AWS credentials and variables
       aws-access-key-id:
         required: true
       aws-secret-access-key:
@@ -40,7 +40,7 @@ on:
         required: true
       container-image-classifier:
         required: true
-      #environment variables
+      # Environment variables
       apps-jwt-secret:
         required: true
       apps-plugin:
@@ -145,6 +145,8 @@ env:
   ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
   CONTAINER_NAME: ${{ secrets.container-name-graasp }}
   ECR_REPOSITORY: ${{ secrets.ecr-repository }}
+  # Allows to increase Node's max heap size
+  NODE_OPTIONS: '--max_old_space_size=8192'
 
 # This workflow is made up of two jobs that run sequentially, called: build-deploy and test
 jobs:

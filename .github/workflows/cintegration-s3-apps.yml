@@ -1,12 +1,12 @@
-name: CI reusable workflow that runs CI pipeline for S3 apps
+name: Reusable workflow that runs Continuous Integration pipeline for S3 apps
 
-# Control when the action will run.
+# Control when the action will run
 on:
   # Allow the workflow to be reusable
   workflow_call:
     # Define inputs which can be passed from the caller workflow
     inputs:
-      # build-folder: path to build folder inside repo, if needed
+      # build-folder: path to build folder inside repository, if needed
       build-folder:
         required: false
         default: 'build'
@@ -18,7 +18,7 @@ on:
         type: string
     # Define secrets which can be passed from the caller workflow
     secrets:
-      #aws credentials and variables
+      # AWS credentials and variables
       aws-access-key-id:
         required: true
       aws-secret-access-key:
@@ -29,7 +29,7 @@ on:
         required: true
       cloudfront-distribution-id:
         required: true
-      #environment variables
+      # Environment variables
       app-id:
         required: true
       graasp-domain:
@@ -39,6 +39,8 @@ on:
 env:
   BUILD_FOLDER: '${{ inputs.build-folder }}'
   VERSION: '${{ inputs.version }}'
+  # Allows to increase Node's max heap size
+  NODE_OPTIONS: '--max_old_space_size=8192'
 
 # This workflow is made up of three jobs that run sequentially, called test, build and deploy
 jobs:
@@ -108,8 +110,8 @@ jobs:
       # --acl public-read makes files publicly readable 
       # --follow-symlinks fixes some weird symbolic link problems that may come up
       # --delete permanently deletes files in the S3 bucket that are not present in the latest version of the repository/build.
-  
-  # Deploy to dev environment
+
+  # Deploy to development environment
   deploy: 
     needs: build
     name: Deploy

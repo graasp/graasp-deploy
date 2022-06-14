@@ -1,12 +1,12 @@
-name: Reusable workflow that runs Contiuious Delivery pipeline for S3 deployments
+name: Reusable workflow that runs Continuous Delivery pipeline for S3 deployments
 
-# Control when the action will run.
+# Control when the action will run
 on:
   # Allow the workflow to be reusable
   workflow_call:
     # Define inputs which can be passed from the caller workflow
     inputs:
-      # Specify build folder, if needed
+      # build-folder: specify build folder, if needed
       build-folder:
         required: false
         default: 'build'
@@ -17,7 +17,7 @@ on:
         type: string
     # Define secrets which can be passed from the caller workflow
     secrets:
-      #aws credentials and variables
+      # AWS credentials and variables
       aws-access-key-id:
         required: true
       aws-secret-access-key:
@@ -28,7 +28,7 @@ on:
         required: true
       cloudfront-distribution-id:
         required: true
-      #environment variables
+      # Environment variables
       api-host:
         required: false
       port:
@@ -53,6 +53,8 @@ on:
 # Set environment variables that are available to the steps of all jobs in the workflow
 env:
   BUILD_FOLDER: '${{ inputs.build-folder }}'
+  # Allows to increase Node's max heap size
+  NODE_OPTIONS: '--max_old_space_size=8192'
 
 # This workflow is made up of two jobs that run sequentially, called build-deploy and test
 jobs:
@@ -61,6 +63,7 @@ jobs:
     name: Build-sync-deploy
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it

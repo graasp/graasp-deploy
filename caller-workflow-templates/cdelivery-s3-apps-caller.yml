@@ -1,6 +1,6 @@
-name: Continuous Delivery pipeline for S3-apps
+name: Deploy to staging environment
 
-# Controls when the action will run.
+# Controls when the action will run
 on:
   # Triggers the workflow on repository-dispatch event
   repository_dispatch:
@@ -11,8 +11,9 @@ jobs:
   graasp-deploy-s3-apps-workflow:
     # Replace with repository name
     name: CD caller template
+    # Replace 'main' with the hash of a commit, so it points to an specific version of the reusable workflow that is used
     uses: graasp/graasp-deploy/.github/workflows/cdelivery-s3-apps.yml@main
-    # Replace input build-folder or version if needed. Replace tag.
+    # Replace input build-folder or version if needed
     with:
       build-folder: 'build'
       version: 'latest'
