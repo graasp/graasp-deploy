@@ -145,4 +145,4 @@ jobs:
     # Create a new invalidation
     - name: Invalidate cloudfront distribution
       id: invalidate-cloudfront
-      run: aws cloudfront create-invalidation --distribution-id ${{ secrets.cloudfront-distribution-id }} --paths /*
+      run: aws cloudfront create-invalidation --distribution-id ${{ secrets.cloudfront-distribution-id }} --paths "/*"
