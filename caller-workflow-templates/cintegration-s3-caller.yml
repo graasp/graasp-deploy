@@ -33,7 +33,9 @@ jobs:
       authentication-host:
       graasp-compose-host:
       graasp-perform-host:
+      graasp-explorer-host:
       graasp-analyzer-host:
       ga-measurement-id:
       hidden-item-tag-id:
       google-key:
+      domain:
