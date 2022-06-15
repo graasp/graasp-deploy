@@ -87,6 +87,7 @@ jobs:
       env: 
         REACT_APP_API_HOST: ${{ secrets.api-host }}
         PORT: ${{ secrets.port }}
+        REACT_APP_GOOGLE_KEY_DEV: ${{ secrets.google-key }}
         REACT_APP_SHOW_NOTIFICATIONS: ${{ secrets.show-notifications }}
         REACT_APP_AUTHENTICATION_HOST: ${{ secrets.authentication-host }}
         REACT_APP_GRAASP_COMPOSE_HOST: ${{ secrets.graasp-compose-host }}
