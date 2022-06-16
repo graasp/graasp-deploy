@@ -16,6 +16,7 @@ jobs:
     # Replace with repository name
     name: CI caller template
     # Replace 'main' with the hash of a commit, so it points to an specific version of the reusable workflow that is used
+    # Reference reusable workflow file. Using the commit SHA is the safest for stability and security
     uses: graasp/graasp-deploy/.github/workflows/cintegration-s3.yml@main
     # Replace input build-folder if needed
     with:
