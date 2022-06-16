@@ -72,8 +72,8 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v2
 
-    # Create new release-versions.json file. Use jq to write to stdout and pipe the output to a newly created file.
-    - name: Create new release-versions.json file name
+    # Create new production-versions.json file. Use jq to write to stdout and pipe the output to a newly created file.
+    - name: Create new production-versions.json file name
       run: | 
         PRODUCTION_FILE_NAME=$(echo "`date +"%Y%m%d%H%M"`"-production-versions.json)
         echo "PRODUCTION_FILE_NAME=$PRODUCTION_FILE_NAME" >> $GITHUB_ENV
@@ -81,12 +81,11 @@ jobs:
     - name: Update latest production versions file
       id: update-latest-production-file
       env:
-        RELEASE_FILE_NAME: ${{ env.PRODUCTION_FILE_NAME }}
+        PRODUCTION_FILE_NAME: ${{ env.PRODUCTION_FILE_NAME }}
       run: |
-        echo $PRODUCTION_FILE_NAME
         cd ./release-versions
-        cp $LATEST_FILE_NAME_RELEASE ../deployed/current-production-versions.json
-        cp $LATEST_FILE_NAME_RELEASE ../deployed/$PRODUCTION_FILE_NAME
+        cp $LATEST_FILE_NAME_RELEASE ../production-versions/$PRODUCTION_FILE_NAME
+        cp $LATEST_FILE_NAME_RELEASE ../production-versions/current-production-versions.json
 
     - name: Commit step
       id: commit

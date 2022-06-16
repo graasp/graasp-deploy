@@ -98,7 +98,7 @@ jobs:
       run: |
         cd ./staging-versions
         cp $LATEST_FILE_NAME_STAGING ../release-versions/$RELEASE_FILE_NAME 
-        cp $LATEST_FILE_NAME_STAGING ../deployed/current-staging-versions.json
+        cp $LATEST_FILE_NAME_STAGING current-staging-versions.json
 
     - name: Commit step
       id: commit
