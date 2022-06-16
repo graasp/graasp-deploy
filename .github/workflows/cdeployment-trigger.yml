@@ -85,7 +85,7 @@ jobs:
       run: |
         cd ./release-versions
         cp $LATEST_FILE_NAME_RELEASE ../production-versions/$PRODUCTION_FILE_NAME
-        cp $LATEST_FILE_NAME_RELEASE ../production-versions/current-production-versions.json
+        cp $LATEST_FILE_NAME_RELEASE ../deployed/current-production-versions.json
 
     - name: Commit step
       id: commit
