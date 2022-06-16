@@ -35,6 +35,7 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v2
 
+    # Set the appropriate job output based on the stack that is being deployed: custom or latest. 
     - name: Get latest staging versions file
       id: latest-staging-file
       run: |
@@ -48,13 +49,23 @@ jobs:
           echo ::set-output name=latest::${LATEST_FILE_NAME_STAGING}
         fi
 
-    - name: Generate matrix
-      id: set-matrix
+    # Install the python version needed
+    - name: Setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8 
+
+    # Run compare.py to get the difference between the newer and the already deployed versions
+    - name: Execute py script 
       env:
         LATEST_FILE_NAME_STAGING: ${{ steps.latest-staging-file.outputs.latest }}
       run: |
-        cd ./staging-versions
-        LATEST_FILE=$(cat $LATEST_FILE_NAME_STAGING)
+        python scripts/compare.py staging-versions/$LATEST_FILE_NAME_STAGING deployed/current-staging-versions.json
+
+    - name: Generate matrix
+      id: set-matrix
+      run: |
+        LATEST_FILE=$(cat diff.json)
         echo ::set-output name=matrix::${LATEST_FILE//'%'/'%25'}
 
   dispatch:
@@ -98,7 +109,7 @@ jobs:
 
   promote:
     name: Promote stack to release ready
-    needs: [generate-matrix, test]
+    needs: [generate-matrix, dispatch, test]
     runs-on: ubuntu-latest
     environment: 
       name: staging

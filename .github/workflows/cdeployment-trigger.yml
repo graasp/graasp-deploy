@@ -25,14 +25,24 @@ jobs:
         LATEST_FILE_NAME_RELEASE=$(ls -Ar | head -n 1)
         echo ::set-output name=latest::${LATEST_FILE_NAME_RELEASE}
 
-    # Load latest json from a file
-    - name: Generate matrix
-      id: set-matrix
+    # Install the python version needed
+    - name: Setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8 
+
+    # Run compare.py to get the difference between the newer and the already deployed versions
+    - name: Execute py script 
       env:
         LATEST_FILE_NAME_RELEASE: ${{ steps.latest-release-file.outputs.latest }}
       run: |
-        cd ./release-versions
-        LATEST_FILE=$(cat $LATEST_FILE_NAME_RELEASE)
+        python scripts/compare.py release-versions/$LATEST_FILE_NAME_RELEASE deployed/current-production-versions.json
+
+    # Load latest json from a file
+    - name: Generate matrix
+      id: set-matrix
+      run: |
+        LATEST_FILE=$(cat diff.json)
         echo ::set-output name=matrix::${LATEST_FILE//'%'/'%25'}
 
   dispatch:
