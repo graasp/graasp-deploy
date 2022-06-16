@@ -13,9 +13,6 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       latest: ${{ steps.latest-release-file.outputs.latest }}
-    # The environment that the job will reference
-    environment: 
-      name: production
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
@@ -42,6 +39,9 @@ jobs:
     name: Dispatch Continuous Deployment workflows
     needs: generate-matrix
     runs-on: ubuntu-latest
+    # The environment that the job will reference
+    environment: 
+      name: production
     strategy:
       # Uses fromJson to parse the output and set a matrix variable.
       matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
