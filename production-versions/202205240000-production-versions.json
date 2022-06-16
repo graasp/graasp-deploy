@@ -1,0 +1,48 @@
+{
+    "include": [
+        {
+            "repository": "graasp/graasp",
+            "tag": ""
+        },
+        {
+            "repository": "graasp/graasp-explore",
+            "tag": ""
+        },
+        {
+            "repository": "graasp/graasp-compose",
+            "tag": ""
+        },
+        {
+            "repository": "graasp/graasp-perform",
+            "tag": ""
+        },
+        {
+            "repository": "graasp/graasp-auth",
+            "tag": ""
+        },
+        {
+            "repository": "graasp/graasp-admin",
+            "tag": ""
+        },
+        {
+            "repository": "graasp/graasp-app-file-drop",
+            "tag": ""
+        },
+        {
+            "repository": "graasp/graasp-app-radiating-charge",
+            "tag": ""
+        },
+        {
+            "repository": "graasp/graasp-app-sticky-notes",
+            "tag": ""
+        },
+        {
+            "repository": "graasp/graasp-app-task-management",
+            "tag": ""
+        },
+        {
+            "repository": "graasp/graasp-app-text-input",
+            "tag": ""
+        }
+    ]
+}
