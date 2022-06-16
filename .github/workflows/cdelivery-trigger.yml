@@ -5,6 +5,18 @@ name: Deploy new stack to staging environment
 # Controls when the action will run.
 on:
   workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      stack:
+        # Description to be shown in the UI instead of 'stack'
+        description: 'Specify a stack to deploy to staging'
+        # Default value if no value is explicitly provided
+        default: ''
+        # Input does not have to be provided for the workflow to run
+        required: false
+
+env:        
+  STACK: ${{ inputs.stack }}
 
 jobs:
   generate-matrix:
@@ -13,7 +25,12 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       latest: ${{ steps.latest-staging-file.outputs.latest }}
+
     steps:
+    - name: Deploying a specific stack
+      if: "${{ env.STACK != '' }}"
+      run: echo ${{ env.STACK }}
+
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
       uses: actions/checkout@v2
@@ -21,9 +38,15 @@ jobs:
     - name: Get latest staging versions file
       id: latest-staging-file
       run: |
-        cd ./staging-versions
-        LATEST_FILE_NAME_STAGING=$(ls -Ar | head -n 1)
-        echo ::set-output name=latest::${LATEST_FILE_NAME_STAGING}
+        if [[ "${{ inputs.stack }}" == "" ]]; then
+          cd ./staging-versions
+          LATEST_FILE_NAME_STAGING=$(ls -Ar | head -n 1)
+          echo ::set-output name=latest::${LATEST_FILE_NAME_STAGING}
+        fi
+        if [[ "${{ inputs.stack }}" != "" ]]; then
+          LATEST_FILE_NAME_STAGING=${{ env.STACK }}
+          echo ::set-output name=latest::${LATEST_FILE_NAME_STAGING}
+        fi
 
     - name: Generate matrix
       id: set-matrix
@@ -98,11 +121,10 @@ jobs:
       run: |
         cd ./staging-versions
         cp $LATEST_FILE_NAME_STAGING ../release-versions/$RELEASE_FILE_NAME 
-        cp $LATEST_FILE_NAME_STAGING current-staging-versions.json
+        cp $LATEST_FILE_NAME_STAGING ../deployed/current-staging-versions.json
 
     - name: Commit step
       id: commit
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        # commit_message: ${{ env.RELEASE_FILE_NAME }}
         commit_message: Deploy new stack to staging environment
