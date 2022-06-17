@@ -30,6 +30,8 @@ jobs:
         echo ::set-output name=latest::${LATEST_FILE_NAME}
 
     # Create new staging-versions.json file. Use jq to write to stdout and pipe the output to a newly created file.
+    # If the file already contains the repository, update the tag value
+    # If the file does not contain the repository, include both the repository and tag
     - name: Create new staging-versions.json file
       # Set environment variables required to create the file. These are only available to this step
       env:
