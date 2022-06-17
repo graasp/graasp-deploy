@@ -43,7 +43,8 @@ jobs:
         FILE_NAME=$(echo "`date +"%Y%m%d%H%M"`"-staging-versions.json)
         echo "FILE_NAME=$FILE_NAME" >> $GITHUB_ENV
         jq --arg tag "$TAG" --arg repository "$REPOSITORY" \
-        '(.include[] | select(.repository == $repository) | .tag) |= $tag' ./staging-versions/$LATEST_FILE_NAME > ./staging-versions/$FILE_NAME
+        'if ((.include[] | select(.repository == $repository)) // null) != null then (.include[] | select(.repository == $repository) | .tag) |= $tag else .include += [{"repository": $repository, "tag": $tag}] end' \
+        ./staging-versions/$LATEST_FILE_NAME > ./staging-versions/$FILE_NAME
     
     # Detect changed files during a Workflow run and commit and push them back to the GitHub repository
     - name: Commit step
