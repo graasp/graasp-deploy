@@ -7,7 +7,7 @@ Deploy Graasp ecosystem in AWS using Github workflows and Github actions.
     - [Continuous Integration](#continuous-integration)
     - [Continuous Delivery](#continuous-delivery)
     - [Continuous Deployment](#continuous-deployment)
-    - [Update saging versions](#update-saging-versions)
+    - [Update staging versions](#update-staging-versions)
 - [How to](#how-to)
     - [Add caller workflows](#add-caller-workflows)
     - [Deploy to development environment](#deploy-to-development-environment)
@@ -37,18 +37,18 @@ Process within development that continuously builds, tests and merges new code c
 
 This functionality is provided by workflows with the syntax `cintegration-*.yml`. When triggered, three jobs are run: test, build and deploy. Use this workflow family whenever you want to automate the deployment of your repository to the development environment. 
 
-### Update saging versions
-When the code is considered to be production-ready, it can be promoted to the staging environment.
+### Update staging versions
+When the code is considered to be release-ready, it can be promoted to the staging environment.
 
 This functionality is provided by the `update-staging-versions.yml` workflow. Use this workflow whenever you want to automate the addition of new tags from your repository to the ecosystem staging stack in graasp-deploy. 
 
 ### Continuous Delivery
-Automated process that takes the validated code additions from the previous process and relases them to the staging environment. This isolated environment is as similar to the production environment as it can be, and it is where all of the hard core testing will be performed. 
+Automated process that takes the validated code additions from the previous process and releases them to the staging environment. This isolated environment is as similar to the production environment as it can be, and it is where all of the hard core testing will be performed. 
 
 This functionality is provided by workflows with the syntax `cdelivery-*.yml`. When triggered, two jobs are run: build-deploy and test. Use this workflow family whenever you want to automate the deployment of your repository to the staging environment. 
 
 ### Continuous Deployment
-When the code is considered to be ready to , it can be automatically deployed to the production environment.
+When the code is considered to be production-ready, it can be automatically deployed to the production environment.
 
 This functionality is provided by workflows with the syntax `cdeployment-*.yml`. When triggered, one job is run: build-deploy. 
 
