@@ -5,11 +5,11 @@ Deploy Graasp ecosystem in AWS using Github workflows and Github actions.
 - [What Graasp Deploy does](#what-graasp-deploy-does)
 - [Features](#features)
     - [Continuous Integration](#continuous-integration)
+    - [Update staging versions](#update-staging-versions)
     - [Continuous Delivery](#continuous-delivery)
     - [Continuous Deployment](#continuous-deployment)
-    - [Update staging versions](#update-staging-versions)
 - [How to](#how-to)
-    - [Add caller workflows](#add-caller-workflows)
+    - [Add graasp-deploy features](#add-graasp-deploy-features)
     - [Deploy to development environment](#deploy-to-development-environment)
     - [Create a new candidate for the staging environment](#create-a-new-candidate-for-the-staging-environment)
     - [Deploy a new stack to staging environment](#deploy-a-new-stack-to-staging-environment)
@@ -33,30 +33,40 @@ The workflows are classified based on the 3 different stages inside the CI/CD pi
 
 ## Features
 ### Continuous Integration
-Process within development that continuously builds, tests and merges new code changes. CI allows developers to deploy to the development environment. There, developers can see how new features will work and test improvements without affecting real users. 
+Continuously build, test and merge new code changes and deploy them to the development environment. There, developers can see how new features will work and test improvements without affecting real users. 
 
-This functionality is provided by workflows with the syntax `cintegration-*.yml`. When triggered, three jobs are run: test, build and deploy. Use this workflow family whenever you want to automate the deployment of your repository to the development environment. 
+This functionality is provided by caller workflows with the syntax `cintegration-*.yml`. When triggered from your repository, three jobs are run: test, build and deploy. 
+
+Use this workflow family whenever you want to automate the deployment of your repository to the development environment. For more information see [Deploy to development environment](#deploy-to-development-environment).
 
 ### Update staging versions
 When the code is considered to be release-ready, it can be promoted to the staging environment.
 
-This functionality is provided by the `update-staging-versions.yml` workflow. Use this workflow whenever you want to automate the addition of new tags from your repository to the ecosystem staging stack in graasp-deploy. 
+This functionality is provided by the `update-staging-version.yml` caller workflow. Use this workflow whenever you want to automate the addition of new tags from your own repository to the ecosystem staging stack in graasp-deploy. For more information see [Create a new candidate for the staging environment](#create-a-new-candidate-for-the-staging-environment). 
+
+Every time this workflow finishes, a new staging-versions stack is created containing the latest pushed version for all the repositories in the ecosystem. This stack information can be found inside the `staging-versions` folder in [graasp-deploy](https://github.com/graasp/graasp-deploy). 
 
 ### Continuous Delivery
 Automated process that takes the validated code additions from the previous process and releases them to the staging environment. This isolated environment is as similar to the production environment as it can be, and it is where all of the hard core testing will be performed. 
 
-This functionality is provided by workflows with the syntax `cdelivery-*.yml`. When triggered, two jobs are run: build-deploy and test. Use this workflow family whenever you want to automate the deployment of your repository to the staging environment. 
+This functionality is provided by the `cdelivery-trigger.yml` workflow. This workflow triggers the reusable workflows with the syntax `cdelivery-*.yml` available inside all the ecosystem repositories. These workflows perform build and deploy jobs. 
+
+Use this workflow family whenever you want to automate the deployment of the latest ecosystem staging-versions stack to the staging environment.  For more information see [Deploy a new stack to staging environment](#deploy-a-new-stack-to-staging-environment). 
+
+Every time this workflow finishes, the recently deployed staging-versions stack will be included in the `current-staging-versions.json` file inside the `deployed` folder in [graasp-deploy](https://github.com/graasp/graasp-deploy). It will also be promoted and included inside the `release-versions` folder so it is available for the next step. 
 
 ### Continuous Deployment
 When the code is considered to be production-ready, it can be automatically deployed to the production environment.
 
-This functionality is provided by workflows with the syntax `cdeployment-*.yml`. When triggered, one job is run: build-deploy. 
+This functionality is provided by the `cdeployment-trigger.yml` workflow. This workflow triggers the reusable workflows with the syntax `cdeployment-*.yml` available inside all the ecosystem repositories. These workflows perform build and deploy jobs. 
 
-Use this workflow family whenever you want to automate the deployment of your repository to the production environment. 
+Use this workflow family whenever you want to automate the deployment of the latest ecosystem release-versions stack to the production environment. For more information see [Deploy a new stack to production environment](#deploy-a-new-stack-to-production-environment).
+
+Every time this workflow finishes, the recently deployed release-versions stack will be included in the `current-production-versions.json` file inside the `deployed` folder in [graasp-deploy](https://github.com/graasp/graasp-deploy). It will also be promoted and included inside the `production-versions` folder. 
 
 ## How to
-### Add caller workflows
-Whenever you want to add the graasp-deploy features to your repository, you should perform the following steps: 
+### Add graasp-deploy features
+Whenever you want to add the graasp-deploy features to your repository, you should add the appropriate caller workflows. To achieve this, perform the following steps: 
 
 1. Copy the appropriate caller templates from the graasp-deploy [caller-workflow-templates](https://github.com/graasp/graasp-deploy/tree/main/caller-workflow-templates) folder in the `.github/workflows` folder of your repository. 
     - If your repository is a graasp-app that uses AWS S3 as a distribution strategy: copy all the `*-s3-apps-caller.yml` files. 
@@ -69,7 +79,13 @@ Whenever you want to add the graasp-deploy features to your repository, you shou
 
 4. All the secrets you include should be added to the Secrets section of your repository. For more information on how to add secrets see [4. Create secrets](#4-create-secrets). 
 
-5. If your repository uses AWS ECS as a distribution strategy add the task definition files of your deployment to the `.aws` folder of your repository. You should include three files (one for each environment) which should be named in the following format: `<name>-<environment>.json`. These task definition files specify which container you want to run, the docker image, ports to expose, CPU to allocate, env variables and logs. You shoud include:
+5. If your repository uses AWS ECS as a distribution strategy, add the task definition files of your deployment to the `.aws` folder of your repository. These task definition files can be retireved manually from the AWS Console or running the following command: 
+    ````
+    aws ecs describe-task-definition --task-definition <family>:<revision>
+    ````
+    These files specify which container you want to run, the docker image, ports to expose, CPU to allocate, env variables and logs. For more information on the appropriate syntax see "[Task definition parameters](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html)". 
+    
+    You should include three files (one for each environment) which should be named in the following format: `<name>-<environment>.json`.   You shoud include:
     - `<name>-dev.json` as an input for the `cintegration-ecs-caller.yml`. 
     - `<name>-stage.json` as an input for the `cdelivery-ecs-caller.yml`. 
     - `<name>-prod.json` as an input for the `cdeployment-ecs-caller.yml`.
@@ -77,7 +93,7 @@ Whenever you want to add the graasp-deploy features to your repository, you shou
 After performing these steps, your repository will include all the features available in [graasp-deploy](https://github.com/graasp/graasp-deploy). For more information on this see [Features](#features). 
 
 ### Deploy to development environment
-The Continuous Integration workflow (`cintegration-*.yml`) is responsible of performing the deployment to development environment. It can be manually run from the Actions tab of **your own** repository. Write access to the repository is required to perform these steps.
+The Continuous Integration workflow (`cintegration-*.yml`) is responsible for performing the deployment to development environment. It can be manually run from the Actions tab of **your own** repository. Write access to the repository is required to perform these steps.
 
 ![Action tab](assets/images/learn-github-actions-repository.png)
 
@@ -96,21 +112,47 @@ The Continuous Integration workflow (`cintegration-*.yml`) is responsible of per
 4. Finally, click on **Run workflow** and wait until the process is finished. 
 
 ### Create a new candidate for the staging environment
-Whenever you want to promote a new version of your development so that it goes from development to staging environment, you should perform the following steps:
-1. Open a CLI window from your repository folder
-2. Run the following commands 
-    ```
-    git tag vA.B.C 
-    git push origin --tags
-    ```
+To promote a new version of your development so that it goes from development to staging environment, you need to generate a new version. For this purpose, make sure your repository is using `standard-version`:
+- this utility must be added to the `devDependencies` of your repository.
+- the following scripts must be included in your `package.json`:
+    ````
+    {
+        "scripts": {
+            "release": "standard-version -a",
+            "release:first": "standard-version -a --first-release",
+            "release:minor": "standard-version -a --release-as minor",
+            "release:major": "standard-version -a --release-as major"
+        }
+    }
+    ````
+
+Whenever you want to create a new tag, perform the following steps:
+1. Choose between one of the following options: 
+    - **First Release**: To generate a tag and your changelog for your first release, simply do: 
+        ````
+        yarn run release:first
+        ````
+    - **Cutting Releases**: to cut a new release, simply do:
+        ````
+        yarn run release
+        ````
+
+    - **Release as a Target Type Imperatively**: To forgo the automated version bump use one of the following: 
+        ```
+        yarn run release:minor
+        yarn run release:major
+        ```
+    For more information on which option to choose based on the appropriate tag syntax, see [Semantic Versioning HOWTO](https://github.com/dbrock/semver-howto).
+
+2. Run `git push --follow-tags origin master` to publish the new tag. 
+
 3. This will automatically trigger the `update-staging-version.yml` workflow inside your repository. 
 
 This process sends the new tag to the [graasp-deploy](https://github.com/graasp/graasp-deploy) repository and creates a new `YYYYMMddhhmm-staging-versions.json` file including the new version. 
 
-For more information on the appropriate tag syntax, see [???]. 
 
 ### Deploy a new stack to staging environment
-The Continuous Delivery workflow (`cdelivery-trigger.yml`) is responsible of deploying a new stack of all the ecosystem versions to staging environment. It can be manually run from the Actions tab of the 
+The Continuous Delivery workflow (`cdelivery-trigger.yml`) is responsible for deploying a new stack of all the ecosystem versions to staging environment. It can be manually run from the Actions tab of the 
 [graasp-deploy](https://github.com/graasp/graasp-deploy) repository. Being a member of the **staging** team is required to perform these steps.
 
 ![Action tab](assets/images/learn-github-actions-repository.png)
@@ -138,7 +180,7 @@ After the workflow finishes the stack (represented by the `YYYYMMddhhmm-staging-
 
 
 ### Deploy a new stack to production environment
-The Continuous Deployment workflow (`cdeployment-trigger.yml`) is responsible of deploying a new stack of all the ecosystem versions to production environment. It can be manually run from the Actions tab of the 
+The Continuous Deployment workflow (`cdeployment-trigger.yml`) is responsible for deploying a new stack of all the ecosystem versions to production environment. It can be manually run from the Actions tab of the 
 [graasp-deploy](https://github.com/graasp/graasp-deploy) repository. Being a member of the **production** team is required to perform these steps.
 
 ![Action tab](assets/images/learn-github-actions-repository.png)
@@ -274,7 +316,7 @@ For more information, see Github Docs "[Encrypted secrets](https://docs.github.c
 ### Update SHA reference of a caller workflow
 It is important that whenever you perform an update on a reusable workflow, you update the SHA reference from the caller workflow that uses it. That is the commit hash from the last commit that includes the changes made to the reusable workflow. 
 
-Inside your caller workfloes, you reference the reusable workflow files from graasp-deploy by using the following syntax:
+Inside your caller workflows, you reference the reusable workflow files from graasp-deploy by using the following syntax:
 ```
 graasp/graasp-deploy/.github/workflows/{filename}@{SHA}
 ```
@@ -285,6 +327,8 @@ For more information see [Why refer to a fixed workflow commit](#why-refer-to-a-
 The use of Github Actions simplifies the automation process. Actions are similar to a plugin that comes bundled for every Github repository created, and that can execute any desired task.
 
 Github Actions embrace five underlying concepts: jobs, workflows, events, actions and runners. 
+
+For more information see Github Docs "[Understanding GitHub Actions](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions)".
 
 
 ## Why use workflows
@@ -303,6 +347,6 @@ The main goal for Graasp Deploy is to build up a library of reusable workflows t
 For more information see Github Docs "[Reusing workflows](https://docs.github.com/en/actions/using-workflows/reusing-workflows)". 
 
 ## Why refer to a fixed workflow commit
-It is a good practice to specify exactly what commit I want to use, as it points to an specific version of the reusable workflow that is used. Using the commit SHA is the safest for stability and security. 
+It is a good practice to specify exactly what commit you want to use, as it points to a specific version of the reusable workflow. Using the commit SHA is the safest for stability and security. 
 
 Therefore, it’s safer to use it like this so if there are changes on the main branch, the hash always points to the same file, and you never have to worry about the action changing or behaving differently. 
