@@ -2,7 +2,7 @@ import json
 import sys
 new = sys.argv[1]
 current = sys.argv[2]
-output = { "include": []}
+output = {"include": []}
 
 with open(new, "r") as f1:
     new_file = json.loads(f1.read())
@@ -22,6 +22,6 @@ for current_item in current_file['include']:
                 print(new_item['tag'])
                 output['include'].append(new_item)
 
-#new file
+# New file
 output_file = open("diff.json", "w")
 json.dump(output, output_file, indent=2)
