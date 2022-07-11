@@ -29,31 +29,17 @@ on:
         required: true
       ecr-repository:
         required: true
-      #container name that will be included in the cluster
-      container-name-explorer:
+      # container name that will be included in the cluster
+      container-name:
         required: true
-      # Environment variables
-      next-public-api-host: 
-        required: true
-      next-public-google-analytics-id:
-        required: true
-      next-public-graasp-auth-host: 
-        required: true
-      next-public-graasp-perform-host:
-        required: true
-      next-public-graasper-id:
-        required: true
-      next-public-published-tag-id:
-        required: true
-      next-public-sentry-dsn:
-        required: false
-      port:
-        required: true
+      # Request environment variables. Example:
+      # env-variable-name:
+      #   required: true or false
 
 # Set environment variables that are available to the steps of all jobs in the workflow
 env:        
   ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
-  CONTAINER_NAME: ${{ secrets.container-name-explorer }}
+  CONTAINER_NAME: ${{ secrets.container-name }}
   ECR_REPOSITORY: ${{ secrets.ecr-repository }}
   # Allows to increase Node's max heap size
   NODE_OPTIONS: '--max_old_space_size=8192'
@@ -115,19 +101,27 @@ jobs:
         IMAGE_TAG: ${{ needs.build.outputs.tag }}
       with:
           task-definition: ${{ inputs.ecs-task-definition }}
-          container-name: ${{ secrets.container-name-explorer }}
+          container-name: ${{ secrets.container-name }}
           image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
-          environment-variables: |
-            NEXT_PUBLIC_API_HOST=${{ secrets.next-public-api-host }}
-            NEXT_PUBLIC_GOOGLE_ANALYTICS_ID=${{ secrets.next-public-google-analytics-id }}
-            NEXT_PUBLIC_GRAASP_AUTH_HOST=${{ secrets.next-public-graasp-auth-host }}
-            NEXT_PUBLIC_API_HOST=${{ secrets.next-public-api-host }}
-            NEXT_PUBLIC_GRAASP_PERFORM_HOST=${{ secrets.next-public-graasp-perform-host }}
-            NEXT_PUBLIC_GRAASPER_ID=${{ secrets.next-public-graasper-id }}
-            NEXT_PUBLIC_PUBLISHED_TAG_ID=${{ secrets.next-public-published-tag-id }}
-            NEXT_PUBLIC_SENTRY_DSN=${{ secrets.next-public-sentry-dsn }}
-            PORT=${{ secrets.port }}
-            
+          # Uncomment next lines to set environment variables here.
+          # Follow the specified format. 
+          # environment-variables: |
+          #   ENV_VARIABLE=${{ secrets.env-variable-name }}
+
+    # Uncomment and replicate the following section for every container you want to add to your ECS deployment. 
+    # # Modify Amazon ECS task definition with second container
+    # - name: Modify Amazon ECS task definition
+    #   id: task-def-2
+    #   uses: aws-actions/amazon-ecs-render-task-definition@v1
+    #   with:
+    #       task-definition: ${{ steps.task-def.outputs.task-definition }}
+    #       container-name: ${{ secrets.container-name-iframely }}
+    #       image: ${{ secrets.container-image-iframely}}
+    #       # Uncomment next lines to set environment variables here.
+    #       # Follow the specified format. 
+    #       # environment-variables: |
+    #       #   ENV_VARIABLE_2=${{ secrets.env-variable-name-2 }}
+
     # Use latest revision of the task-definition to deploy the application to ECS
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1

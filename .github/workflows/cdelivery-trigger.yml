@@ -1,0 +1,141 @@
+# This workflow takes the latest YYYYMMddhhmm-staging-versions.json file inside the staging-versions folder 
+# and triggers all the cdelivery workflows in the different repositories. 
+name: Deploy new stack to staging environment
+
+# Controls when the action will run.
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      stack:
+        # Description to be shown in the UI instead of 'stack'
+        description: 'Specify a stack to deploy to staging'
+        # Default value if no value is explicitly provided
+        default: ''
+        # Input does not have to be provided for the workflow to run
+        required: false
+
+env:        
+  STACK: ${{ inputs.stack }}
+
+jobs:
+  generate-matrix:
+    name: Generate matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      latest: ${{ steps.latest-staging-file.outputs.latest }}
+
+    steps:
+    - name: Deploying a specific stack
+      if: "${{ env.STACK != '' }}"
+      run: echo ${{ env.STACK }}
+
+    # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    # Set the appropriate job output based on the stack that is being deployed: custom or latest. 
+    - name: Get latest staging versions file
+      id: latest-staging-file
+      run: |
+        if [[ "${{ inputs.stack }}" == "" ]]; then
+          cd ./staging-versions
+          LATEST_FILE_NAME_STAGING=$(ls -Ar | head -n 1)
+          echo ::set-output name=latest::${LATEST_FILE_NAME_STAGING}
+        fi
+        if [[ "${{ inputs.stack }}" != "" ]]; then
+          LATEST_FILE_NAME_STAGING=${{ env.STACK }}
+          echo ::set-output name=latest::${LATEST_FILE_NAME_STAGING}
+        fi
+
+    # Install the python version needed
+    - name: Setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8 
+
+    # Run compare.py to get the difference between the newer and the already deployed versions
+    - name: Execute py script 
+      env:
+        LATEST_FILE_NAME_STAGING: ${{ steps.latest-staging-file.outputs.latest }}
+      run: |
+        python scripts/compare.py staging-versions/$LATEST_FILE_NAME_STAGING deployed/current-staging-versions.json
+
+    - name: Generate matrix
+      id: set-matrix
+      run: |
+        LATEST_FILE=$(cat diff.json)
+        echo ::set-output name=matrix::${LATEST_FILE//'%'/'%25'}
+
+  dispatch:
+    name: Dispatch Continuous Delivery workflows
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    environment: 
+      name: staging
+    strategy:
+      matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
+    steps:
+    - name: Set json output
+      id: set-json
+      env:
+        TAG: ${{matrix.tag}}
+      run: |
+        JSON=$(jq --null-input --arg tag "$TAG" '{"tag": $tag}')
+        echo ::set-output name=json::${JSON//'%'/'%25'}
+
+    - name: Repository Dispatch
+      uses: peter-evans/repository-dispatch@v2
+      with:
+        token: ${{ secrets.REPO_ACCESS_TOKEN }}
+        repository: ${{ matrix.repository }}
+        event-type: staging-deployment
+        client-payload: ${{steps.set-json.outputs.json}}
+
+  test:
+    name: Test
+    needs: dispatch
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # The environment that the job will reference
+    environment: 
+      name: staging
+    steps:
+    # This step runs a single command to execute integation testing
+    - name: Test
+      run: |
+        echo "This is the integration test step"
+
+  promote:
+    name: Promote stack to release ready
+    needs: [generate-matrix, dispatch, test]
+    runs-on: ubuntu-latest
+    environment: 
+      name: staging
+    env:
+      LATEST_FILE_NAME_STAGING: ${{ needs.generate-matrix.outputs.latest }}
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    # Create new staging-versions.json file
+    - name: Create new release-versions.json file name
+      run: | 
+        RELEASE_FILE_NAME=$(echo "`date +"%Y%m%d%H%M"`"-release-versions.json)
+        echo "RELEASE_FILE_NAME=$RELEASE_FILE_NAME" >> $GITHUB_ENV
+
+    - name: Update latest release versions file
+      id: update-latest-release-file
+      env:
+        RELEASE_FILE_NAME: ${{ env.RELEASE_FILE_NAME }}
+      run: |
+        cd ./staging-versions
+        cp $LATEST_FILE_NAME_STAGING ../release-versions/$RELEASE_FILE_NAME 
+        cp $LATEST_FILE_NAME_STAGING ../deployed/current-staging-versions.json
+
+    - name: Commit step
+      id: commit
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Deploy new stack to staging environment

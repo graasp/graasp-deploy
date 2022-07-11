@@ -1,0 +1,104 @@
+# This workflow takes the latest YYYYMMddhhmm-release-versions.json file inside the release-versions folder 
+# and triggers all the cdeployment workflows in the different repositories. 
+name: Deploy new stack to production environment
+
+# Controls when the action will run.
+on:
+  workflow_dispatch:
+
+jobs:
+  generate-matrix:
+    name: Generate matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      latest: ${{ steps.latest-release-file.outputs.latest }}
+    steps:
+    # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Get latest release versions file
+      id: latest-release-file
+      run: |
+        cd ./release-versions
+        LATEST_FILE_NAME_RELEASE=$(ls -Ar | head -n 1)
+        echo ::set-output name=latest::${LATEST_FILE_NAME_RELEASE}
+
+    # Install the python version needed
+    - name: Setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8 
+
+    # Run compare.py to get the difference between the newer and the already deployed versions
+    - name: Execute py script 
+      env:
+        LATEST_FILE_NAME_RELEASE: ${{ steps.latest-release-file.outputs.latest }}
+      run: |
+        python scripts/compare.py release-versions/$LATEST_FILE_NAME_RELEASE deployed/current-production-versions.json
+
+    # Load latest json from a file
+    - name: Generate matrix
+      id: set-matrix
+      run: |
+        LATEST_FILE=$(cat diff.json)
+        echo ::set-output name=matrix::${LATEST_FILE//'%'/'%25'}
+
+  dispatch:
+    name: Dispatch Continuous Deployment workflows
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    # The environment that the job will reference
+    environment: 
+      name: production
+    strategy:
+      # Uses fromJson to parse the output and set a matrix variable.
+      matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
+    steps:
+    - name: Set json output
+      id: set-json
+      env:
+        TAG: ${{matrix.tag}}
+      run: |
+        JSON=$(jq --null-input --arg tag "$TAG" '{"tag": $tag}')
+        echo ::set-output name=json::${JSON//'%'/'%25'}
+
+    - name: Repository Dispatch
+      uses: peter-evans/repository-dispatch@v2
+      with:
+        token: ${{ secrets.REPO_ACCESS_TOKEN }}
+        repository: ${{ matrix.repository }}
+        event-type: production-deployment
+        client-payload: ${{steps.set-json.outputs.json}}
+
+  promote:
+    name: Promote stack to production ready
+    needs: [generate-matrix, dispatch]
+    runs-on: ubuntu-latest
+    env:
+      LATEST_FILE_NAME_RELEASE: ${{ needs.generate-matrix.outputs.latest }}
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    # Create new production-versions.json file. Use jq to write to stdout and pipe the output to a newly created file.
+    - name: Create new production-versions.json file name
+      run: | 
+        PRODUCTION_FILE_NAME=$(echo "`date +"%Y%m%d%H%M"`"-production-versions.json)
+        echo "PRODUCTION_FILE_NAME=$PRODUCTION_FILE_NAME" >> $GITHUB_ENV
+
+    - name: Update latest production versions file
+      id: update-latest-production-file
+      env:
+        PRODUCTION_FILE_NAME: ${{ env.PRODUCTION_FILE_NAME }}
+      run: |
+        cd ./release-versions
+        cp $LATEST_FILE_NAME_RELEASE ../production-versions/$PRODUCTION_FILE_NAME
+        cp $LATEST_FILE_NAME_RELEASE ../deployed/current-production-versions.json
+
+    - name: Commit step
+      id: commit
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Deploy new stack to production environment

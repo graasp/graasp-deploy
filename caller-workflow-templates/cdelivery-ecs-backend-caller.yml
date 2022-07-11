@@ -1,22 +1,22 @@
-name: Continuous Delivery pipeline for ECS backend
+name: Deploy to staging environment
 
-# Controls when the action will run.
+# Controls when the action will run
 on:
-  # Triggers the workflow on push tag event
-  push:
-    tags:
-      - v*
+  # Triggers the workflow on repository-dispatch event
+  repository_dispatch:
+    types: [staging-deployment]
 
 # This workflow is made up of one job that calls the reusable workflow in graasp-deploy
 jobs:
   graasp-deploy-ecs-backend-workflow:
     # Replace with repository name
     name: CD caller template
+    # Replace 'main' with the hash of a commit, so it points to an specific version of the reusable workflow that is used
     uses: graasp/graasp-deploy/.github/workflows/cdelivery-ecs-backend.yml@main
-    # Replace input ecs-task-definition with template file. Format: '.aws/<name>-stage.json'. Replace tag.
+    # Replace input ecs-task-definition with template file. Format: '.aws/<name>-stage.json'
     with:
       ecs-task-definition:
-      tag:
+      tag: ${{ github.event.client_payload.tag }}
     # Insert required secrets based on repository with the following format: ${{ secrets.SECRET_NAME }}
     secrets:
       aws-access-key-id:
@@ -75,6 +75,8 @@ jobs:
       s3-file-item-secret-access-key:
       save-actions:
       secure-session-secret-key:
+      stripe-secret-key:
+      stripe-default-plan-price-id:
       thumbnails-path-prefix:
       token-based-auth:
       websockets-plugin:

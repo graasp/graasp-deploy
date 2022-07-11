@@ -1,6 +1,6 @@
 name: Reusable workflow that runs Continuous Deployment pipeline for ECS
 
-# Control when the action will run.
+# Control when the action will run
 on:
   # Allow the workflow to be reusable
   workflow_call:
@@ -12,7 +12,7 @@ on:
         type: string
     # Define secrets which can be passed from the caller workflow
     secrets:
-      #aws credentials and variables
+      # AWS credentials and variables
       aws-access-key-id:
         required: true
       aws-secret-access-key:
@@ -36,7 +36,7 @@ on:
         required: true
       container-image-classifier:
         required: true
-      #environment variables
+      # Environment variables
       apps-jwt-secret:
         required: true
       apps-plugin:
@@ -129,6 +129,10 @@ on:
         required: true
       secure-session-secret-key:
         required: true
+      stripe-secret-key:
+        required: true
+      stripe-default-plan-price-id:
+        required: true
       thumbnails-path-prefix:
         required: true
       token-based-auth:
@@ -141,6 +145,8 @@ env:
   ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
   CONTAINER_NAME: ${{ secrets.container-name-graasp}}
   ECR_REPOSITORY: ${{ secrets.ecr-repository }}
+  # Allows to increase Node's max heap size
+  NODE_OPTIONS: '--max_old_space_size=8192'
 
 # This workflow is made up of one job called: build-deploy
 jobs:
@@ -155,6 +161,7 @@ jobs:
     # Define job output that is available to all downstream jobs that depend on this job
     outputs:
       tag: ${{ steps.tag-number.outputs.tag }}
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: Check out code
@@ -247,6 +254,8 @@ jobs:
             S3_FILE_ITEM_SECRET_ACCESS_KEY=${{ secrets.s3-file-item-secret-access-key }}
             SAVE_ACTIONS=${{ secrets.save-actions }}
             SECURE_SESSION_SECRET_KEY=${{ secrets.secure-session-secret-key }}
+            STRIPE_SECRET_KEY=${{ secrets.stripe-secret-key }}
+            STRIPE_DEFAULT_PLAN_PRICE_ID=${{ secrets.stripe-default-plan-price-id }}
             THUMBNAILS_PATH_PREFIX=${{ secrets.thumbnails-path-prefix }}
             TOKEN_BASED_AUTH=${{ secrets.token-based-auth }}
             WEBSOCKETS_PLUGIN=${{ secrets.websockets-plugin }}

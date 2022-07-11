@@ -1,19 +1,22 @@
-name: Continuous Deployment pipeline for ECS backend
+name: Deploy to production environment
 
-# Controls when the action will run.
+# Controls when the action will run
 on:
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  # Triggers the workflow on repository-dispatch event
+  repository_dispatch:
+    types: [production-deployment]
 
 # This workflow is made up of one job that calls the reusable workflow in graasp-deploy
 jobs:
   graasp-deploy-ecs-backend-workflow:
     # Replace with repository name
     name: CD caller template
-    uses: graasp/graasp-deploy/.github/workflows/cdelivery-ecs.yml@main
-    # Replace input ecs-task-definition with template file. Format: '.aws/<name>-stage.json'. Replace tag.
+    # Replace 'main' with the hash of a commit, so it points to an specific version of the reusable workflow that is used
+    uses: graasp/graasp-deploy/.github/workflows/cdeployment-ecs-backend.yml@main
+    # Replace input ecs-task-definition with template file. Format: '.aws/<name>-prod.json'
     with:
       ecs-task-definition:
+      tag: ${{ github.event.client_payload.tag }}
     # Insert required secrets based on repository with the following format: ${{ secrets.SECRET_NAME }}
     secrets:
       aws-access-key-id:
@@ -72,6 +75,8 @@ jobs:
       s3-file-item-secret-access-key:
       save-actions:
       secure-session-secret-key:
+      stripe-secret-key:
+      stripe-default-plan-price-id:
       thumbnails-path-prefix:
       token-based-auth:
       websockets-plugin:

@@ -1,12 +1,12 @@
-name: Reusable workflow that runs Contiuious Delivery pipeline for S3 deployments
+name: Reusable workflow that runs Continuous Delivery pipeline for S3 deployments
 
-# Control when the action will run.
+# Control when the action will run
 on:
   # Allow the workflow to be reusable
   workflow_call:
     # Define inputs which can be passed from the caller workflow
     inputs:
-      # Specify build folder, if needed
+      # build-folder: specify build folder, if needed
       build-folder:
         required: false
         default: 'build'
@@ -17,7 +17,7 @@ on:
         type: string
     # Define secrets which can be passed from the caller workflow
     secrets:
-      #aws credentials and variables
+      # AWS credentials and variables
       aws-access-key-id:
         required: true
       aws-secret-access-key:
@@ -28,7 +28,7 @@ on:
         required: true
       cloudfront-distribution-id:
         required: true
-      #environment variables
+      # Environment variables
       api-host:
         required: false
       port:
@@ -41,6 +41,8 @@ on:
         required: false
       graasp-perform-host:
         required: false
+      graasp-explorer-host:
+        required: false
       graasp-analyzer-host:
         required: false
       ga-measurement-id:
@@ -49,10 +51,14 @@ on:
         required: false
       google-key:
         required: false
+      domain:
+        required: false
 
 # Set environment variables that are available to the steps of all jobs in the workflow
 env:
   BUILD_FOLDER: '${{ inputs.build-folder }}'
+  # Allows to increase Node's max heap size
+  NODE_OPTIONS: '--max_old_space_size=8192'
 
 # This workflow is made up of two jobs that run sequentially, called build-deploy and test
 jobs:
@@ -61,6 +67,7 @@ jobs:
     name: Build-sync-deploy
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
@@ -83,13 +90,16 @@ jobs:
       env: 
         REACT_APP_API_HOST: ${{ secrets.api-host }}
         PORT: ${{ secrets.port }}
+        REACT_APP_GOOGLE_KEY_DEV: ${{ secrets.google-key }}
         REACT_APP_SHOW_NOTIFICATIONS: ${{ secrets.show-notifications }}
         REACT_APP_AUTHENTICATION_HOST: ${{ secrets.authentication-host }}
         REACT_APP_GRAASP_COMPOSE_HOST: ${{ secrets.graasp-compose-host }}
-        REACT_APP_GRAASP_PERFORM_HOST: ${{ secrets.graasp-preform-host }}
+        REACT_APP_GRAASP_PERFORM_HOST: ${{ secrets.graasp-perform-host }}
+        REACT_APP_GRAASP_EXPLORE_HOST: ${{ secrets.graasp-explorer-host }}
         REACT_APP_GRAASP_ANALYZER_HOST: ${{ secrets.graasp-analyzer-host }}
         REACT_APP_GA_MEASUREMENT_ID: ${{ secrets.ga-measurement-id }}
         REACT_APP_HIDDEN_ITEM_TAG_ID: ${{ secrets.hidden-item-tag-id }}
+        REACT_APP_DOMAIN: ${{ secrets.domain }}
       # Run a set of commands using the runners shell to perform install and build
       run: |
         yarn install
@@ -118,7 +128,7 @@ jobs:
     # Create a new invalidation
     - name: Invalidate cloudfront distribution
       id: invalidate-cloudfront
-      run: aws cloudfront create-invalidation --distribution-id ${{ secrets.cloudfront-distribution-id }} --paths /*
+      run: aws cloudfront create-invalidation --distribution-id ${{ secrets.cloudfront-distribution-id }} --paths "/*"
     
   test:
     name: Test

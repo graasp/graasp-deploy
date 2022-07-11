@@ -12,7 +12,7 @@ jobs:
     # Replace with repository name
     name: CD caller template
     # Replace 'main' with the hash of a commit, so it points to an specific version of the reusable workflow that is used
-    uses: graasp/graasp-deploy/.github/workflows/cdelivery-ecs-explorer.yml@main
+    uses: graasp/graasp-deploy/.github/workflows/cdelivery-ecs.yml@main
     # Replace input ecs-task-definition with template file. Format: '.aws/<name>-stage.json'
     with:
       ecs-task-definition:
@@ -25,11 +25,4 @@ jobs:
       ecs-cluster:
       ecs-service:
       ecr-repository:
-      container-name-explorer:
-      next-public-api-host:
-      next-public-google-analytics-id:
-      next-public-graasp-auth-host:
-      next-public-graasp-perform-host:
-      next-public-graasper-id:
-      next-public-published-tag-id:
-      port:
+      container-name:
