@@ -40,7 +40,7 @@ jobs:
       ecs-cluster:
       ecs-service:
       ecr-repository:
-      container-name-graasp:        
+      container-name-graasp:
       container-name-iframely:
       container-name-classifier:
       container-image-iframely:

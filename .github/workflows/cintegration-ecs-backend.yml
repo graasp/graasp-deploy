@@ -80,6 +80,8 @@ on:
         required: true
       apps-publisher-id:
         required: true
+      apps-publisher-id:
+        required: true
       auth-client-host:
         required: true
       auth-token-expiration-in-minutes:
