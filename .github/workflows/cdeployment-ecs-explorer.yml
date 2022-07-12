@@ -10,6 +10,10 @@ on:
       ecs-task-definition:
         required: true
         type: string
+      # tag: specify tag version to deploy
+      tag:
+        required: true
+        type: string
     # Define secrets which can be passed from the caller workflow
     secrets:
       # AWS credentials and variables
@@ -41,8 +45,6 @@ on:
         required: true
       next-public-published-tag-id:
         required: true
-      next-public-s3-files-host:
-        required: false
       next-public-sentry-dsn:
         required: false
       port:
@@ -75,6 +77,8 @@ jobs:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
       uses: actions/checkout@v2
+      with:
+        ref: ${{ inputs.tag }}
 
     # Set output variable tag with the current checked out ref
     - name: Set Tag Number
@@ -125,7 +129,6 @@ jobs:
             NEXT_PUBLIC_GRAASP_PERFORM_HOST=${{ secrets.next-public-graasp-perform-host }}
             NEXT_PUBLIC_GRAASPER_ID=${{ secrets.next-public-graasper-id }}
             NEXT_PUBLIC_PUBLISHED_TAG_ID=${{ secrets.next-public-published-tag-id }}
-            NEXT_PUBLIC_S3_FILES_HOST=${{ secrets.next-public-s3-files-host }}
             NEXT_PUBLIC_SENTRY_DSN=${{ secrets.next-public-sentry-dsn }}
             PORT=${{ secrets.port }}
 
