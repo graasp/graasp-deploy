@@ -25,7 +25,7 @@ jobs:
       database-logs: false
       embedded-link-item-plugin: true
       node-env: production
-      node-env-container-2: production
+      node-env-iframely: production
       public-plugin: true
       roarr-log: false
       s3-file-item-plugin: true
