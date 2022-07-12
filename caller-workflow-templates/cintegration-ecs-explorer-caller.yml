@@ -35,5 +35,6 @@ jobs:
       next-public-graasp-perform-host:
       next-public-graasper-id:
       next-public-published-tag-id:
+      next-public-s3-files-host:
       next-public-sentry-dsn:
       port:
