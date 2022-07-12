@@ -11,6 +11,10 @@ on:
         required: false
         default: 'build'
         type: string
+      # tag: specify tag version to deploy
+      tag:
+        required: true
+        type: string
     # Define secrets which can be passed from the caller workflow
     secrets:
       # AWS credentials and variables
@@ -63,15 +67,13 @@ jobs:
     name: Build-sync-deploy
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    # The environment that the job will reference
-    environment: 
-      name: production
-
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
       uses: actions/checkout@v2
+      with:
+        ref: ${{ inputs.tag }}
 
     # Download and cache distribution of the requested Node.js version, and add it to the PATH
     - name: Setup node

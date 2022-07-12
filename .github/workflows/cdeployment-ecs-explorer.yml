@@ -65,9 +65,6 @@ jobs:
     name: Build-push-deploy
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    # The environment that the job will reference
-    environment: 
-      name: production
     # Define job output that is available to all downstream jobs that depend on this job
     outputs: 
       tag: ${{ steps.tag-number.outputs.tag }}
