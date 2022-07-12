@@ -74,6 +74,8 @@ on:
       container-image-classifier:
         required: true
       # Environment variables
+      analyzer-client-host:
+        required: true
       apps-jwt-secret:
         required: true
       apps-publisher-id:
@@ -86,6 +88,8 @@ on:
         required: true
       avatars-path-prefix:
         required: true
+      builder-client-host:
+        required: true
       client-host:
         required: true
       cookie-domain:
@@ -95,6 +99,8 @@ on:
       email-links-host:
         required: true
       embedded-link-item-iframely-href-origin:
+        required: true
+      explorer-client-host:
         required: true
       file-storage-root-path:
         required: true
@@ -129,6 +135,8 @@ on:
       mailer-config-username:
         required: true
       pg-connection-uri:
+        required: true
+      player-client-host:
         required: true
       port:
         required: true
@@ -271,13 +279,15 @@ jobs:
           container-name: ${{ secrets.container-name-graasp }}
           image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
           environment-variables: |
+            ANALYZER_CLIENT_HOST=${{ secrets.analyzer-client-host }}
             APPS_JWT_SECRET=${{ secrets.apps-jwt-secret }}
             APPS_PLUGIN=${{ inputs.apps-plugin }}
             APPS_PUBLISHER_ID=${{ secrets.apps-publisher-id }}
             AUTH_CLIENT_HOST=${{ secrets.auth-client-host }}
             AUTH_TOKEN_EXPIRATION_IN_MINUTES=${{ secrets.auth-token-expiration-in-minutes }}
             AUTH_TOKEN_JWT_SECRET=${{ secrets.auth-token-jwt-secret }}
-            AVATARS_PATH_PREFIX=${{ inputs.avatars-path-prefix }}
+            AVATARS_PATH_PREFIX=${{ secrets.avatars-path-prefix }}
+            BUILDER_CLIENT_HOST=${{ secrets.builder-client-host }}
             CHATBOX_PLUGIN=${{ inputs.chatbox-plugin }}
             CLIENT_HOST=${{ secrets.client-host }}
             COOKIE_DOMAIN=${{ secrets.cookie-domain }}
@@ -286,6 +296,7 @@ jobs:
             EMAIL_LINKS_HOST=${{ secrets.email-links-host }}
             EMBEDDED_LINK_ITEM_IFRAMELY_HREF_ORIGIN=${{ secrets.embedded-link-item-iframely-href-origin }}
             EMBEDDED_LINK_ITEM_PLUGIN=${{ inputs.embedded-link-item-plugin }}
+            EXPLORER_CLIENT_HOST=${{ secrets.explorer-client-host }}
             FILE_STORAGE_ROOT_PATH=${{ secrets.file-storage-root-path }}
             FILES_PATH_PREFIX=${{ secrets.files-path-prefix }}
             H5P_CONTENT_ACCESS_KEY_ID=${{ secrets.h5p-content-access-key-id }}
@@ -304,6 +315,7 @@ jobs:
             MAILER_CONFIG_USERNAME=${{ secrets.mailer-config-username }}
             NODE_ENV=${{ inputs.node-env }}
             PG_CONNECTION_URI=${{ secrets.pg-connection-uri }}
+            PLAYER_CLIENT_HOST=${{ secrets.player-client-host }}
             PORT=${{ secrets.port }}
             PUBLIC_PLUGIN=${{ inputs.public-plugin }}
             PUBLIC_TAG_ID=${{ secrets.public-tag-id }}

@@ -45,17 +45,20 @@ jobs:
       container-name-classifier:
       container-image-iframely:
       container-image-classifier:
+      analyzer-client-host:
       apps-jwt-secret:
       apps-publisher-id:
       auth-client-host:
       auth-token-expiration-in-minutes:
       auth-token-jwt-secret:
       avatars-path-prefix:
+      builder-client-host:
       client-host:
       cookie-domain:
       cors-origin-regex:
       email-links-host:
       embedded-link-item-iframely-href-origin:
+      explorer-client-host:
       file-storage-root-path:
       files-path-prefix:
       h5p-content-access-key-id:
@@ -73,6 +76,7 @@ jobs:
       mailer-config-smtp-host:
       mailer-config-username:
       pg-connection-uri:
+      player-client-host:
       port:
       public-tag-id:
       published-tag-id:
