@@ -58,6 +58,11 @@ jobs:
       embedded-link-item-iframely-href-origin:
       file-storage-root-path:
       files-path-prefix:
+      h5p-content-access-key-id:
+      h5p-content-bucket-name:
+      h5p-content-region:
+      h5p-content-secret-access-key:
+      h5p-path-prefix:
       hidden-tag-id:
       hostname:
       image-classifier-api:
