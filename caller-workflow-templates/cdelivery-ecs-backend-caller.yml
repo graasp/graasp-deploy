@@ -17,6 +17,18 @@ jobs:
     with:
       ecs-task-definition:
       tag: ${{ github.event.client_payload.tag }}
+      apps-plugin: true
+      chatbox-plugin: true
+      database-logs: false
+      embedded-link-item-plugin: true
+      node-env: production
+      node-env-iframely: production
+      public-plugin: true
+      roarr-log: false
+      s3-file-item-plugin: true
+      save-actions: true
+      token-based-auth: true
+      websockets-plugin: true
     # Insert required secrets based on repository with the following format: ${{ secrets.SECRET_NAME }}
     secrets:
       aws-access-key-id:
@@ -25,25 +37,22 @@ jobs:
       ecs-cluster:
       ecs-service:
       ecr-repository:
-      container-name-graasp:
+      container-name-graasp:        
       container-name-iframely:
       container-name-classifier:
       container-image-iframely:
       container-image-classifier:
       apps-jwt-secret:
-      apps-plugin:
+      apps-publisher-id:
       auth-client-host:
       auth-token-expiration-in-minutes:
       auth-token-jwt-secret:
       avatars-path-prefix:
-      chatbox-plugin:
       client-host:
       cookie-domain:
       cors-origin-regex:
-      database-logs:
       email-links-host:
       embedded-link-item-iframely-href-origin:
-      embedded-link-item-plugin:
       file-storage-root-path:
       files-path-prefix:
       hidden-tag-id:
@@ -55,11 +64,8 @@ jobs:
       mailer-config-password:
       mailer-config-smtp-host:
       mailer-config-username:
-      node-env:
-      node-env-container-2:
       pg-connection-uri:
       port:
-      public-plugin:
       public-tag-id:
       published-tag-id:
       redis-host:
@@ -67,16 +73,11 @@ jobs:
       redis-username:
       refresh-token-expiration-in-minutes:
       refresh-token-jwt-secret:
-      roarr-log:
       s3-file-item-access-key-id:
       s3-file-item-bucket:
-      s3-file-item-access-plugin:
       s3-file-item-region:
       s3-file-item-secret-access-key:
-      save-actions:
       secure-session-secret-key:
       stripe-secret-key:
       stripe-default-plan-price-id:
       thumbnails-path-prefix:
-      token-based-auth:
-      websockets-plugin:

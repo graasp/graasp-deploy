@@ -10,6 +10,43 @@ on:
       ecs-task-definition:
         required: true
         type: string
+      # Environment variables
+      apps-plugin:
+        required: true
+        type: string
+      chatbox-plugin:
+        required: true
+        type: string
+      database-logs:
+        required: true
+        type: string
+      embedded-link-item-plugin:
+        required: true
+        type: string
+      node-env:
+        required: true
+        type: string
+      node-env-iframely:
+        required: true
+        type: string
+      public-plugin:
+        required: true
+        type: string
+      roarr-log:
+        required: true
+        type: string
+      s3-file-item-plugin:
+        required: true
+        type: string
+      save-actions:
+        required: true
+        type: string
+      token-based-auth:
+        required: true
+        type: string
+      websockets-plugin:
+        required: true
+        type: string
     # Define secrets which can be passed from the caller workflow
     secrets:
       # AWS credentials and variables
@@ -39,7 +76,7 @@ on:
       # Environment variables
       apps-jwt-secret:
         required: true
-      apps-plugin:
+      apps-publisher-id:
         required: true
       auth-client-host:
         required: true
@@ -49,21 +86,15 @@ on:
         required: true
       avatars-path-prefix:
         required: true
-      chatbox-plugin:
-        required: true
       client-host:
         required: true
       cookie-domain:
         required: true
       cors-origin-regex:
         required: true
-      database-logs:
-        required: true
       email-links-host:
         required: true
       embedded-link-item-iframely-href-origin:
-        required: true
-      embedded-link-item-plugin:
         required: true
       file-storage-root-path:
         required: true
@@ -87,15 +118,9 @@ on:
         required: true
       mailer-config-username:
         required: true
-      node-env:
-        required: true
-      node-env-container-2:
-        required: true
       pg-connection-uri:
         required: true
       port:
-        required: true
-      public-plugin:
         required: true
       public-tag-id:
         required: true
@@ -113,19 +138,13 @@ on:
         required: true
       refresh-token-jwt-secret:
         required: true
-      roarr-log:
-        required: true
       s3-file-item-access-key-id:
         required: true
       s3-file-item-bucket:
         required: true
-      s3-file-item-access-plugin:
-        required: true
       s3-file-item-region:
         required: true
       s3-file-item-secret-access-key:
-        required: true
-      save-actions:
         required: true
       secure-session-secret-key:
         required: true
@@ -134,10 +153,6 @@ on:
       stripe-default-plan-price-id:
         required: true
       thumbnails-path-prefix:
-        required: true
-      token-based-auth:
-        required: true
-      websockets-plugin:
         required: true
 
 # Set environment variables that are available to the steps of all jobs in the workflow
@@ -247,19 +262,20 @@ jobs:
           image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
           environment-variables: |
             APPS_JWT_SECRET=${{ secrets.apps-jwt-secret }}
-            APPS_PLUGIN=${{ secrets.apps-plugin }}
+            APPS_PLUGIN=${{ inputs.apps-plugin }}
+            APPS_PUBLISHER_ID=${{ secrets.apps-publisher-id }}
             AUTH_CLIENT_HOST=${{ secrets.auth-client-host }}
             AUTH_TOKEN_EXPIRATION_IN_MINUTES=${{ secrets.auth-token-expiration-in-minutes }}
             AUTH_TOKEN_JWT_SECRET=${{ secrets.auth-token-jwt-secret }}
-            AVATARS_PATH_PREFIX=${{ secrets.avatars-path-prefix }}
-            CHATBOX_PLUGIN=${{ secrets.chatbox-plugin }}
+            AVATARS_PATH_PREFIX=${{ inputs.avatars-path-prefix }}
+            CHATBOX_PLUGIN=${{ inputs.chatbox-plugin }}
             CLIENT_HOST=${{ secrets.client-host }}
             COOKIE_DOMAIN=${{ secrets.cookie-domain }}
             CORS_ORIGIN_REGEX=${{ secrets.cors-origin-regex }}
-            DATABASE_LOGS=${{ secrets.database-logs }}
+            DATABASE_LOGS=${{ inputs.database-logs }}
             EMAIL_LINKS_HOST=${{ secrets.email-links-host }}
             EMBEDDED_LINK_ITEM_IFRAMELY_HREF_ORIGIN=${{ secrets.embedded-link-item-iframely-href-origin }}
-            EMBEDDED_LINK_ITEM_PLUGIN=${{ secrets.embedded-link-item-plugin }}
+            EMBEDDED_LINK_ITEM_PLUGIN=${{ inputs.embedded-link-item-plugin }}
             FILE_STORAGE_ROOT_PATH=${{ secrets.file-storage-root-path }}
             FILES_PATH_PREFIX=${{ secrets.files-path-prefix }}
             HIDDEN_TAG_ID=${{ secrets.hidden-tag-id }}
@@ -271,10 +287,10 @@ jobs:
             MAILER_CONFIG_PASSWORD=${{ secrets.mailer-config-password }}
             MAILER_CONFIG_SMTP_HOST=${{ secrets.mailer-config-smtp-host }}
             MAILER_CONFIG_USERNAME=${{ secrets.mailer-config-username }}
-            NODE_ENV=${{ secrets.node-env }}
+            NODE_ENV=${{ inputs.node-env }}
             PG_CONNECTION_URI=${{ secrets.pg-connection-uri }}
             PORT=${{ secrets.port }}
-            PUBLIC_PLUGIN=${{ secrets.public-plugin }}
+            PUBLIC_PLUGIN=${{ inputs.public-plugin }}
             PUBLIC_TAG_ID=${{ secrets.public-tag-id }}
             PUBLISHED_TAG_ID=${{ secrets.published-tag-id }}
             REDIS_HOST=${{ secrets.redis-host }}
@@ -283,19 +299,19 @@ jobs:
             REDIS_USERNAME=${{ secrets.redis-username }}
             REFRESH_TOKEN_EXPIRATION_IN_MINUTES=${{ secrets.refresh-token-expiration-in-minutes }}
             REFRESH_TOKEN_JWT_SECRET=${{ secrets.refresh-token-jwt-secret }}
-            ROARR_LOG=${{ secrets.roarr-log }}
+            ROARR_LOG=${{ inputs.roarr-log }}
             S3_FILE_ITEM_ACCESS_KEY_ID=${{ secrets.s3-file-item-access-key-id }}
             S3_FILE_ITEM_BUCKET=${{ secrets.s3-file-item-bucket }}
-            S3_FILE_ITEM_PLUGIN=${{ secrets.s3-file-item-access-plugin }}
+            S3_FILE_ITEM_PLUGIN=${{ inputs.s3-file-item-plugin }}
             S3_FILE_ITEM_REGION=${{ secrets.s3-file-item-region }}
             S3_FILE_ITEM_SECRET_ACCESS_KEY=${{ secrets.s3-file-item-secret-access-key }}
-            SAVE_ACTIONS=${{ secrets.save-actions }}
+            SAVE_ACTIONS=${{ inputs.save-actions }}
             SECURE_SESSION_SECRET_KEY=${{ secrets.secure-session-secret-key }}
             STRIPE_SECRET_KEY=${{ secrets.stripe-secret-key }}
             STRIPE_DEFAULT_PLAN_PRICE_ID=${{ secrets.stripe-default-plan-price-id }}
             THUMBNAILS_PATH_PREFIX=${{ secrets.thumbnails-path-prefix }}
-            TOKEN_BASED_AUTH=${{ secrets.token-based-auth }}
-            WEBSOCKETS_PLUGIN=${{ secrets.websockets-plugin }}
+            TOKEN_BASED_AUTH=${{ inputs.token-based-auth }}
+            WEBSOCKETS_PLUGIN=${{ inputs.websockets-plugin }}
 
     # Modify Amazon ECS task definition with second container
     - name: Modify Amazon ECS task definition
@@ -306,7 +322,7 @@ jobs:
           container-name: ${{ secrets.container-name-iframely }}
           image: ${{ secrets.container-image-iframely}}
           environment-variables: |
-            NODE_ENV=${{ secrets.node-env-container-2 }}
+            NODE_ENV=${{ inputs.node-env-iframely }}
 
     # Modify Amazon ECS task definition with third container
     - name: Modify Amazon ECS task definition
