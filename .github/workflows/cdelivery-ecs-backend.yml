@@ -45,6 +45,8 @@ on:
         required: true
       apps-plugin:
         required: true
+      apps-publisher-id:
+        required: true
       auth-client-host:
         required: true
       auth-token-expiration-in-minutes:
@@ -72,6 +74,16 @@ on:
       file-storage-root-path:
         required: true
       files-path-prefix:
+        required: true
+      h5p-content-access-key-id:
+        required: true
+      h5p-content-bucket-name:
+        required: true
+      h5p-content-region:
+        required: true
+      h5p-content-secret-access-key:
+        required: true
+      h5p-path-prefix:
         required: true
       hidden-tag-id:
         required: true
@@ -214,6 +226,7 @@ jobs:
           environment-variables: |
             APPS_JWT_SECRET=${{ secrets.apps-jwt-secret }}
             APPS_PLUGIN=${{ secrets.apps-plugin }}
+            APPS_PUBLISHER_ID=${{ secrets.apps-publisher-id }}
             AUTH_CLIENT_HOST=${{ secrets.auth-client-host }}
             AUTH_TOKEN_EXPIRATION_IN_MINUTES=${{ secrets.auth-token-expiration-in-minutes }}
             AUTH_TOKEN_JWT_SECRET=${{ secrets.auth-token-jwt-secret }}
@@ -228,6 +241,11 @@ jobs:
             EMBEDDED_LINK_ITEM_PLUGIN=${{ secrets.embedded-link-item-plugin }}
             FILE_STORAGE_ROOT_PATH=${{ secrets.file-storage-root-path }}
             FILES_PATH_PREFIX=${{ secrets.files-path-prefix }}
+            H5P_CONTENT_ACCESS_KEY_ID=${{ secrets.h5p-content-access-key-id }}
+            H5P_CONTENT_BUCKET=${{ secrets.h5p-content-bucket-name }}
+            H5P_CONTENT_REGION=${{ secrets.h5p-content-region }}
+            H5P_CONTENT_SECRET_ACCESS_KEY=${{ secrets.h5p-content-secret-access-key }}
+            H5P_PATH_PREFIX=${{ secrets.h5p-path-prefix }}
             HIDDEN_TAG_ID=${{ secrets.hidden-tag-id }}
             HOSTNAME=${{ secrets.hostname }}
             IMAGE_CLASSIFIER_API=${{ secrets.image-classifier-api }}

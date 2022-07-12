@@ -35,6 +35,7 @@ jobs:
       container-image-classifier:
       apps-jwt-secret:
       apps-plugin:
+      apps-publisher-id:
       auth-client-host:
       auth-token-expiration-in-minutes:
       auth-token-jwt-secret:
@@ -49,6 +50,11 @@ jobs:
       embedded-link-item-plugin:
       file-storage-root-path:
       files-path-prefix:
+      h5p-content-access-key-id:
+      h5p-content-bucket-name:
+      h5p-content-region:
+      h5p-content-secret-access-key:
+      h5p-path-prefix:
       hidden-tag-id:
       hostname:
       image-classifier-api:
