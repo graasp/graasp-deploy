@@ -16,6 +16,10 @@ on:
         required: false
         default: 'latest'
         type: string
+      # tag: specify tag version to deploy
+      tag:
+        required: true
+        type: string
     # Define secrets which can be passed from the caller workflow
     secrets:
       # AWS credentials and variables
@@ -34,6 +38,8 @@ on:
         required: true
       graasp-domain:
         required: true
+      next-public-sentry-dsn:
+        required: false
 
 # Set environment variables that are available to the steps of all jobs in the workflow
 env:
@@ -49,15 +55,13 @@ jobs:
     name: Build-sync-deploy
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    # The environment that the job will reference
-    environment: 
-      name: production
-
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
       uses: actions/checkout@v2
+      with:
+        ref: ${{ inputs.tag }}
 
     # Download and cache distribution of the requested Node.js version, and add it to the PATH
     - name: Setup node
@@ -73,6 +77,7 @@ jobs:
       env: 
         REACT_APP_GRAASP_DOMAIN: ${{ secrets.graasp-domain }}
         REACT_APP_GRAASP_APP_ID: ${{ secrets.app-id }}
+        NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.next-public-sentry-dsn }}
         REACT_APP_MOCK_API: false
       # Run a set of commands using the runners shell to perform install and build
       run: |

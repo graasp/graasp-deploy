@@ -10,6 +10,10 @@ on:
       ecs-task-definition:
         required: true
         type: string
+      # tag: specify tag version to deploy
+      tag:
+        required: true
+        type: string
     # Define secrets which can be passed from the caller workflow
     secrets:
       # AWS credentials and variables
@@ -34,6 +38,8 @@ on:
       next-public-google-analytics-id:
         required: true
       next-public-graasp-auth-host: 
+        required: true
+      next-public-graasp-builder-host:
         required: true
       next-public-graasp-perform-host:
         required: true
@@ -61,9 +67,6 @@ jobs:
     name: Build-push-deploy
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    # The environment that the job will reference
-    environment: 
-      name: production
     # Define job output that is available to all downstream jobs that depend on this job
     outputs: 
       tag: ${{ steps.tag-number.outputs.tag }}
@@ -73,6 +76,8 @@ jobs:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
       uses: actions/checkout@v2
+      with:
+        ref: ${{ inputs.tag }}
 
     # Set output variable tag with the current checked out ref
     - name: Set Tag Number
@@ -119,6 +124,7 @@ jobs:
             NEXT_PUBLIC_API_HOST=${{ secrets.next-public-api-host }}
             NEXT_PUBLIC_GOOGLE_ANALYTICS_ID=${{ secrets.next-public-google-analytics-id }}
             NEXT_PUBLIC_GRAASP_AUTH_HOST=${{ secrets.next-public-graasp-auth-host }}
+            NEXT_PUBLIC_GRAASP_BUILDER_HOST=${{ secrets.next-public-graasp-builder-host }}
             NEXT_PUBLIC_API_HOST=${{ secrets.next-public-api-host }}
             NEXT_PUBLIC_GRAASP_PERFORM_HOST=${{ secrets.next-public-graasp-perform-host }}
             NEXT_PUBLIC_GRAASPER_ID=${{ secrets.next-public-graasper-id }}

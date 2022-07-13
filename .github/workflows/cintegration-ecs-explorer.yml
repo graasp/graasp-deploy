@@ -35,6 +35,8 @@ on:
         required: true
       next-public-graasp-auth-host: 
         required: true
+      next-public-graasp-builder-host:
+        required: true
       next-public-graasp-perform-host:
         required: true
       next-public-graasper-id:
@@ -155,6 +157,7 @@ jobs:
             NEXT_PUBLIC_API_HOST=${{ secrets.next-public-api-host }}
             NEXT_PUBLIC_GOOGLE_ANALYTICS_ID=${{ secrets.next-public-google-analytics-id }}
             NEXT_PUBLIC_GRAASP_AUTH_HOST=${{ secrets.next-public-graasp-auth-host }}
+            NEXT_PUBLIC_GRAASP_BUILDER_HOST=${{ secrets.next-public-graasp-builder-host }}
             NEXT_PUBLIC_API_HOST=${{ secrets.next-public-api-host }}
             NEXT_PUBLIC_GRAASP_PERFORM_HOST=${{ secrets.next-public-graasp-perform-host }}
             NEXT_PUBLIC_GRAASPER_ID=${{ secrets.next-public-graasper-id }}

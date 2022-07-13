@@ -34,6 +34,8 @@ on:
         required: true
       graasp-domain:
         required: true
+      next-public-sentry-dsn:
+        required: false
 
 # Set environment variables that are available to the steps of all jobs in the workflow
 env:
@@ -85,6 +87,7 @@ jobs:
       env: 
         REACT_APP_GRAASP_DOMAIN: ${{ secrets.graasp-domain }}
         REACT_APP_GRAASP_APP_ID: ${{ secrets.app-id }}
+        NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.next-public-sentry-dsn }}
         REACT_APP_MOCK_API: false
       # Run a set of commands using the runners shell to perform install and build
       run: |

@@ -29,7 +29,9 @@ jobs:
       next-public-api-host:
       next-public-google-analytics-id:
       next-public-graasp-auth-host:
+      next-public-graasp-builder-host:
       next-public-graasp-perform-host:
       next-public-graasper-id:
       next-public-published-tag-id:
+      next-public-sentry-dsn:
       port:

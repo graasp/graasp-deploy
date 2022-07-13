@@ -76,6 +76,9 @@ jobs:
     name: Promote stack to production ready
     needs: [generate-matrix, dispatch]
     runs-on: ubuntu-latest
+    # The environment that the job will reference
+    environment: 
+      name: production
     env:
       LATEST_FILE_NAME_RELEASE: ${{ needs.generate-matrix.outputs.latest }}
     steps:

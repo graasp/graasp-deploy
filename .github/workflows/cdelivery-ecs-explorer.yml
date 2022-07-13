@@ -39,6 +39,8 @@ on:
         required: true
       next-public-graasp-auth-host: 
         required: true
+      next-public-graasp-builder-host:
+        required: true
       next-public-graasp-perform-host:
         required: true
       next-public-graasper-id:
@@ -121,6 +123,7 @@ jobs:
             NEXT_PUBLIC_API_HOST=${{ secrets.next-public-api-host }}
             NEXT_PUBLIC_GOOGLE_ANALYTICS_ID=${{ secrets.next-public-google-analytics-id }}
             NEXT_PUBLIC_GRAASP_AUTH_HOST=${{ secrets.next-public-graasp-auth-host }}
+            NEXT_PUBLIC_GRAASP_BUILDER_HOST=${{ secrets.next-public-graasp-builder-host }}
             NEXT_PUBLIC_API_HOST=${{ secrets.next-public-api-host }}
             NEXT_PUBLIC_GRAASP_PERFORM_HOST=${{ secrets.next-public-graasp-perform-host }}
             NEXT_PUBLIC_GRAASPER_ID=${{ secrets.next-public-graasper-id }}
@@ -142,9 +145,6 @@ jobs:
     needs: build-deploy
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    # The environment that the job will reference
-    environment: 
-      name: staging
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
