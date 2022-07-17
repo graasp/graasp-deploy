@@ -36,7 +36,7 @@ on:
       # Environment variables
       app-id:
         required: true
-      graasp-domain-test:
+      graasp-domain:
         required: true
       next-public-sentry-dsn:
         required: false
@@ -75,7 +75,7 @@ jobs:
       id: build-image
       # Set environment variables required to perform the build. These are only available to this step
       env: 
-        REACT_APP_GRAASP_DOMAIN: ${{ secrets.graasp-domain-test }}
+        REACT_APP_GRAASP_DOMAIN: ${{ secrets.graasp-domain }}
         REACT_APP_GRAASP_APP_ID: ${{ secrets.app-id }}
         NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.next-public-sentry-dsn }}
         REACT_APP_MOCK_API: false
