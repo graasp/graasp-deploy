@@ -2,11 +2,11 @@
   "include": [
     {
       "repository": "graasp/graasp",
-      "tag": ""
+      "tag": "v0.1.0"
     },
     {
       "repository": "graasp/graasp-explore",
-      "tag": ""
+      "tag": "v0.1.0"
     },
     {
       "repository": "graasp/graasp-compose",
