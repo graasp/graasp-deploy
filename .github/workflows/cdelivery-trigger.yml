@@ -65,14 +65,17 @@ jobs:
     - name: Generate matrix
       id: set-matrix
       run: |
-        LATEST_FILE=$(cat diff.json)
-        echo ::set-output name=matrix::${LATEST_FILE//'%'/'%25'}
-
-    - name: Generate job summary markdown
-      run: |
-        echo '### New stack! :rocket:' >> $GITHUB_STEP_SUMMARY
-        NEW_STACK=$(cat diff.json | jq -r '.include[] | {repository,tag}| join(" - tag: ")')
-        echo $NEW_STACK >> $GITHUB_STEP_SUMMARY
+        STACK_LENGTH=$(cat diff.json | jq '.include | length')
+        if [[ "$STACK_LENGTH" -gt 0 ]]; then
+          LATEST_FILE=$(cat diff.json)
+          echo ::set-output name=matrix::${LATEST_FILE//'%'/'%25'}
+          echo '### New versions detected! :bookmark:' >> $GITHUB_STEP_SUMMARY
+          NEW_STACK=$(cat diff.json | jq -r '.include[] | {repository,tag}| join(" - tag: ")')
+          echo $NEW_STACK >> $GITHUB_STEP_SUMMARY
+        else
+          echo '### No new versions detected! :hankey:' >> $GITHUB_STEP_SUMMARY
+          exit 1
+        fi
 
   dispatch:
     name: Dispatch Continuous Delivery workflows
@@ -103,6 +106,8 @@ jobs:
     name: Update deployed staging stack
     needs: [generate-matrix, dispatch]
     runs-on: ubuntu-latest
+    outputs:
+      commit-hash: ${{ steps.commit.outputs.commit_hash }}
     env:
       LATEST_FILE_NAME_STAGING: ${{ needs.generate-matrix.outputs.latest }}
     steps:
@@ -120,6 +125,12 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: Deploy new stack to staging environment
+
+    - name: Set commit hash output
+      if: steps.auto-commit-action.outputs.changes_detected == 'true'
+      run: |
+        echo ::set-output name=commit-hash::${{steps.commit.outputs.commit_hash}}
+        echo '### New stack deployed! :rocket:' >> $GITHUB_STEP_SUMMARY
 
   test:
     name: Test
@@ -146,6 +157,8 @@ jobs:
     steps:
     - name: Check out code
       uses: actions/checkout@v2
+      with:
+        ref: ${{ needs.update-deployed-stack.outputs.commit-hash }}
 
     # Create new staging-versions.json file
     - name: Create new release-versions.json file name
@@ -166,3 +179,7 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: Promote new stack to release ready
+
+    - name: Generate job summary markdown
+      run: |
+        echo '### New stack promoted! :boom:' >> $GITHUB_STEP_SUMMARY
