@@ -238,7 +238,7 @@ jobs:
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       # Set environment variables required to create the task definition file. These are only available to this step
       env:
-        ECR_REGISTRY: ${{ steps.login-ecr-deploy.outputs.registry }}
+        ECR_REGISTRY: ${{ steps.login-ecr-build.outputs.registry }}
         IMAGE_TAG: ${{ steps.tag-number.outputs.tag }}
       with:
           task-definition: ${{ inputs.ecs-task-definition }}
