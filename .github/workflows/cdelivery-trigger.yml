@@ -93,9 +93,31 @@ jobs:
         event-type: staging-deployment
         client-payload: ${{steps.set-json.outputs.json}}
 
+  update-deployed-stack:
+    name: Promote stack to release ready
+    needs: [generate-matrix, dispatch]
+    runs-on: ubuntu-latest
+    env:
+      LATEST_FILE_NAME_STAGING: ${{ needs.generate-matrix.outputs.latest }}
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Update current-staging-versions file
+      id: update-current-staging-versions-file
+      run: |
+        cd ./staging-versions
+        cp $LATEST_FILE_NAME_STAGING ../deployed/current-staging-versions.json
+
+    - name: Commit step
+      id: commit
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Deploy new stack to staging environment
+
   test:
     name: Test
-    needs: dispatch
+    needs: [dispatch, update-deployed-stack]
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # The environment that the job will reference
@@ -105,11 +127,11 @@ jobs:
     # This step runs a single command to execute integation testing
     - name: Test
       run: |
-        echo "This is the integration test step"
+        echo "This is the integration test job"
 
   promote:
     name: Promote stack to release ready
-    needs: [generate-matrix, dispatch, test]
+    needs: [generate-matrix, dispatch, update-deployed-stack, test]
     runs-on: ubuntu-latest
     environment: 
       name: staging
@@ -132,10 +154,9 @@ jobs:
       run: |
         cd ./staging-versions
         cp $LATEST_FILE_NAME_STAGING ../release-versions/$RELEASE_FILE_NAME 
-        cp $LATEST_FILE_NAME_STAGING ../deployed/current-staging-versions.json
 
     - name: Commit step
       id: commit
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_message: Deploy new stack to staging environment
+        commit_message: Promote new stack to release ready
