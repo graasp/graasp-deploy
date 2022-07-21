@@ -2,23 +2,23 @@
   "include": [
     {
       "repository": "graasp/graasp",
-      "tag": ""
+      "tag": "v0.1.0"
     },
     {
       "repository": "graasp/graasp-explore",
-      "tag": ""
+      "tag": "v0.1.0"
     },
     {
       "repository": "graasp/graasp-compose",
-      "tag": ""
+      "tag": "v0.1.0"
     },
     {
       "repository": "graasp/graasp-perform",
-      "tag": ""
+      "tag": "v0.1.0"
     },
     {
       "repository": "graasp/graasp-auth",
-      "tag": ""
+      "tag": "v0.1.0"
     },
     {
       "repository": "graasp/graasp-admin",
@@ -43,6 +43,10 @@
     {
       "repository": "graasp/graasp-app-text-input",
       "tag": "v0.4.1"
+    },
+    {
+      "repository": "graasp/graasp-app-code-capsule",
+      "tag": "v0.1.1"
     }
   ]
 }
