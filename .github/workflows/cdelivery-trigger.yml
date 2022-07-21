@@ -103,6 +103,8 @@ jobs:
     name: Update deployed staging stack
     needs: [generate-matrix, dispatch]
     runs-on: ubuntu-latest
+    outputs:
+      commit-hash: ${{ steps.commit.outputs.commit_hash }}
     env:
       LATEST_FILE_NAME_STAGING: ${{ needs.generate-matrix.outputs.latest }}
     steps:
@@ -120,6 +122,10 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: Deploy new stack to staging environment
+
+    - name: Set commit hash output
+      if: steps.auto-commit-action.outputs.changes_detected == 'true'
+      run: echo ::set-output name=commit-hash::${{steps.commit.outputs.commit_hash}}
 
   test:
     name: Test
@@ -146,6 +152,8 @@ jobs:
     steps:
     - name: Check out code
       uses: actions/checkout@v2
+      with:
+        ref: ${{ needs.update-deployed-stack.outputs.commit-hash }}
 
     # Create new staging-versions.json file
     - name: Create new release-versions.json file name
