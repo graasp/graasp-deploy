@@ -206,7 +206,7 @@ jobs:
     # Set output variable tag with the current checked out ref
     - name: Set Tag Number
       id: tag-number
-      run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+      run: echo ::set-output name=tag::${{ inputs.tag }}
 
     # Configure AWS credential and region environment variables for use in next steps
     - name: Configure AWS Credentials
@@ -239,7 +239,7 @@ jobs:
       # Set environment variables required to create the task definition file. These are only available to this step
       env:
         ECR_REGISTRY: ${{ steps.login-ecr-deploy.outputs.registry }}
-        IMAGE_TAG: ${{ needs.build.outputs.tag }}
+        IMAGE_TAG: ${{ steps.tag-number.outputs.tag }}
       with:
           task-definition: ${{ inputs.ecs-task-definition }}
           container-name: ${{ secrets.container-name-graasp }}
