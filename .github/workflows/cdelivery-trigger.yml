@@ -100,7 +100,7 @@ jobs:
         client-payload: ${{steps.set-json.outputs.json}}
 
   update-deployed-stack:
-    name: Promote stack to release ready
+    name: Update deployed staging stack
     needs: [generate-matrix, dispatch]
     runs-on: ubuntu-latest
     env:
