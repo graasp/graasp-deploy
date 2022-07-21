@@ -68,6 +68,12 @@ jobs:
         LATEST_FILE=$(cat diff.json)
         echo ::set-output name=matrix::${LATEST_FILE//'%'/'%25'}
 
+    - name: Generate job summary markdown
+      run: |
+        echo '### New stack! :rocket:' >> $GITHUB_STEP_SUMMARY
+        NEW_STACK=$(cat diff.json | jq -r '.include[] | {repository,tag}| join(" - tag: ")')
+        echo $NEW_STACK >> $GITHUB_STEP_SUMMARY
+
   dispatch:
     name: Dispatch Continuous Delivery workflows
     needs: generate-matrix
