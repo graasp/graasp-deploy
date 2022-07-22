@@ -13,6 +13,7 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       latest: ${{ steps.latest-release-file.outputs.latest }}
+
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
@@ -42,8 +43,17 @@ jobs:
     - name: Generate matrix
       id: set-matrix
       run: |
-        LATEST_FILE=$(cat diff.json)
-        echo ::set-output name=matrix::${LATEST_FILE//'%'/'%25'}
+        STACK_LENGTH=$(cat diff.json | jq '.include | length')
+        if [[ "$STACK_LENGTH" -gt 0 ]]; then
+          LATEST_FILE=$(cat diff.json)
+          echo ::set-output name=matrix::${LATEST_FILE//'%'/'%25'}
+          echo '### New versions detected! :bookmark:' >> $GITHUB_STEP_SUMMARY
+          NEW_STACK=$(cat diff.json | jq -r '.include[] | {repository,tag}| join(" - tag: ")')
+          echo $NEW_STACK >> $GITHUB_STEP_SUMMARY
+        else
+          echo '### No new versions detected! :hankey:' >> $GITHUB_STEP_SUMMARY
+          exit 1
+        fi
 
   dispatch:
     name: Dispatch Continuous Deployment workflows
@@ -72,8 +82,8 @@ jobs:
         event-type: production-deployment
         client-payload: ${{steps.set-json.outputs.json}}
 
-  promote:
-    name: Promote stack to production ready
+  update:
+    name: Upate stack to production ready
     needs: [generate-matrix, dispatch]
     runs-on: ubuntu-latest
     # The environment that the job will reference
@@ -105,3 +115,7 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: Deploy new stack to production environment
+
+    - name: Generate job summary markdown
+      run: |
+        echo '### New stack deployed! :rocket:' >> $GITHUB_STEP_SUMMARY
