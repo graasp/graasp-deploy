@@ -180,7 +180,7 @@ on:
 # Set environment variables that are available to the steps of all jobs in the workflow
 env:        
   ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
-  CONTAINER_NAME: ${{ secrets.container-name-graasp}}
+  CONTAINER_NAME: ${{ secrets.container-name-graasp }}
   ECR_REPOSITORY: ${{ secrets.ecr-repository }}
   # Allows to increase Node's max heap size
   NODE_OPTIONS: '--max_old_space_size=8192'
@@ -198,6 +198,7 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
       uses: actions/checkout@v2
       with:
@@ -223,7 +224,7 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
 
     # Build and tag the docker image
-    - name: Build, and tag image
+    - name: Build, tag and push image to AWS ECR
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr-build.outputs.registry }}
@@ -242,7 +243,7 @@ jobs:
         IMAGE_TAG: ${{ steps.tag-number.outputs.tag }}
       with:
           task-definition: ${{ inputs.ecs-task-definition }}
-          container-name: ${{ secrets.container-name-graasp}}
+          container-name: ${{ secrets.container-name-graasp }}
           image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
           environment-variables: |
             ANALYZER_CLIENT_HOST=${{ secrets.analyzer-client-host }}
@@ -330,7 +331,7 @@ jobs:
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          task-definition: ${{ steps.task-def-3.outputs.task-definition }}
           service: ${{ secrets.ecs-service }}
           cluster: ${{ secrets.ecs-cluster }}
           wait-for-service-stability: true       

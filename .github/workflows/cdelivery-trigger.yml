@@ -62,6 +62,7 @@ jobs:
       run: |
         python scripts/compare.py staging-versions/$LATEST_FILE_NAME_STAGING deployed/current-staging-versions.json
 
+    # Load latest json from a file
     - name: Generate matrix
       id: set-matrix
       run: |
@@ -81,9 +82,11 @@ jobs:
     name: Dispatch Continuous Delivery workflows
     needs: generate-matrix
     runs-on: ubuntu-latest
+    # The environment that the job will reference
     environment: 
       name: staging
     strategy:
+      # Uses fromJson to parse the output and set a matrix variable.
       matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
     steps:
     - name: Set json output
