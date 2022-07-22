@@ -55,7 +55,7 @@ on:
 # Set environment variables that are available to the steps of all jobs in the workflow
 env:        
   ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
-  CONTAINER_NAME: ${{ secrets.container-name-explorer}}
+  CONTAINER_NAME: ${{ secrets.container-name-explorer }}
   ECR_REPOSITORY: ${{ secrets.ecr-repository }}
   # Allows to increase Node's max heap size
   NODE_OPTIONS: '--max_old_space_size=8192'
@@ -99,7 +99,7 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
 
     # Build and tag the docker image
-    - name: Build, and tag image
+    - name: Build, tag and push image to AWS ECR
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr-build.outputs.registry }}

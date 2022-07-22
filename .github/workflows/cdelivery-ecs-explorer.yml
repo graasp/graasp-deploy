@@ -70,6 +70,7 @@ jobs:
     # Define job output that is available to all downstream jobs that depend on this job
     outputs: 
       tag: ${{ steps.tag-number.outputs.tag }}
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
@@ -77,12 +78,12 @@ jobs:
       uses: actions/checkout@v2
       with:
         ref: ${{ inputs.tag }}
-      
+
     # Set output variable tag with the current checked out ref
     - name: Set Tag Number
       id: tag-number
       run: echo ::set-output name=tag::${{ inputs.tag }}
-    
+
     # Configure AWS credential and region environment variables for use in next steps
     - name: Configure AWS Credentials
       id: configure-aws
@@ -130,7 +131,7 @@ jobs:
             NEXT_PUBLIC_PUBLISHED_TAG_ID=${{ secrets.next-public-published-tag-id }}
             NEXT_PUBLIC_SENTRY_DSN=${{ secrets.next-public-sentry-dsn }}
             PORT=${{ secrets.port }}
-            
+
     # Use latest revision of the task-definition to deploy the application to ECS
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
