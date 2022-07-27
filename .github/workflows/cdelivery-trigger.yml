@@ -109,6 +109,8 @@ jobs:
     name: Update deployed staging stack
     needs: [generate-matrix, dispatch]
     runs-on: ubuntu-latest
+    environment: 
+      name: staging
     outputs:
       commit-hash: ${{ steps.commit.outputs.commit_hash }}
     env:
