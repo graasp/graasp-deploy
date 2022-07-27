@@ -9,8 +9,10 @@ with open(new, "r") as f1:
 with open(current, "r") as f2:
     current_file = json.loads(f2.read())
 
-for current_item in current_file['include']:
-    for new_item in new_file['include']:
+for new_item in new_file['include']:
+    visited = []
+    for current_item in current_file['include']:
+        visited.append(current_item['repository'])
         if new_item['repository'] != current_item['repository']:
             continue
         else:
@@ -21,6 +23,12 @@ for current_item in current_file['include']:
                 print('New tag')
                 print(new_item['tag'])
                 output['include'].append(new_item)
+            else: 
+                break
+
+    if new_item['repository'] not in visited:
+        print(f"Found new repository in stack: {new_item['repository']}")
+        output['include'].append(new_item)        
 
 # New file
 output_file = open("diff.json", "w")
