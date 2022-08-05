@@ -1,0 +1,1598 @@
+{
+	"info": {
+		"_postman_id": "6012ff61-6e08-4782-bb9c-6f4c760e8b51",
+		"name": "GraaspAPITest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13967016"
+	},
+	"item": [
+		{
+			"name": "status",
+			"item": [
+				{
+					"name": "/status api",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_host}}/status",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "explorer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.text().to.exist;",
+									"});",
+									"// Load the HTML response to $",
+									"pm.test(\"Verify item\", function () {",
+									"    const $ = cheerio.load(pm.response.text());",
+									"    // Use the jQuery selector API to get different elements on the page",
+									"    pm.expect($(\"title\").text()).to.eql(\"Graasp Explorer\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://explorer.stage.graasp.org/",
+							"protocol": "https",
+							"host": [
+								"explorer",
+								"stage",
+								"graasp",
+								"org"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.text().to.exist;",
+									"});",
+									"// Load the HTML response to $",
+									"pm.test(\"Verify item\", function () {",
+									"    const $ = cheerio.load(pm.response.text());",
+									"    // Use the jQuery selector API to get different elements on the page",
+									"    pm.expect($(\"title\").text()).to.eql(\"Graasp\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://auth.stage.graasp.org/",
+							"protocol": "https",
+							"host": [
+								"auth",
+								"stage",
+								"graasp",
+								"org"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.text().to.exist;",
+									"});",
+									"// Load the HTML response to $",
+									"pm.test(\"Verify item\", function () {",
+									"    const $ = cheerio.load(pm.response.text());",
+									"    // Use the jQuery selector API to get different elements on the page",
+									"    pm.expect($(\"title\").text()).to.eql(\"Graasp\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://player.stage.graasp.org/",
+							"protocol": "https",
+							"host": [
+								"player",
+								"stage",
+								"graasp",
+								"org"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "builder",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.text().to.exist;",
+									"});",
+									"// Load the HTML response to $",
+									"pm.test(\"Verify item\", function () {",
+									"    const $ = cheerio.load(pm.response.text());",
+									"    // Use the jQuery selector API to get different elements on the page",
+									"    pm.expect($(\"title\").text()).to.eql(\"Graasp\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://builder.stage.graasp.org/",
+							"protocol": "https",
+							"host": [
+								"builder",
+								"stage",
+								"graasp",
+								"org"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "/register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 409\", function () {",
+									" pm.response.to.have.status(409);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"test_user\",\n\t\"email\": \"{{email}}\"\n}"
+						},
+						"url": {
+							"raw": "{{api_host}}/register",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 303\", function () {",
+									" pm.response.to.have.status(303);",
+									"});",
+									"pm.test(\"Content-Type is application json; charset=utf-8\", function () {",
+									"    pm.response.to.be.header(\"Content-Type\", \"application/json; charset=utf-8\");",
+									"});",
+									"pm.test(\"Response is JSON\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.resource).to.exist;",
+									"});",
+									"let resource = pm.response.json().resource;",
+									"const token = resource.split('/')[3].split('=')[1];",
+									"pm.environment.set(\"token\", token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_host}}/login-password",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"login-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									" pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_host}}/auth?t={{token}}",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"auth"
+							],
+							"query": [
+								{
+									"key": "t",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "members",
+			"item": [
+				{
+					"name": "/current",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.to.be.json;",
+									"});",
+									"let email = pm.environment.get(\"email\");",
+									"pm.test(\"Verify member\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.id).to.exist;",
+									"    pm.expect(response.name).to.exist;",
+									"    pm.expect(response.email).to.eql(email);",
+									"    pm.expect(response.type).to.eql(\"individual\");",
+									"    pm.expect(response.createdAt).to.exist;",
+									"    pm.expect(response.updatedAt).to.exist;",
+									"    pm.expect(response.extra).to.exist;",
+									"});",
+									"let member_id = pm.response.json().id;",
+									"pm.environment.set(\"member_id\", member_id);",
+									"let member_name = pm.response.json().name;",
+									"pm.environment.set(\"member_name\", member_name);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_host}}/members/current",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"members",
+								"current"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/members/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.to.be.json;",
+									"});",
+									"let member_id = pm.environment.get(\"member_id\");",
+									"let member_name = pm.environment.get(\"member_name\");",
+									"let email = pm.environment.get(\"email\");",
+									"",
+									"pm.test(\"Verify member\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.id).to.eql(member_id);",
+									"    pm.expect(response.name).to.eql(member_name);",
+									"    pm.expect(response.email).to.eql(email);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_host}}/members/{{member_id}}",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"members",
+								"{{member_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "items",
+			"item": [
+				{
+					"name": "/items",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Verify item\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.id).to.exist;",
+									"    pm.expect(response.name).to.eql(\"parent\");",
+									"    pm.expect(response.description).to.eql(null);",
+									"    pm.expect(response.type).to.eql(\"folder\");",
+									"    pm.expect(response.path).to.exist;",
+									"    pm.expect(response.extra).to.exist;",
+									"    pm.expect(response.settings).to.exist;",
+									"    pm.expect(response.creator).to.exist;",
+									"    pm.expect(response.createdAt).to.exist;",
+									"    pm.expect(response.updatedAt).to.exist;",
+									"});",
+									"let item_id = pm.response.json().id;",
+									"pm.environment.set(\"parent_id\", item_id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"parent\", \n    \"type\": \"folder\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_host}}/items/",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"items",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/items/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.to.be.json;",
+									"});",
+									"let item_id = pm.environment.get(\"parent_id\");",
+									"pm.test(\"Verify item\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.id).to.eql(item_id);",
+									"    pm.expect(response.name).to.eql(\"parent\");",
+									"    pm.expect(response.description).to.eql(null);",
+									"    pm.expect(response.type).to.eql(\"folder\");",
+									"    pm.expect(response.path).to.exist;",
+									"    pm.expect(response.extra).to.exist;",
+									"    pm.expect(response.settings).to.exist;",
+									"    pm.expect(response.creator).to.exist;",
+									"    pm.expect(response.createdAt).to.exist;",
+									"    pm.expect(response.updatedAt).to.exist;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"parent\", \n    \"type\": \"folder\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_host}}/items/{{parent_id}}",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"items",
+								"{{parent_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/items/own",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.to.be.json;",
+									"});",
+									"let item_id = pm.environment.get(\"parent_id\");",
+									"pm.test(\"Verify item\", function () {",
+									"    const response = pm.response.json()[0];",
+									"    pm.expect(response.id).to.eql(item_id);",
+									"    pm.expect(response.name).to.eql(\"parent\");",
+									"    pm.expect(response.description).to.eql(null);",
+									"    pm.expect(response.type).to.eql(\"folder\");",
+									"    pm.expect(response.path).to.exist;",
+									"    pm.expect(response.extra).to.exist;",
+									"    pm.expect(response.settings).to.exist;",
+									"    pm.expect(response.creator).to.exist;",
+									"    pm.expect(response.createdAt).to.exist;",
+									"    pm.expect(response.updatedAt).to.exist;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{api_host}}/items/own",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"items",
+								"own"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/items?parentId=:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Verify item\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.id).to.exist;",
+									"    pm.expect(response.name).to.eql(\"children\");",
+									"    pm.expect(response.description).to.eql(null);",
+									"    pm.expect(response.type).to.eql(\"folder\");",
+									"    pm.expect(response.path).to.exist;",
+									"    pm.expect(response.extra).to.exist;",
+									"    pm.expect(response.settings).to.exist;",
+									"    pm.expect(response.creator).to.exist;",
+									"    pm.expect(response.createdAt).to.exist;",
+									"    pm.expect(response.updatedAt).to.exist;",
+									"});",
+									"let item_id = pm.response.json().id;",
+									"pm.environment.set(\"children_id\", item_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"children\",\n    \"type\": \"folder\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_host}}/items?parentId={{parent_id}}",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"items"
+							],
+							"query": [
+								{
+									"key": "parentId",
+									"value": "{{parent_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/items/:id/children",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.to.be.json;",
+									"});",
+									"let item_id = pm.environment.get(\"children_id\");",
+									"pm.test(\"Verify item\", function () {",
+									"    const response = pm.response.json()[0];",
+									"    pm.expect(response.id).to.eql(item_id);",
+									"    pm.expect(response.name).to.eql(\"children\");",
+									"    pm.expect(response.description).to.eql(null);",
+									"    pm.expect(response.type).to.eql(\"folder\");",
+									"    pm.expect(response.path).to.exist;",
+									"    pm.expect(response.extra).to.exist;",
+									"    pm.expect(response.settings).to.exist;",
+									"    pm.expect(response.creator).to.exist;",
+									"    pm.expect(response.createdAt).to.exist;",
+									"    pm.expect(response.updatedAt).to.exist;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_host}}/items/{{parent_id}}/children",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"items",
+								"{{parent_id}}",
+								"children"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/items/copy?id=:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Verify item\", function () {",
+									"    const response = pm.response.json()[0];",
+									"    pm.expect(response.id).to.exist;",
+									"    pm.expect(response.name).to.eql(\"children\");",
+									"    pm.expect(response.description).to.eql(null);",
+									"    pm.expect(response.type).to.eql(\"folder\");",
+									"    pm.expect(response.path).to.exist;",
+									"    pm.expect(response.extra).to.exist;",
+									"    pm.expect(response.settings).to.exist;",
+									"    pm.expect(response.creator).to.exist;",
+									"    pm.expect(response.createdAt).to.exist;",
+									"    pm.expect(response.updatedAt).to.exist;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"parentId\": \"{{parent_id}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_host}}/items/copy?id={{children_id}}",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"items",
+								"copy"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{children_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/items/:id/move",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.to.be.json;",
+									"});",
+									"let item_id = pm.environment.get(\"children_id\");",
+									"pm.test(\"Verify item\", function () {",
+									"    const response = pm.response.json()[0];",
+									"    pm.expect(response.id).to.eql(item_id);",
+									"    pm.expect(response.name).to.eql(\"children\");",
+									"    pm.expect(response.description).to.eql(null);",
+									"    pm.expect(response.type).to.eql(\"folder\");",
+									"    pm.expect(response.path).to.exist;",
+									"    pm.expect(response.extra).to.exist;",
+									"    pm.expect(response.settings).to.exist;",
+									"    pm.expect(response.creator).to.exist;",
+									"    pm.expect(response.createdAt).to.exist;",
+									"    pm.expect(response.updatedAt).to.exist;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_host}}/items/move?id={{children_id}}",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"items",
+								"move"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{children_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/items/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.to.be.json;",
+									"});",
+									"let item_id = pm.environment.get(\"parent_id\");",
+									"pm.test(\"Verify item\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.id).to.eql(item_id);",
+									"    pm.expect(response.name).to.eql(\"parent\");",
+									"    pm.expect(response.description).to.eql(null);",
+									"    pm.expect(response.type).to.eql(\"folder\");",
+									"    pm.expect(response.path).to.exist;",
+									"    pm.expect(response.extra).to.exist;",
+									"    pm.expect(response.settings).to.exist;",
+									"    pm.expect(response.creator).to.exist;",
+									"    pm.expect(response.createdAt).to.exist;",
+									"    pm.expect(response.updatedAt).to.exist;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_host}}/items/{{parent_id}}",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"items",
+								"{{parent_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/items/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_host}}/items/{{parent_id}}",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"items",
+								"{{parent_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/items/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.to.be.json;",
+									"});",
+									"let item_id = pm.environment.get(\"children_id\");",
+									"pm.test(\"Verify item\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.id).to.eql(item_id);",
+									"    pm.expect(response.name).to.eql(\"test update\");",
+									"    pm.expect(response.description).to.eql(null);",
+									"    pm.expect(response.type).to.eql(\"folder\");",
+									"    pm.expect(response.path).to.exist;",
+									"    pm.expect(response.extra).to.exist;",
+									"    pm.expect(response.settings).to.exist;",
+									"    pm.expect(response.creator).to.exist;",
+									"    pm.expect(response.createdAt).to.exist;",
+									"    pm.expect(response.updatedAt).to.exist;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"{{item_id}}\",\n    \"name\": \"test update\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_host}}/items/{{children_id}}",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"items",
+								"{{children_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/items/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.to.be.json;",
+									"});",
+									"let item_id = pm.environment.get(\"children_id\");",
+									"pm.test(\"Verify item\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.id).to.eql(item_id);",
+									"    pm.expect(response.name).to.eql(\"test update\");",
+									"    pm.expect(response.description).to.eql(null);",
+									"    pm.expect(response.type).to.eql(\"folder\");",
+									"    pm.expect(response.path).to.exist;",
+									"    pm.expect(response.extra).to.exist;",
+									"    pm.expect(response.settings).to.exist;",
+									"    pm.expect(response.creator).to.exist;",
+									"    pm.expect(response.createdAt).to.exist;",
+									"    pm.expect(response.updatedAt).to.exist;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_host}}/items/{{children_id}}",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"items",
+								"{{children_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "item memberships",
+			"item": [
+				{
+					"name": "/items",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Verify item\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.id).to.exist;",
+									"    pm.expect(response.name).to.eql(\"item\");",
+									"    pm.expect(response.description).to.eql(null);",
+									"    pm.expect(response.type).to.eql(\"folder\");",
+									"    pm.expect(response.path).to.exist;",
+									"    pm.expect(response.extra).to.exist;",
+									"    pm.expect(response.settings).to.exist;",
+									"    pm.expect(response.creator).to.exist;",
+									"    pm.expect(response.createdAt).to.exist;",
+									"    pm.expect(response.updatedAt).to.exist;",
+									"});",
+									"let item_id = pm.response.json().id;",
+									"pm.environment.set(\"item_id\", item_id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"item\", \n    \"type\": \"folder\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_host}}/items/",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"items",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/item-memberships?itemId=:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.to.be.json;",
+									"});",
+									"",
+									"let member_id = pm.environment.get(\"member_id\");",
+									"",
+									"pm.test(\"Verify item membership\", function () {",
+									"    const response = pm.response.json()[0][0];",
+									"    pm.expect(response.id).to.exist;",
+									"    pm.expect(response.memberId).to.eql(member_id);",
+									"    pm.expect(response.itemPath).to.exist;",
+									"    pm.expect(response.permission).to.eql(\"admin\");",
+									"    pm.expect(response.creator).to.eql(member_id);",
+									"    pm.expect(response.createdAt).to.exist;",
+									"    pm.expect(response.updatedAt).to.exist;",
+									"});",
+									"",
+									"let item_membership_id = pm.response.json()[0][0].id;",
+									"pm.environment.set(\"item_membership_id\", item_membership_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "notusednow",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "U2",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_host}}/item-memberships?itemId={{item_id}}",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"item-memberships"
+							],
+							"query": [
+								{
+									"key": "itemId",
+									"value": "{{item_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/item-memberships/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.to.be.json;",
+									"});",
+									"",
+									"let member_id = pm.environment.get(\"member_id\");",
+									"",
+									"pm.test(\"Verify item membership\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.id).to.exist;",
+									"    pm.expect(response.memberId).to.eql(member_id);",
+									"    pm.expect(response.itemPath).to.exist;",
+									"    pm.expect(response.permission).to.eql(\"write\");",
+									"    pm.expect(response.creator).to.eql(member_id);",
+									"    pm.expect(response.createdAt).to.exist;",
+									"    pm.expect(response.updatedAt).to.exist;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"permission\": \"write\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_host}}/item-memberships/{{item_membership_id}}",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"item-memberships",
+								"{{item_membership_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/item-memberships/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.to.be.json;",
+									"});",
+									"",
+									"let member_id = pm.environment.get(\"member_id\");",
+									"",
+									"pm.test(\"Verify item membership\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.id).to.exist;",
+									"    pm.expect(response.memberId).to.eql(member_id);",
+									"    pm.expect(response.itemPath).to.exist;",
+									"    pm.expect(response.permission).to.eql(\"write\");",
+									"    pm.expect(response.creator).to.eql(member_id);",
+									"    pm.expect(response.createdAt).to.exist;",
+									"    pm.expect(response.updatedAt).to.exist;",
+									"});",
+									"let item_membership_id = pm.response.json().id;",
+									"pm.environment.set(\"item_membership_id\", item_membership_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"permission\": \"write\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_host}}/item-memberships/{{item_membership_id}}",
+							"host": [
+								"{{api_host}}"
+							],
+							"path": [
+								"item-memberships",
+								"{{item_membership_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "/logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_host}}/logout",
+					"host": [
+						"{{api_host}}"
+					],
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
