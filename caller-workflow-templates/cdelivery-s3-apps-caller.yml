@@ -21,11 +21,12 @@ jobs:
       tag: ${{ github.event.client_payload.tag }}
     # Insert required secrets based on repository with the following format: ${{ secrets.SECRET_NAME }}
     secrets:
+      app-id:
       aws-access-key-id:
-      aws-secret-access-key:
       aws-region:
       aws-s3-bucket-name:
+      aws-secret-access-key:
       cloudfront-distribution-id:
-      app-id:
       graasp-domain:
       next-public-sentry-dsn:
+      stripe-publishable-key:

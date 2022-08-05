@@ -23,20 +23,21 @@ jobs:
       build-folder: 'build'
     # Insert required secrets based on repository with the following format: ${{ secrets.SECRET_NAME }}
     secrets:
+      api-host:
+      authentication-host:
       aws-access-key-id:
-      aws-secret-access-key:
       aws-region:
       aws-s3-bucket-name:
+      aws-secret-access-key:
       cloudfront-distribution-id:
-      api-host:
+      domain:
+      ga-measurement-id:
+      google-key:
+      graasp-analyzer-host:
+      graasp-compose-host:
+      graasp-explorer-host:
+      graasp-perform-host:
+      hidden-item-tag-id:
       port:
       show-notifications:
-      authentication-host:
-      graasp-compose-host:
-      graasp-perform-host:
-      graasp-explorer-host:
-      graasp-analyzer-host:
-      ga-measurement-id:
-      hidden-item-tag-id:
-      google-key:
-      domain:
+      stripe-publishable-key:
