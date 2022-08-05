@@ -139,16 +139,10 @@ jobs:
   test:
     name: Test
     needs: [dispatch, update-deployed-stack]
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
     # The environment that the job will reference
     environment: 
       name: staging
-    steps:
-    # This step runs a single command to execute integation testing
-    - name: Test
-      run: |
-        echo "This is the integration test job"
+    uses: graasp/graasp-deploy/.github/workflows/smoke-test.yml@main
 
   promote:
     name: Promote stack to release ready
