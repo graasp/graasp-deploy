@@ -4,6 +4,10 @@ name: Deploy to staging environment
 
 # Controls when the action will run.
 on:
+  # Allow the workflow to be automatically triggered every monday at 9 am every Monday
+  schedule:
+    - cron: '0 9 * * 1'
+  # Allow the workflow to be manually triggered
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
