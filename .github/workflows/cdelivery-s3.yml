@@ -51,6 +51,8 @@ on:
         required: false
       port:
         required: false
+      sentry-dsn:
+        required: false
       show-notifications:
         required: false
       stripe-publishable-key:
@@ -102,6 +104,7 @@ jobs:
         REACT_APP_GRAASP_PERFORM_HOST: ${{ secrets.graasp-perform-host }}
         REACT_APP_HIDDEN_ITEM_TAG_ID: ${{ secrets.hidden-item-tag-id }}
         REACT_APP_SHOW_NOTIFICATIONS: ${{ secrets.show-notifications }}
+        REACT_APP_SENTRY_DSN: ${{ secrets.sentry-dsn }}
         REACT_APP_STRIPE_PUBLISHABLE_KEY: ${{ secrets.stripe-publishable-key }}
       # Run a set of commands using the runners shell to perform install and build
       run: |
