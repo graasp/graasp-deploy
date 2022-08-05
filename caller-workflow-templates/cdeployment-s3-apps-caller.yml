@@ -28,4 +28,4 @@ jobs:
       cloudfront-distribution-id:
       app-id:
       graasp-domain:
-      next-public-sentry-dsn:
+      sentry-dsn:

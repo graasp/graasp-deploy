@@ -29,4 +29,5 @@ jobs:
       cloudfront-distribution-id:
       graasp-domain:
       next-public-sentry-dsn:
+      sentry-dsn:
       stripe-publishable-key:
