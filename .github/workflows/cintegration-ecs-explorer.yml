@@ -45,6 +45,8 @@ on:
         required: true
       next-public-sentry-dsn:
         required: false
+      next-public-domain:
+        required: false
       port:
         required: true
 
@@ -163,6 +165,7 @@ jobs:
             NEXT_PUBLIC_GRAASPER_ID=${{ secrets.next-public-graasper-id }}
             NEXT_PUBLIC_PUBLISHED_TAG_ID=${{ secrets.next-public-published-tag-id }}
             NEXT_PUBLIC_SENTRY_DSN=${{ secrets.next-public-sentry-dsn }}
+            NEXT_PUBLIC_DOMAIN=${{ secrets.next-public-domain }}
             PORT=${{ secrets.port }}
 
     # Use latest revision of the task-definition to deploy the application to ECS

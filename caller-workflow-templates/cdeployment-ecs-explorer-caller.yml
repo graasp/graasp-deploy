@@ -34,4 +34,5 @@ jobs:
       next-public-graasper-id:
       next-public-published-tag-id:
       next-public-sentry-dsn:
+      next-public-domain:
       port:
