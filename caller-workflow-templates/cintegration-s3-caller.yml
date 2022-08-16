@@ -44,6 +44,7 @@ jobs:
       stripe-publishable-key:
       graasp-analyzer-host:
       google-key:
+      h5p-integration-url:
       hidden-item-tag-id:
       port:
       sentry-dsn:

@@ -34,6 +34,7 @@ jobs:
       graasp-compose-host:
       graasp-explorer-host:
       graasp-perform-host:
+      h5p-integration-url:
       hidden-item-tag-id:
       port:
       sentry-dsn:
