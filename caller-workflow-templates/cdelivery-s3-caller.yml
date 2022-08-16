@@ -20,20 +20,21 @@ jobs:
       tag: ${{ github.event.client_payload.tag }}
     # Insert required secrets based on repository with the following format: ${{ secrets.SECRET_NAME }}
     secrets:
+      api-host:
+      authentication-host:
       aws-access-key-id:
-      aws-secret-access-key:
       aws-region:
+      aws-secret-access-key:
       aws-s3-bucket-name:
       cloudfront-distribution-id:
-      api-host:
-      port:
-      show-notifications:
-      authentication-host:
+      domain:
+      ga-measurement-id:
+      google-key:
       graasp-compose-host:
       graasp-perform-host:
       graasp-explorer-host:
       graasp-analyzer-host:
-      ga-measurement-id:
       hidden-item-tag-id:
-      google-key:
-      domain:
+      port:
+      sentry-dsn:
+      show-notifications:

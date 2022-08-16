@@ -42,3 +42,9 @@ jobs:
       port:
       show-notifications:
       stripe-publishable-key:
+      graasp-analyzer-host:
+      google-key:
+      hidden-item-tag-id:
+      port:
+      sentry-dsn:
+      show-notifications:

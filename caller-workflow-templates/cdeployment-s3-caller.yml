@@ -36,5 +36,6 @@ jobs:
       graasp-perform-host:
       hidden-item-tag-id:
       port:
+      sentry-dsn:
       show-notifications:
       stripe-publishable-key:
