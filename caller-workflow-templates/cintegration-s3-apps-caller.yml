@@ -26,6 +26,7 @@ jobs:
     # Insert required secrets based on repository with the following format: ${{ secrets.SECRET_NAME }}
     secrets:
       app-id:
+      app-key:
       aws-access-key-id:
       aws-region:
       aws-s3-bucket-name:
