@@ -10,11 +10,12 @@ on:
   workflow_dispatch:
   # Allow the workflow to be automatically triggered everyday at 8 am
   schedule:
-    - cron: '0 8 * * *'
+    - cron: '0 3 * * *'
 
 env:
   PASSWORD: ${{ secrets.STAGING_PASSWORD }}
   EMAIL: ${{ secrets.STAGING_EMAIL }}
+  HOST: ${{ secrets.REACT_APP_API_HOST_STAGE }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -46,8 +47,8 @@ jobs:
     - name: Setup environment secrets
       id: setup-secrets
       run: |
-        cat postman/postman_environment.json | jq -r --arg password "$PASSWORD" --arg email "$EMAIL" \
-        '.values[0].value |= $password | .values[1].value|= $email' > postman/staging.postman_environment.json
+        cat postman/postman_environment.json | jq -r --arg password "$PASSWORD" --arg email "$EMAIL" --arg host "$HOST" \
+        '.values[0].value |= $password | .values[1].value|= $email | .values[2].value|= $host' > postman/staging.postman_environment.json
 
     # Run a set of commands using the runners shell to perform tests
     - name: Run newman
@@ -63,6 +64,7 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: 'test commit'
+        branch: gh-pages
         file_pattern: newman/*
 
     - name: Generate job summary markdown
