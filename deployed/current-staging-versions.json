@@ -59,6 +59,10 @@
     {
       "repository": "graasp/graasp-library",
       "tag": "v0.1.4"
+    },
+    {
+      "repository": "graasp/graasp-app-sketchfab",
+      "tag": "v0.6.1"
     }
   ]
 }
