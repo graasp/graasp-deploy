@@ -1,0 +1,176 @@
+name: Test Staging environment 
+
+# Controls when the action will run. 
+on:
+  # Allow the workflow to be reusable
+  workflow_call:
+  # Allow the workflow to be manually triggered
+  workflow_dispatch:
+  # Allow the workflow to be automatically triggered everyday at 3 am
+  schedule:
+    - cron: '0 3 * * *'
+env:
+  GH_PAGES_ENDPOINT: 'https://graasp.github.io/graasp-deploy/'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  set-up:
+    name: Set up
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    outputs:
+      date: ${{ steps.set-date.outputs.date }}
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - id: set-date
+      run: |
+        DATE=$(echo "`date +"%Y-%m-%d-%H-%M"`")
+        echo ::set-output name=date::$DATE
+
+  smoke-test:
+    name: Smoke Test
+    needs: set-up
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    env:        
+      DATE: ${{ needs.set-up.outputs.date }}
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
+    - name: Git checkout 
+      uses: actions/checkout@v3
+
+    # Download and cache distribution of the requested Node.js version, and add it to the PATH
+    - name: Setup node
+      id: setup-node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        check-latest: true
+
+    # Setup the runner with the appropriate packages
+    - name: Setup runner
+      id: setup-runner
+      run: |
+        npm install newman newman-reporter-htmlextra
+
+    # Cache output files to improve workflow execution time
+    - name: Cache Newman
+      id: cache-newman
+      uses: actions/cache@v3
+      with:
+        path: newman/*
+        key: ${{ runner.os }}-newman-${{ env.DATE }}
+
+    # Run a set of commands using the runners shell to perform tests
+    - name: Run newman
+      id: newman
+      continue-on-error: true
+      run: |
+        FILE_NAME=$(echo $DATE-smoke-test-run.html)
+        echo "FILE_NAME=$FILE_NAME" >> $GITHUB_ENV
+        node_modules/newman/bin/newman.js run postman/GraaspSmokeTest.postman_collection.json -r htmlextra --reporter-htmlextra-export ./newman/smoke-test/$FILE_NAME
+
+    - name: Generate job summary markdown
+      env:
+        FILE_NAME: ${{ env.FILE_NAME }}
+      if: always()
+      run: |
+        echo '[See smoke test summary in github pages](https://victorggonzalez.github.io/workflows/newman/smoke-test/${{ env.FILE_NAME }})' >> $GITHUB_STEP_SUMMARY
+        echo 'Please wait for the github pages deployment to finish (this can take around 2 minutes).' >> $GITHUB_STEP_SUMMARY
+
+  api-test:
+    name: Graasp API Test
+    needs: [set-up, smoke-test]
+    runs-on: ubuntu-latest
+    env:        
+      PASSWORD: ${{ secrets.STAGING_PASSWORD }}
+      EMAIL: ${{ secrets.STAGING_EMAIL }}
+      API_HOST: ${{ secrets.REACT_APP_API_HOST_STAGE }}
+      DATE: ${{ needs.set-up.outputs.date }}
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - name: Git checkout 
+      uses: actions/checkout@v3
+
+    # Cache output files to improve workflow execution time
+    # key is unique for every run 
+    # restore-keys restores the nearest cache
+    - name: Cache Newman
+      id: cache-newman
+      uses: actions/cache@v3
+      with:
+        path: newman/*
+        key: ${{ runner.os }}-newman-${{ env.DATE }}-${{ github.run_id }}
+        restore-keys: |
+          ${{ runner.os }}-newman-${{ env.DATE }}
+
+    - name: Setup node
+      id: setup-node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        check-latest: true
+
+    - name: Setup runner
+      id: setup-runner
+      run: |
+        npm install newman newman-reporter-htmlextra
+
+    # Set environment variables required to perform the tests
+    - name: Setup environment secrets
+      id: setup-secrets
+      run: |
+        cat postman/postman_environment.json | jq -r --arg password "$PASSWORD" --arg email "$EMAIL" --arg api_host "$API_HOST" \
+        '.values[0].value |= $password | .values[1].value|= $email | .values[2].value|= $api_host' > postman/staging.postman_environment.json
+
+    # Run a set of commands using the runners shell to perform tests
+    - name: Run newman
+      id: newman
+      continue-on-error: true
+      run: |
+        FILE_NAME=$(echo "`date +"%Y-%m-%d-%H-%M"`"-run.html)
+        echo "FILE_NAME=$FILE_NAME" >> $GITHUB_ENV
+        node_modules/newman/bin/newman.js run postman/GraaspAPITest.postman_collection.json -e postman/staging.postman_environment.json -r htmlextra --reporter-htmlextra-export ./newman/$FILE_NAME
+
+    - name: Generate job summary markdown
+      env:
+        FILE_NAME: ${{ env.FILE_NAME }}
+      if: always()
+      run: |
+        echo '[See summary in github pages](https://graasp.github.io/graasp-deploy/newman/${{ env.FILE_NAME }})' >> $GITHUB_STEP_SUMMARY
+        echo 'Please wait for the github pages deployment to finish (this can take around 2 minutes).' >> $GITHUB_STEP_SUMMARY
+
+  commit:
+    name: Commit reports
+    needs: [set-up, smoke-test, api-test]
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    env:        
+      DATE: ${{ needs.set-up.outputs.date }}
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - name: Git checkout 
+      uses: actions/checkout@v3
+
+    # Cache output files to improve workflow execution time
+    # key is unique for every run 
+    # restore-keys restores the nearest cache
+    - name: Cache Newman
+      id: cache-newman
+      uses: actions/cache@v3
+      with:
+        path: newman/*
+        key: ${{ runner.os }}-newman-${{ env.DATE }}-${{ github.run_id }}
+        restore-keys: |
+          ${{ runner.os }}-newman-${{ env.DATE }}
+
+    - name: Commit step
+      id: commit
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: 'Test run ${{ env.DATE }}'
+        branch: gh-pages
+        file_pattern: newman/*
