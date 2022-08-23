@@ -1,0 +1,235 @@
+{
+	"info": {
+		"_postman_id": "7d4cdefc-4485-4612-98b1-bf618dd56ec3",
+		"name": "GraaspSmokeTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13967016"
+	},
+	"item": [
+		{
+			"name": "status",
+			"item": [
+				{
+					"name": "api",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.stage.graasp.org/status",
+							"protocol": "https",
+							"host": [
+								"api",
+								"stage",
+								"graasp",
+								"org"
+							],
+							"path": [
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "explorer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.text().to.exist;",
+									"});",
+									"// Load the HTML response to $",
+									"pm.test(\"Verify item\", function () {",
+									"    const $ = cheerio.load(pm.response.text());",
+									"    // Use the jQuery selector API to get different elements on the page",
+									"    pm.expect($(\"title\").text()).to.eql(\"Graasp Library\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://explorer.stage.graasp.org/",
+							"protocol": "https",
+							"host": [
+								"explorer",
+								"stage",
+								"graasp",
+								"org"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.text().to.exist;",
+									"});",
+									"// Load the HTML response to $",
+									"pm.test(\"Verify item\", function () {",
+									"    const $ = cheerio.load(pm.response.text());",
+									"    // Use the jQuery selector API to get different elements on the page",
+									"    pm.expect($(\"title\").text()).to.eql(\"Graasp\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://auth.stage.graasp.org/",
+							"protocol": "https",
+							"host": [
+								"auth",
+								"stage",
+								"graasp",
+								"org"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.text().to.exist;",
+									"});",
+									"// Load the HTML response to $",
+									"pm.test(\"Verify item\", function () {",
+									"    const $ = cheerio.load(pm.response.text());",
+									"    // Use the jQuery selector API to get different elements on the page",
+									"    pm.expect($(\"title\").text()).to.eql(\"Graasp\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://player.stage.graasp.org/",
+							"protocol": "https",
+							"host": [
+								"player",
+								"stage",
+								"graasp",
+								"org"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "builder",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response must be valid and have a body\", function () {",
+									"     pm.response.to.be.ok;",
+									"     pm.response.to.be.withBody;",
+									"     pm.response.text().to.exist;",
+									"});",
+									"// Load the HTML response to $",
+									"pm.test(\"Verify item\", function () {",
+									"    const $ = cheerio.load(pm.response.text());",
+									"    // Use the jQuery selector API to get different elements on the page",
+									"    pm.expect($(\"title\").text()).to.eql(\"Graasp\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://builder.stage.graasp.org/",
+							"protocol": "https",
+							"host": [
+								"builder",
+								"stage",
+								"graasp",
+								"org"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
