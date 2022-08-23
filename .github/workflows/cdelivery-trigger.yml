@@ -4,7 +4,7 @@ name: Deploy to staging environment
 
 # Controls when the action will run.
 on:
-  # Allow the workflow to be automatically triggered every monday at 9 am every Monday
+  # Allow the workflow to be automatically triggered every Monday at 9 a.m.
   schedule:
     - cron: '0 9 * * 1'
   # Allow the workflow to be manually triggered
@@ -13,7 +13,7 @@ on:
     inputs:
       stack:
         # Description to be shown in the UI instead of 'stack'
-        description: 'Specify a stack to deploy to staging. Format: YYYYMMddhhmm-release-versions.json'
+        description: '(Optional) Specify a stack. Format: YYYYMMddhhmm-release-versions.json'
         # Default value if no value is explicitly provided
         default: ''
         # Input does not have to be provided for the workflow to run
