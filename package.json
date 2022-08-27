@@ -1,0 +1,15 @@
+{
+  "name": "graasp-deploy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:graasp/graasp-deploy.git",
+  "license": "AGPL-3.0-only",
+  "devDependencies": {
+    "cypress": "^10.6.0",
+    "env-cmd": "^10.1.0"
+  },
+  "scripts": {
+    "cypress:open": "env-cmd -f ./.env.stage cypress open",
+    "cypress:run": "env-cmd -f ./.env.stage cypress run --browser chrome"
+  }
+}
