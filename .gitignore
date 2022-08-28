@@ -7,3 +7,10 @@
 # environment files but not encrypted ones
 .env*
 !.env.*.encrypted
+# yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

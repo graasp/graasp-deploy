@@ -11,5 +11,6 @@
   "scripts": {
     "cypress:open": "env-cmd -f ./.env.stage cypress open",
     "cypress:run": "env-cmd -f ./.env.stage cypress run --browser chrome --headed"
-  }
+  },
+  "packageManager": "yarn@3.2.3"
 }
