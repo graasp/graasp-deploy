@@ -27,28 +27,35 @@ on:
       # Environment variables
       api-host:
         required: false
-      port:
-        required: false
-      show-notifications:
-        required: false
       authentication-host:
-        required: false
-      graasp-compose-host:
-        required: false
-      graasp-perform-host:
-        required: false
-      graasp-explorer-host:
-        required: false
-      graasp-analyzer-host:
-        required: false
-      ga-measurement-id:
-        required: false
-      hidden-item-tag-id:
-        required: false
-      google-key:
         required: false
       domain:
         required: false
+      ga-measurement-id:
+        required: false
+      google-key:
+        required: false
+      graasp-analyzer-host:
+        required: false
+      graasp-compose-host:
+        required: false
+      graasp-explorer-host:
+        required: false
+      graasp-perform-host:
+        required: false
+      h5p-integration-url:
+        required: false
+      hidden-item-tag-id:
+        required: false
+      port:
+        required: false
+      sentry-dsn:
+        required: false
+      show-notifications:
+        required: false
+      stripe-publishable-key:
+        required: false
+
 
 # Set environment variables that are available to the steps of all jobs in the workflow
 env:
