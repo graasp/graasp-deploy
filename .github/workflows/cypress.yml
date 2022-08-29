@@ -6,10 +6,6 @@ on:
     # Define inputs which can be passed from the caller workflow
     inputs:
       # build-folder: path to build folder inside repository, if needed
-      build-folder:
-        required: false
-        default: 'build'
-        type: string
       graasp-compose-host:
         required: false
         type: string
@@ -49,10 +45,10 @@ on:
       graasp-domain:
         required: false
         type: string
-      graasp-id:
+      graasp-app-id:
         required: false
         type: string
-      graasp-mock-api:
+      mock-api:
         required: false
         type: string
       enable-mock-api:
@@ -112,8 +108,8 @@ jobs:
         GRAASPER_ID: ${{ inputs.graasper-id }}
         NEXT_PUBLIC_NODE_ENV: ${{ inputs.next-public-node-env }}
         REACT_APP_GRAASP_DOMAIN: ${{ inputs.graasp-domain }}
-        REACT_APP_GRAASP_APP_ID: ${{ inputs.graasp-id }}
-        REACT_APP_MOCK_API: ${{ inputs.graasp-mock-api }}
+        REACT_APP_GRAASP_APP_ID: ${{ inputs.graasp-app-id }}
+        REACT_APP_MOCK_API: ${{ inputs.mock-api }}
         NODE_ENV: ${{ inputs.node-env }}
         REACT_APP_ENABLE_MOCK_API: : ${{ inputs.enable-mock-api }}
       with:
