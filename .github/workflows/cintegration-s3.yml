@@ -92,8 +92,9 @@ jobs:
       uses: actions/cache@v3
       with:
         path: '**/node_modules'
-        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+        key: ${{ runner.os }}-modules-${{ github.ref_name }}-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
+            ${{ runner.os }}-modules-${{ github.ref_name }}-
             ${{ runner.os }}-modules-
             ${{ runner.os }}-
 
@@ -129,8 +130,9 @@ jobs:
         cache-name: cache-build
       with:
           path: build
-          key: ${{ runner.os }}-build-{{ github.run_id }}
+          key: ${{ runner.os }}-build-${{ github.ref_name }}-${{ github.run_id }}
           restore-keys: |
+            ${{ runner.os }}-build-${{ github.ref_name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
@@ -151,8 +153,9 @@ jobs:
       uses: actions/cache@v3
       with:
         path: '**/node_modules'
-        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+        key: ${{ runner.os }}-modules-${{ github.ref_name }}-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
+            ${{ runner.os }}-modules-${{ github.ref_name }}-
             ${{ runner.os }}-modules-
             ${{ runner.os }}-
 
@@ -180,8 +183,9 @@ jobs:
         cache-name: cache-build
       with:
           path: build
-          key: ${{ runner.os }}-build-{{ github.run_id }}
+          key: ${{ runner.os }}-build-${{ github.ref_name }}-${{ github.run_id }}
           restore-keys: |
+            ${{ runner.os }}-build-${{ github.ref_name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
