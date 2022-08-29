@@ -58,40 +58,42 @@ env:
 
 # This workflow is made up of three jobs that run sequentially, called test, build and deploy
 jobs:
-  test:
-    name: Test
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-    # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
-    - name: Check out code
-      uses: actions/checkout@v2
-
-    # This step runs a single command to execute unitary testing
-    - name: Test job
-      run: |
-        echo "This is the test job"
-
   # Build and sync with S3
   build:
-    needs: test
     name: Build
     runs-on: ubuntu-latest
 
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     # Download and cache distribution of the requested Node.js version, and add it to the PATH
     - name: Setup node
       id: setup-node
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: '16'
         check-latest: true
+
+    # - name: Get Yarn cache path
+    #   id: yarn-cache-path
+    #   run: echo "::set-output name=dir::$(yarn cache dir)"
+
+    - name: Cache dependencies
+      id: cache-deps
+      uses: actions/cache@v3
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+            ${{ runner.os }}-modules-
+            ${{ runner.os }}-
+
+    - name: Install dependencies
+      id: install
+      if: steps.cache-deps.outputs.cache-hit != 'true'
+      run: yarn install
 
     - name: Yarn build dev
       id: build-image
@@ -111,9 +113,70 @@ jobs:
         REACT_APP_DOMAIN: ${{ secrets.domain }}
       # Run a set of commands using the runners shell to perform install and build
       run: |
-        yarn install
         yarn run build
 
+    - name: Cache build
+      id: cache-build
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-build
+      with:
+          path: result/build
+          key: ${{ runner.os }}-build-{{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+  test:
+    name: Test
+    needs: build
+
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
+    - name: Check out code
+      uses: actions/checkout@v2
+    - name: Cache dependencies
+      id: cache-deps
+      uses: actions/cache@v3
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+            ${{ runner.os }}-modules-
+            ${{ runner.os }}-
+
+    - name: Install dependencies
+      id: install
+      if: steps.cache-deps.outputs.cache-hit != 'true'
+      run: yarn install
+
+    # This step runs a single command to execute unitary testing
+    - name: Test job
+      run: |
+        echo "This is the test job"
+
+  # Deploy to development environment
+  deploy: 
+    needs: test
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Cache build
+      id: cache-build
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-build
+      with:
+          path: result/build
+          key: ${{ runner.os }}-build-{{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
     # Configure AWS credential and region environment variables for use in next steps
     - name: Configure AWS Credentials
       id: configure-aws
@@ -133,21 +196,6 @@ jobs:
       # --acl public-read makes files publicly readable 
       # --follow-symlinks fixes some weird symbolic link problems that may come up
       # --delete permanently deletes files in the S3 bucket that are not present in the latest version of the repository/build.
-
-  # Deploy to development environment
-  deploy: 
-    needs: build
-    name: Deploy
-    runs-on: ubuntu-latest
-
-    steps:
-    # Configure AWS credential and region environment variables for use in next steps
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.aws-access-key-id }}
-        aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
-        aws-region: ${{ secrets.aws-region }}
 
     # Create a new invalidation
     - name: Invalidate cloudfront distribution
