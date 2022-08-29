@@ -56,8 +56,8 @@ on:
         type: string
     # Define secrets which can be passed from the caller workflow
     secrets:
-      api-host: ${{ secrets.REACT_APP_API_HOST }}
-  push:
+      api-host: 
+        required: false
 
 jobs:
   cypress-run:
