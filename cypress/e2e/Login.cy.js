@@ -25,10 +25,11 @@ describe("Login behaviour Test", () => {
     cy.intercept("POST", "/login-password").as("login");
     cy.login(email, password); // custom command that hanldes signIn wth password
     // wait for API after button click
-    cy.wait(["@login"], { responseTimeout: 15000 }).then((xhr) => {
+    cy.wait('@login').then((xhr) => {
       expect(xhr.response.statusCode).to.equal(statusCode);
     });
   });
+
   it("Signing in with a valid email but unset password does not pass", () => {
     const { email, password, statusCode } = UNKNOWN_PASSWORD;
 
@@ -40,10 +41,11 @@ describe("Login behaviour Test", () => {
     cy.intercept("POST", "/login-password").as("login");
     cy.login(email, password); // custom command that hanldes signIn wth password
     // wait for API after button click
-    cy.wait(["@login"], { responseTimeout: 15000 }).then((xhr) => {
+    cy.wait('@login').then((xhr) => {
       expect(xhr.response.statusCode).to.equal(statusCode);
     });
   });
+
   it("Signing in with a valid email but wrong password does not pass", () => {
     const { email, password, statusCode } = WRONG_PASSWORD;
 
@@ -56,8 +58,24 @@ describe("Login behaviour Test", () => {
     cy.intercept("POST", "/login-password").as("login");
     cy.login(email, password); // custom command that hanldes signIn wth password
     // wait for API after button click
-    cy.wait(["@login"], { responseTimeout: 15000 }).then((xhr) => {
+    cy.wait('@login').then((xhr) => {
       expect(xhr.response.statusCode).to.equal(statusCode);
+    });
+  });
+
+  it("Signing in with a valid email and valid password passes", () => {
+    // Listen for uncaught exceptions and prevent Cypress from failing the test
+    cy.on("uncaught:exception", (err, runnable) => {
+      return false;
+    });
+
+    // Spy network requests
+    cy.intercept("POST", "/login-password").as("login");
+    cy.login(Cypress.env("TEST_EMAIL"), Cypress.env("TEST_PASSWORD")); // custom command that hanldes signIn wth password
+    // wait for API after button click
+    cy.wait('@login').then((xhr) => {
+      expect(xhr.response.statusCode).to.equal(303);
+      expect(xhr.response.body.resource).to.exist;
     });
   });
 });
