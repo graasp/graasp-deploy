@@ -31,7 +31,6 @@ Cypress.Commands.add('login', (email, password) => {
           replace: cy.stub().as('replace')
         }
     })
-    cy.intercept("POST", "/login-password").as("login") //Intercept the url that is triggered after clicking the modal button
     // Select Sign In method
     cy.get("#passwordSignInMethodButton").should("exist") //making sure the button is visible
     cy.get("#passwordSignInMethodButton").click()
@@ -42,7 +41,6 @@ Cypress.Commands.add('login', (email, password) => {
     // Submit Sign In
     cy.get("#passwordSignInButtonId").should('be.visible')
     cy.get("#passwordSignInButtonId").click()
-    cy.wait('@login') //Wait till that request has finished execution
 });
 Cypress.Commands.add('logout', () => {
     cy.intercept("GET", "/logout").as("logout") //Intercept the url that is triggered after clicking the modal button
