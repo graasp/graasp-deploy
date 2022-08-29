@@ -14,51 +14,18 @@ env:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  cypress-run:
-    name: End-to-End Test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
-      - name: Cypress run
-        uses: cypress-io/github-action@v4
-        with:
-          browser: chrome
-          headed: true
-        env:
-          TEST_EMAIL: ${{secrets.TEST_EMAIL}}
-          TEST_PASSWORD: ${{secrets.TEST_PASSWORD}}
-          REACT_APP_GRAASP_PERFORM_HOST_STAGE: ${{secrets.REACT_APP_GRAASP_PERFORM_HOST_STAGE}}
-          REACT_APP_GRAASP_COMPOSE_HOST_STAGE: ${{secrets.REACT_APP_GRAASP_COMPOSE_HOST_STAGE}}
-          REACT_APP_GRAASP_EXPLORE_HOST_STAGE: ${{secrets.REACT_APP_GRAASP_EXPLORE_HOST_STAGE}}
-          REACT_APP_AUTHENTICATION_HOST_STAGE: ${{secrets.REACT_APP_AUTHENTICATION_HOST_STAGE}}
-
-  set-up:
-    name: Set up
+  smoke-test:
+    name: Smoke Test
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    outputs:
-      date: ${{ steps.set-date.outputs.date }}
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - id: set-date
       run: |
         DATE=$(echo "`date +"%Y-%m-%d-%H-%M"`")
-        echo ::set-output name=date::$DATE
+        echo "DATE=$DATE" >> $GITHUB_ENV
 
-  smoke-test:
-    name: Smoke Test
-    needs: set-up
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-    env:        
-      DATE: ${{ needs.set-up.outputs.date }}
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Git checkout 
       uses: actions/checkout@v3
@@ -77,18 +44,9 @@ jobs:
       run: |
         npm install newman newman-reporter-htmlextra
 
-    # Cache output files to improve workflow execution time
-    - name: Cache Newman
-      id: cache-newman
-      uses: actions/cache@v3
-      with:
-        path: newman/*
-        key: ${{ runner.os }}-newman-${{ env.DATE }}
-
     # Run a set of commands using the runners shell to perform tests
     - name: Run newman
       id: newman
-      continue-on-error: true
       run: |
         FILE_NAME=$(echo $DATE-smoke-test-run.html)
         echo "FILE_NAME=$FILE_NAME" >> $GITHUB_ENV
@@ -102,32 +60,32 @@ jobs:
         echo '[See smoke test summary in github pages](${{env.GH_PAGES_ENDPOINT}}newman/smoke-test/${{ env.FILE_NAME }})' >> $GITHUB_STEP_SUMMARY
         echo 'Please wait for the github pages deployment to finish (this can take around 2 minutes).' >> $GITHUB_STEP_SUMMARY
 
+    - name: Commit step
+      id: commit
+      if: always()
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: 'Staging test run ${{ env.DATE }}'
+        branch: gh-pages
+        file_pattern: newman/*
+
   api-test:
     name: Graasp API Test
-    needs: [set-up, smoke-test]
     runs-on: ubuntu-latest
     env:        
       PASSWORD: ${{ secrets.STAGING_PASSWORD }}
       EMAIL: ${{ secrets.STAGING_EMAIL }}
       API_HOST: ${{ secrets.REACT_APP_API_HOST_STAGE }}
-      DATE: ${{ needs.set-up.outputs.date }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    - id: set-date
+      run: |
+        DATE=$(echo "`date +"%Y-%m-%d-%H-%M"`")
+        echo "DATE=$DATE" >> $GITHUB_ENV
+
     - name: Git checkout 
       uses: actions/checkout@v3
-
-    # Cache output files to improve workflow execution time
-    # key is unique for every run 
-    # restore-keys restores the nearest cache
-    - name: Cache Newman
-      id: cache-newman
-      uses: actions/cache@v3
-      with:
-        path: newman/*
-        key: ${{ runner.os }}-newman-${{ env.DATE }}-${{ github.run_id }}
-        restore-keys: |
-          ${{ runner.os }}-newman-${{ env.DATE }}
 
     - name: Setup node
       id: setup-node
@@ -165,34 +123,32 @@ jobs:
         echo '[See summary in github pages](${{env.GH_PAGES_ENDPOINT}}newman/api-test/${{ env.FILE_NAME }})' >> $GITHUB_STEP_SUMMARY
         echo 'Please wait for the github pages deployment to finish (this can take around 2 minutes).' >> $GITHUB_STEP_SUMMARY
 
-  commit:
-    name: Commit reports
-    needs: [set-up, smoke-test, api-test]
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-    env:        
-      DATE: ${{ needs.set-up.outputs.date }}
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-    - name: Git checkout 
-      uses: actions/checkout@v3
-
-    # Cache output files to improve workflow execution time
-    # key is unique for every run 
-    # restore-keys restores the nearest cache
-    - name: Cache Newman
-      id: cache-newman
-      uses: actions/cache@v3
-      with:
-        path: newman/*
-        key: ${{ runner.os }}-newman-${{ env.DATE }}-${{ github.run_id }}
-        restore-keys: |
-          ${{ runner.os }}-newman-${{ env.DATE }}
-
     - name: Commit step
       id: commit
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_message: 'Test run ${{ env.DATE }}'
+        commit_message: 'Staging test run ${{ env.DATE }}'
         branch: gh-pages
         file_pattern: newman/*
+
+  cypress-run:
+    name: End-to-End Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          headed: true
+        env:
+          TEST_EMAIL: ${{secrets.TEST_EMAIL}}
+          TEST_PASSWORD: ${{secrets.TEST_PASSWORD}}
+          REACT_APP_GRAASP_PERFORM_HOST_STAGE: ${{secrets.REACT_APP_GRAASP_PERFORM_HOST_STAGE}}
+          REACT_APP_GRAASP_COMPOSE_HOST_STAGE: ${{secrets.REACT_APP_GRAASP_COMPOSE_HOST_STAGE}}
+          REACT_APP_GRAASP_EXPLORE_HOST_STAGE: ${{secrets.REACT_APP_GRAASP_EXPLORE_HOST_STAGE}}
+          REACT_APP_AUTHENTICATION_HOST_STAGE: ${{secrets.REACT_APP_AUTHENTICATION_HOST_STAGE}}
