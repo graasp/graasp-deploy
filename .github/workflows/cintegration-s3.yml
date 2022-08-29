@@ -128,7 +128,7 @@ jobs:
       env:
         cache-name: cache-build
       with:
-          path: result/build
+          path: build
           key: ${{ runner.os }}-build-{{ github.run_id }}
           restore-keys: |
             ${{ runner.os }}-build-
@@ -179,11 +179,12 @@ jobs:
       env:
         cache-name: cache-build
       with:
-          path: result/build
+          path: build
           key: ${{ runner.os }}-build-{{ github.run_id }}
           restore-keys: |
             ${{ runner.os }}-build-
             ${{ runner.os }}-
+
     # Configure AWS credential and region environment variables for use in next steps
     - name: Configure AWS Credentials
       id: configure-aws
