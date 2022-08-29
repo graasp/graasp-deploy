@@ -10,6 +10,10 @@ on:
       release-type:
         required: true
         type: string
+    secrets:
+      # GH repo PAT
+      token:
+        required: true
 
 # This workflow is made up of one job called create-release-candidate
 jobs:
@@ -25,7 +29,7 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v3
       with:
-        token: ${{ secrets.REPO_ACCESS_TOKEN }}
+        token: ${{ secrets.token }}
 
     # Run a set of commands using the runners shell to install yarn
     - name: Yarn install
@@ -73,7 +77,7 @@ jobs:
     - name: Repository Dispatch
       uses: peter-evans/repository-dispatch@v2
       with:
-        token: ${{ secrets.REPO_ACCESS_TOKEN }}
+        token: ${{ secrets.token }}
         repository: graasp/graasp-deploy
         event-type: update-staging-version
         client-payload: ${{steps.set-tag.outputs.json}}
