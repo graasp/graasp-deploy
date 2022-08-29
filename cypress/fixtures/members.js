@@ -27,5 +27,3 @@ export const MEMBERS = {
     statusCode: 401,
   },
 };
-
-export default MEMBERS;
