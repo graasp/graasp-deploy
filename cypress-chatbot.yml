@@ -1,0 +1,35 @@
+name: Cypress tests
+on: [ push ]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: component tests 🧪
+        uses: cypress-io/github-action@v2
+        with:
+          # to run component tests we need to use "cypress run-ct"
+          command: yarn cypress run-ct
+          browser: chrome
+          headless: true
+          quiet: true
+
+      # after the test run completes
+      # store videos and any screenshots
+      # NOTE: screenshots will be generated only if a test failed
+      - name: upload screenshots
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+      # Test run video was always captured, so this action uses "always()" condition
+      # Make sure that the "video" setting in cypress.config is set to true, otherwise there will be no videos
+      - name: upload videos
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: cypress-videos
+          path: cypress/videos
