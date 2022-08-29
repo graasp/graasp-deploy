@@ -151,7 +151,7 @@ jobs:
       id: cache-cypress-binary
       uses: actions/cache@v3
       with:
-        path: '**/cypress/cache'
+        path: '**/Cypress'
         key: ${{ runner.os }}-cypress-binary-${{ github.ref_name }}-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
             ${{ runner.os }}-cypress-binary-${{ github.ref_name }}-
@@ -185,8 +185,6 @@ jobs:
     - name: Cache build
       id: cache-build
       uses: actions/cache@v3
-      env:
-        cache-name: cache-build
       with:
           path: build
           key: ${{ runner.os }}-build-${{ github.ref_name }}-${{ github.run_id }}
@@ -221,7 +219,7 @@ jobs:
       id: cache-cypress-binary
       uses: actions/cache@v3
       with:
-        path: '**/cypress/cache'
+        path: '**/Cypress'
         key: ${{ runner.os }}-cypress-binary-${{ github.ref_name }}-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
             ${{ runner.os }}-cypress-binary-${{ github.ref_name }}-
@@ -285,8 +283,6 @@ jobs:
     - name: Cache build
       id: cache-build
       uses: actions/cache@v3
-      env:
-        cache-name: cache-build
       with:
           path: build
           key: ${{ runner.os }}-build-${{ github.ref_name }}-${{ github.run_id }}
