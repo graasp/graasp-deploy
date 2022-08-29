@@ -14,6 +14,28 @@ env:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  cypress-run:
+    name: End-to-End Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          headed: true
+        env:
+          TEST_EMAIL: ${{secrets.TEST_EMAIL}}
+          TEST_PASSWORD: ${{secrets.TEST_PASSWORD}}
+          REACT_APP_GRAASP_PERFORM_HOST_STAGE: ${{secrets.REACT_APP_GRAASP_PERFORM_HOST_STAGE}}
+          REACT_APP_GRAASP_COMPOSE_HOST_STAGE: ${{secrets.REACT_APP_GRAASP_COMPOSE_HOST_STAGE}}
+          REACT_APP_GRAASP_EXPLORE_HOST_STAGE: ${{secrets.REACT_APP_GRAASP_EXPLORE_HOST_STAGE}}
+          REACT_APP_AUTHENTICATION_HOST_STAGE: ${{secrets.REACT_APP_AUTHENTICATION_HOST_STAGE}}
+
   set-up:
     name: Set up
     # The type of runner that the job will run on
