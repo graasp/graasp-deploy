@@ -46,7 +46,6 @@ env:
 
 # This workflow is made up of three jobs that run sequentially, called test, build and deploy
 jobs:
-
   # Build and sync with S3
   build:
     name: Build
@@ -65,6 +64,26 @@ jobs:
         node-version: '16'
         check-latest: true
 
+    # Cache dependencies to speed up workflow. Only for development branches
+    # path: The file path on the runner to cache or restore.
+    # key: Create cache key using the hashFiles function to create a new cache when dependencies change.
+    # restore-keys: An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key
+    - name: Cache dependencies
+      id: cache-node-modules
+      if: (github.ref_name != 'main') && (github.ref_name != 'master')
+      uses: actions/cache@v3
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+            ${{ runner.os }}-modules-
+
+    # Install dependencies when the cache has not been retrieved
+    - name: Install dependencies
+      id: install
+      if: steps.cache-node-modules.outputs.cache-hit != 'true'
+      run: yarn install
+
     - name: Yarn build dev
       id: build-image
       # Set environment variables required to perform the build. These are only available to this step
@@ -74,9 +93,7 @@ jobs:
         REACT_APP_SENTRY_DSN: ${{ secrets.sentry-dsn }}
         REACT_APP_MOCK_API: false
       # Run a set of commands using the runners shell to perform install and build
-      run: |
-        yarn install
-        yarn run build
+      run: yarn run build
 
     # Cache build to share it between jobs
     # path: The file path on the runner to cache or restore.
