@@ -88,6 +88,7 @@ jobs:
     # restore-keys: An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key
     - name: Cache dependencies
       id: cache-node-modules
+      if: (github.ref_name != 'main') && (github.ref_name != 'master')
       uses: actions/cache@v3
       with:
         path: '**/node_modules'
