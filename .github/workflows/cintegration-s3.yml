@@ -234,15 +234,8 @@ jobs:
 
     - name: Install dependencies
       id: install
-      if: steps.cache-node-modules.outputs.cache-hit != 'true'
+      if: ${{ (steps.cache-node-modules.outputs.cache-hit != 'true') || (steps.cache-cypress-binary.outputs.cache-hit != 'true') }}
       run: yarn install
-
-    - name: Install dependencies
-      if: steps.cache-cypress-binary.outputs.cache-hit != 'true'
-      uses: cypress-io/github-action@v4
-      with:
-        # just perform install
-        runTests: false
 
     - name: Cypress run
       uses: cypress-io/github-action@v4
