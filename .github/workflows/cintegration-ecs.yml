@@ -40,27 +40,10 @@ env:
   # Allows to increase Node's max heap size
   NODE_OPTIONS: '--max_old_space_size=8192'
 
-# This workflow is made up of three jobs that run sequentially, called test, build and deploy
+# This workflow is made up of two jobs that run sequentially, called build and deploy
 jobs:
-  test:
-    name: Test
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-    # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
-    - name: Check out code
-      uses: actions/checkout@v2
-
-    # This step runs a single command to execute unitary testing
-    - name: Test job
-      run: |
-        echo "This is the test job"
-
   # Build image and push to ECR
   build:
-    needs: test
     name: Build
     runs-on: ubuntu-latest
     # Define job output that is available to all downstream jobs that depend on this job
