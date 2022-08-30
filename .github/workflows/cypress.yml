@@ -59,6 +59,10 @@ on:
       api-host-test: 
         required: false
 
+concurrency: 
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   cypress:
     name: Cypress
