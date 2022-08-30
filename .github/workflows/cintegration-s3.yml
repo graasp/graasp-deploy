@@ -11,54 +11,6 @@ on:
         required: false
         default: 'build'
         type: string
-      graasp-compose-host-test:
-        required: false
-        type: string
-      graasp-authentication-host-test:
-        required: false
-        type: string
-      node-env-test:
-        required: false
-        type: string
-      hidden-item-tag-id-test:
-        required: false
-        type: string
-      public-tag-id-test:
-        required: false
-        type: string
-      next-public-google-analytics-id-test:
-        required: false
-        type: string
-      next-public-published-tag-id-test:
-        required: false
-        type: string
-      next-public-api-host-test:
-        required: false
-        type: string
-      next-public-graasp-perform-host-test:
-        required: false
-        type: string
-      next-public-graasp-authentication-host-test:
-        required: false
-        type: string
-      next-public-node-env-test:
-        required: false
-        type: string
-      graasper-id-test:
-        required: false
-        type: string
-      graasp-domain-test:
-        required: false
-        type: string
-      graasp-app-id-test:
-        required: false
-        type: string
-      mock-api-test:
-        required: false
-        type: string
-      enable-mock-api-test:
-        required: false
-        type: string
     # Define secrets which can be passed from the caller workflow
     secrets:
       # AWS credentials and variables
@@ -103,9 +55,6 @@ on:
         required: false
       stripe-publishable-key:
         required: false
-      api-host-test: 
-        required: false
-
 
 # Set environment variables that are available to the steps of all jobs in the workflow
 env:
@@ -115,87 +64,8 @@ env:
 
 # This workflow is made up of three jobs that run sequentially, called test, build and deploy
 jobs:
-  # Build and sync with S3
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-
-    steps:
-    # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
-    - name: Check out code
-      uses: actions/checkout@v3
-
-    # Download and cache distribution of the requested Node.js version, and add it to the PATH
-    - name: Setup node
-      id: setup-node
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
-        check-latest: true
-
-    # - name: Get Yarn cache path
-    #   id: yarn-cache-path
-    #   run: echo "::set-output name=dir::$(yarn cache dir)"
-
-    - name: Cache dependencies
-      id: cache-node-modules
-      uses: actions/cache@v3
-      with:
-        path: '**/node_modules'
-        key: ${{ runner.os }}-modules-${{ github.ref_name }}-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-            ${{ runner.os }}-modules-${{ github.ref_name }}-
-            ${{ runner.os }}-modules-
-
-    - name: Cache Cypress Binary
-      id: cache-cypress-binary
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/Cypress
-        key: ${{ runner.os }}-cypress-binary-${{ github.ref_name }}-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-            ${{ runner.os }}-cypress-binary-${{ github.ref_name }}-
-            ${{ runner.os }}-cypress-binary-
-
-    - name: Install dependencies
-      id: install
-      if: steps.cache-node-modules.outputs.cache-hit != 'true'
-      run: yarn install
-
-    - name: Yarn build dev
-      id: build-image
-      # Set environment variables required to perform the build. These are only available to this step
-      env: 
-        REACT_APP_API_HOST: ${{ secrets.api-host }}
-        PORT: ${{ secrets.port }}
-        REACT_APP_GOOGLE_KEY_DEV: ${{ secrets.google-key }}
-        REACT_APP_SHOW_NOTIFICATIONS: ${{ secrets.show-notifications }}
-        REACT_APP_AUTHENTICATION_HOST: ${{ secrets.authentication-host }}
-        REACT_APP_GRAASP_COMPOSE_HOST: ${{ secrets.graasp-compose-host }}
-        REACT_APP_GRAASP_PERFORM_HOST: ${{ secrets.graasp-perform-host }}
-        REACT_APP_GRAASP_EXPLORE_HOST: ${{ secrets.graasp-explorer-host }}
-        REACT_APP_GRAASP_ANALYZER_HOST: ${{ secrets.graasp-analyzer-host }}
-        REACT_APP_GA_MEASUREMENT_ID: ${{ secrets.ga-measurement-id }}
-        REACT_APP_HIDDEN_ITEM_TAG_ID: ${{ secrets.hidden-item-tag-id }}
-        REACT_APP_DOMAIN: ${{ secrets.domain }}
-      # Run a set of commands using the runners shell to perform install and build
-      run: |
-        yarn run build
-
-    - name: Cache build
-      id: cache-build
-      uses: actions/cache@v3
-      with:
-          path: build
-          key: ${{ runner.os }}-build-${{ github.ref_name }}-${{ github.run_id }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ github.ref_name }}-
-            ${{ runner.os }}-build-
-
   test:
     name: Test
-    needs: build
-
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -203,100 +73,55 @@ jobs:
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
+
+    # This step runs a single command to execute unitary testing
+    - name: Test job
+      run: |
+        echo "This is the test job"
+
+  # Build and sync with S3
+  build:
+    needs: test
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+    # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
+    - name: Check out code
+      uses: actions/checkout@v2
+
     # Download and cache distribution of the requested Node.js version, and add it to the PATH
     - name: Setup node
       id: setup-node
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v2
       with:
         node-version: '16'
         check-latest: true
 
-    - name: Cache dependencies
-      id: cache-node-modules
-      uses: actions/cache@v3
-      with:
-        path: '**/node_modules'
-        key: ${{ runner.os }}-modules-${{ github.ref_name }}-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-            ${{ runner.os }}-modules-${{ github.ref_name }}-
-            ${{ runner.os }}-modules-
-
-    - name: Cache Cypress Binary
-      id: cache-cypress-binary
-      uses: actions/cache@v3
-      with:
-        path: '~/.cache/Cypress'
-        key: ${{ runner.os }}-cypress-binary-${{ github.ref_name }}-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-            ${{ runner.os }}-cypress-binary-${{ github.ref_name }}-
-            ${{ runner.os }}-cypress-binary-
-
-    - name: Install dependencies
-      id: install
-      if: ${{ (steps.cache-node-modules.outputs.cache-hit != 'true') || (steps.cache-cypress-binary.outputs.cache-hit != 'true') }}
-      run: yarn install
-
-    - name: Cypress run
-      uses: cypress-io/github-action@v4
-      with:
-        install: false
-        config: baseUrl=http://localhost:3000
-        start: yarn start:ci
-        wait-on: 'http://localhost:3000'
-        wait-on-timeout: 180
-        browser: chrome
-        quiet: true
-      env:
-        REACT_APP_API_HOST: ${{ secrets.api-host-test }}
-        REACT_APP_GRAASP_COMPOSE_HOST: ${{ inputs.graasp-compose-host-test }}
-        REACT_APP_AUTHENTICATION_HOST: ${{ inputs.graasp-authentication-host-test }}
-        REACT_APP_NODE_ENV: ${{ inputs.node-env-test }}
-        REACT_APP_HIDDEN_ITEM_TAG_ID: ${{ inputs.hidden-item-tag-id-test }}
-        REACT_APP_PUBLIC_TAG_ID: ${{ inputs.public-tag-id-test }}
-        NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: ${{ inputs.next-public-google-analytics-id-test }}
-        NEXT_PUBLIC_PUBLISHED_TAG_ID: ${{ inputs.next-public-published-tag-id-test }}
-        NEXT_PUBLIC_API_HOST: ${{ inputs.next-public-api-host-test }}
-        NEXT_PUBLIC_GRAASP_AUTH_HOST: ${{ inputs.next-public-graasp-authentication-host-test }}
-        NEXT_PUBLIC_GRAASP_PERFORM_HOST: ${{ inputs.next-public-graasp-perform-host-test }}
-        GRAASPER_ID: ${{ inputs.graasper-id-test }}
-        NEXT_PUBLIC_NODE_ENV: ${{ inputs.next-public-node-env-test }}
-        REACT_APP_GRAASP_DOMAIN: ${{ inputs.graasp-domain-test }}
-        REACT_APP_GRAASP_APP_ID: ${{ inputs.graasp-app-id-test }}
-        REACT_APP_MOCK_API: ${{ inputs.mock-api-test }}
-        NODE_ENV: ${{ inputs.node-env-test}}
-        REACT_APP_ENABLE_MOCK_API: ${{ inputs.enable-mock-api-test }}
-
-    # after the test run completes
-    # store any screenshots
-    # NOTE: screenshots will be generated only if E2E test failed
-    # thus we store screenshots only on failures
-    - uses: actions/upload-artifact@v3
-      if: failure()
-      with:
-        name: cypress-screenshots
-        path: cypress/screenshots
-
-    - name: coverage report
-      run: npx nyc report --reporter=text-summary
-
-  # Deploy to development environment
-  deploy: 
-    needs: test
-    name: Deploy
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Cache build
-      id: cache-build
-      uses: actions/cache@v3
-      with:
-          path: build
-          key: ${{ runner.os }}-build-${{ github.ref_name }}-${{ github.run_id }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ github.ref_name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+    - name: Yarn build dev
+      id: build-image
+      # Set environment variables required to perform the build. These are only available to this step
+      env: 
+        PORT: ${{ secrets.port }}
+        REACT_APP_API_HOST: ${{ secrets.api-host }}
+        REACT_APP_AUTHENTICATION_HOST: ${{ secrets.authentication-host }}
+        REACT_APP_DOMAIN: ${{ secrets.domain }}
+        REACT_APP_GA_MEASUREMENT_ID: ${{ secrets.ga-measurement-id }}
+        REACT_APP_GOOGLE_KEY_DEV: ${{ secrets.google-key }}
+        REACT_APP_GRAASP_ANALYZER_HOST: ${{ secrets.graasp-analyzer-host }}
+        REACT_APP_GRAASP_COMPOSE_HOST: ${{ secrets.graasp-compose-host }}
+        REACT_APP_GRAASP_EXPLORE_HOST: ${{ secrets.graasp-explorer-host }}
+        REACT_APP_GRAASP_PERFORM_HOST: ${{ secrets.graasp-perform-host }}
+        REACT_APP_H5P_INTEGRATION_URL: ${{ secrets.h5p-integration-url }}
+        REACT_APP_HIDDEN_ITEM_TAG_ID: ${{ secrets.hidden-item-tag-id }}
+        REACT_APP_SHOW_NOTIFICATIONS: ${{ secrets.show-notifications }}
+        REACT_APP_SENTRY_DSN: ${{ secrets.sentry-dsn }}
+        REACT_APP_STRIPE_PUBLISHABLE_KEY: ${{ secrets.stripe-publishable-key }}
+      # Run a set of commands using the runners shell to perform install and build
+      run: |
+        yarn install
+        yarn run build
 
     # Configure AWS credential and region environment variables for use in next steps
     - name: Configure AWS Credentials
@@ -317,6 +142,21 @@ jobs:
       # --acl public-read makes files publicly readable 
       # --follow-symlinks fixes some weird symbolic link problems that may come up
       # --delete permanently deletes files in the S3 bucket that are not present in the latest version of the repository/build.
+
+  # Deploy to development environment
+  deploy: 
+    needs: build
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    # Configure AWS credential and region environment variables for use in next steps
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.aws-access-key-id }}
+        aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
+        aws-region: ${{ secrets.aws-region }}
 
     # Create a new invalidation
     - name: Invalidate cloudfront distribution
