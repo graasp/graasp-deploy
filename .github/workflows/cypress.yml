@@ -6,57 +6,57 @@ on:
     # Define inputs which can be passed from the caller workflow
     inputs:
       # build-folder: path to build folder inside repository, if needed
-      graasp-compose-host:
+      graasp-compose-host-test:
         required: false
         type: string
-      graasp-authentication-host:
+      graasp-authentication-host-test:
         required: false
         type: string
-      node-env:
+      node-env-test:
         required: false
         type: string
-      hidden-item-tag-id:
+      hidden-item-tag-id-test:
         required: false
         type: string
-      public-tag-id:
+      public-tag-id-test:
         required: false
         type: string
-      next-public-google-analytics-id:
+      next-public-google-analytics-id-test:
         required: false
         type: string
-      next-public-published-tag-id:
+      next-public-published-tag-id-test:
         required: false
         type: string
-      next-public-api-host:
+      next-public-api-host-test:
         required: false
         type: string
-      next-public-graasp-perform-host:
+      next-public-graasp-perform-host-test:
         required: false
         type: string
-      next-public-graasp-authentication-host:
+      next-public-graasp-authentication-host-test:
         required: false
         type: string
-      next-public-node-env:
+      next-public-node-env-test:
         required: false
         type: string
-      graasper-id:
+      graasper-id-test:
         required: false
         type: string
-      graasp-domain:
+      graasp-domain-test:
         required: false
         type: string
-      graasp-app-id:
+      graasp-app-id-test:
         required: false
         type: string
-      mock-api:
+      mock-api-test:
         required: false
         type: string
-      enable-mock-api:
+      enable-mock-api-test:
         required: false
         type: string
     # Define secrets which can be passed from the caller workflow
     secrets:
-      api-host: 
+      api-host-test: 
         required: false
 
 jobs:
@@ -76,7 +76,7 @@ jobs:
         check-latest: true
 
     - name: Cache dependencies
-      id: cache-deps
+      id: cache-node-modules
       uses: actions/cache@v3
       with:
         path: '**/node_modules'
@@ -86,10 +86,27 @@ jobs:
             ${{ runner.os }}-modules-
             ${{ runner.os }}-
 
+    - name: Cache Cypress Binary
+      id: cache-cypress-binary
+      uses: actions/cache@v3
+      with:
+        path: '~/.cache/Cypress'
+        key: ${{ runner.os }}-cypress-binary-${{ github.ref_name }}-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+            ${{ runner.os }}-cypress-binary-${{ github.ref_name }}-
+            ${{ runner.os }}-cypress-binary-
+
     - name: Install dependencies
       id: install
-      if: steps.cache-deps.outputs.cache-hit != 'true'
+      if: steps.cache-node-modules.outputs.cache-hit != 'true'
       run: yarn install
+
+    - name: Install dependencies
+      if: steps.cache-cypress-binary.outputs.cache-hit != 'true'
+      uses: cypress-io/github-action@v4
+      with:
+        # just perform install
+        runTests: false
 
     - name: Cypress run
       uses: cypress-io/github-action@v4
@@ -102,24 +119,24 @@ jobs:
         browser: chrome
         quiet: true
       env:
-        REACT_APP_API_HOST: ${{ secrets.api-host }}
-        REACT_APP_GRAASP_COMPOSE_HOST: ${{ inputs.graasp-compose-host }}
-        REACT_APP_AUTHENTICATION_HOST: ${{ inputs.graasp-authentication-host }}
-        REACT_APP_NODE_ENV: ${{ inputs.node-env }}
-        REACT_APP_HIDDEN_ITEM_TAG_ID: ${{ inputs.hidden-item-tag-id }}
-        REACT_APP_PUBLIC_TAG_ID: ${{ inputs.public-tag-id }}
-        NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: ${{ inputs.next-public-google-analytics-id }}
-        NEXT_PUBLIC_PUBLISHED_TAG_ID: ${{ inputs.next-public-published-tag-id }}
-        NEXT_PUBLIC_API_HOST: ${{ inputs.next-public-api-host }}
-        NEXT_PUBLIC_GRAASP_AUTH_HOST: ${{ inputs.next-public-graasp-authentication-host }}
-        NEXT_PUBLIC_GRAASP_PERFORM_HOST: ${{ inputs.next-public-graasp-perform-host }}
-        GRAASPER_ID: ${{ inputs.graasper-id }}
-        NEXT_PUBLIC_NODE_ENV: ${{ inputs.next-public-node-env }}
-        REACT_APP_GRAASP_DOMAIN: ${{ inputs.graasp-domain }}
-        REACT_APP_GRAASP_APP_ID: ${{ inputs.graasp-app-id }}
-        REACT_APP_MOCK_API: ${{ inputs.mock-api }}
-        NODE_ENV: ${{ inputs.node-env }}
-        REACT_APP_ENABLE_MOCK_API: ${{ inputs.enable-mock-api }}
+        REACT_APP_API_HOST: ${{ secrets.api-host-test }}
+        REACT_APP_GRAASP_COMPOSE_HOST: ${{ inputs.graasp-compose-host-test }}
+        REACT_APP_AUTHENTICATION_HOST: ${{ inputs.graasp-authentication-host-test }}
+        REACT_APP_NODE_ENV: ${{ inputs.node-env-test }}
+        REACT_APP_HIDDEN_ITEM_TAG_ID: ${{ inputs.hidden-item-tag-id-test }}
+        REACT_APP_PUBLIC_TAG_ID: ${{ inputs.public-tag-id-test }}
+        NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: ${{ inputs.next-public-google-analytics-id-test }}
+        NEXT_PUBLIC_PUBLISHED_TAG_ID: ${{ inputs.next-public-published-tag-id-test }}
+        NEXT_PUBLIC_API_HOST: ${{ inputs.next-public-api-host-test }}
+        NEXT_PUBLIC_GRAASP_AUTH_HOST: ${{ inputs.next-public-graasp-authentication-host-test }}
+        NEXT_PUBLIC_GRAASP_PERFORM_HOST: ${{ inputs.next-public-graasp-perform-host-test }}
+        GRAASPER_ID: ${{ inputs.graasper-id-test }}
+        NEXT_PUBLIC_NODE_ENV: ${{ inputs.next-public-node-env-test }}
+        REACT_APP_GRAASP_DOMAIN: ${{ inputs.graasp-domain-test }}
+        REACT_APP_GRAASP_APP_ID: ${{ inputs.graasp-app-id-test }}
+        REACT_APP_MOCK_API: ${{ inputs.mock-api-test }}
+        NODE_ENV: ${{ inputs.node-env-test}}
+        REACT_APP_ENABLE_MOCK_API: ${{ inputs.enable-mock-api-test }}
 
     # after the test run completes
     # store any screenshots
