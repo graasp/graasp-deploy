@@ -64,40 +64,28 @@ env:
 
 # This workflow is made up of three jobs that run sequentially, called test, build and deploy
 jobs:
-  test:
-    name: Test
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-    # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
-    - name: Check out code
-      uses: actions/checkout@v2
-
-    # This step runs a single command to execute unitary testing
-    - name: Test job
-      run: |
-        echo "This is the test job"
-
   # Build and sync with S3
   build:
-    needs: test
     name: Build
     runs-on: ubuntu-latest
 
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     # Download and cache distribution of the requested Node.js version, and add it to the PATH
     - name: Setup node
       id: setup-node
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: '16'
         check-latest: true
+
+    # Install dependencies when the cache has not been retrieved
+    - name: Install dependencies
+      id: install
+      run: yarn install
 
     - name: Yarn build dev
       id: build-image
@@ -120,8 +108,39 @@ jobs:
         REACT_APP_STRIPE_PUBLISHABLE_KEY: ${{ secrets.stripe-publishable-key }}
       # Run a set of commands using the runners shell to perform install and build
       run: |
-        yarn install
         yarn run build
+
+    # Cache build to share it between jobs
+    # path: The file path on the runner to cache or restore.
+    # key: Create cache key using the run_id to create a new build for every run.
+    # restore-keys: An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key
+    - name: Cache build
+      id: cache-build
+      uses: actions/cache@v3
+      with:
+        path: build
+        key: ${{ runner.os }}-build-${{ github.ref_name }}-${{ github.run_id }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ github.ref_name }}-
+          ${{ runner.os }}-build-
+
+  # Deploy to development environment
+  deploy: 
+    needs: test
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    # Cache build to re-use it from previous jobs
+    - name: Cache build
+      id: cache-build
+      uses: actions/cache@v3
+      with:
+        path: build
+        key: ${{ runner.os }}-build-${{ github.ref_name }}-${{ github.run_id }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ github.ref_name }}-
+          ${{ runner.os }}-build-
 
     # Configure AWS credential and region environment variables for use in next steps
     - name: Configure AWS Credentials
@@ -142,21 +161,6 @@ jobs:
       # --acl public-read makes files publicly readable 
       # --follow-symlinks fixes some weird symbolic link problems that may come up
       # --delete permanently deletes files in the S3 bucket that are not present in the latest version of the repository/build.
-
-  # Deploy to development environment
-  deploy: 
-    needs: build
-    name: Deploy
-    runs-on: ubuntu-latest
-
-    steps:
-    # Configure AWS credential and region environment variables for use in next steps
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.aws-access-key-id }}
-        aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
-        aws-region: ${{ secrets.aws-region }}
 
     # Create a new invalidation
     - name: Invalidate cloudfront distribution
