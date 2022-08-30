@@ -82,9 +82,24 @@ jobs:
         node-version: '16'
         check-latest: true
 
+    # Cache dependencies to speed up workflow
+    # path: The file path on the runner to cache or restore.
+    # key: Create cache key using the hashFiles function to create a new cache when dependencies change.
+    # restore-keys: An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key
+    - name: Cache dependencies
+      id: cache-node-modules
+      uses: actions/cache@v3
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.os }}-modules-${{ github.ref_name }}-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+            ${{ runner.os }}-modules-${{ github.ref_name }}-
+            ${{ runner.os }}-modules-
+
     # Install dependencies when the cache has not been retrieved
     - name: Install dependencies
       id: install
+      if: steps.cache-node-modules.outputs.cache-hit != 'true'
       run: yarn install
 
     - name: Yarn build dev
