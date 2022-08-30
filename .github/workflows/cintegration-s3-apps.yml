@@ -78,6 +78,31 @@ jobs:
         yarn install
         yarn run build
 
+    # Cache build to share it between jobs
+    # path: The file path on the runner to cache or restore.
+    # key: Create cache key using the branch and run_id to create a new build for every run.
+    - name: Cache build
+      id: cache-build
+      uses: actions/cache@v3
+      with:
+        path: build
+        key: ${{ runner.os }}-build-${{ github.ref_name }}-${{ github.run_id }}
+
+  # Deploy to development environment
+  deploy: 
+    needs: build
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    # Cache build to re-use it from previous jobs
+    - name: Cache build
+      id: cache-build
+      uses: actions/cache@v3
+      with:
+        path: build
+        key: ${{ runner.os }}-build-${{ github.ref_name }}-${{ github.run_id }}
+
     # Configure AWS credential and region environment variables for use in next steps
     - name: Configure AWS Credentials
       id: configure-aws
@@ -98,20 +123,6 @@ jobs:
       # --follow-symlinks fixes some weird symbolic link problems that may come up
       # --delete permanently deletes files in the S3 bucket that are not present in the latest version of the repository/build.
 
-  # Deploy to development environment
-  deploy: 
-    needs: build
-    name: Deploy
-    runs-on: ubuntu-latest
-
-    steps:
-    # Configure AWS credential and region environment variables for use in next steps
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.aws-access-key-id }}
-        aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
-        aws-region: ${{ secrets.aws-region }}
 
     # Create a new invalidation
     - name: Invalidate cloudfront distribution
