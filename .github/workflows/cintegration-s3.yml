@@ -82,7 +82,7 @@ jobs:
         node-version: '16'
         check-latest: true
 
-    # Cache dependencies to speed up workflow
+    # Cache dependencies to speed up workflow. Only for development branches
     # path: The file path on the runner to cache or restore.
     # key: Create cache key using the hashFiles function to create a new cache when dependencies change.
     # restore-keys: An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key
@@ -92,9 +92,8 @@ jobs:
       uses: actions/cache@v3
       with:
         path: '**/node_modules'
-        key: ${{ runner.os }}-modules-${{ github.ref_name }}-${{ hashFiles('**/yarn.lock') }}
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
-            ${{ runner.os }}-modules-${{ github.ref_name }}-
             ${{ runner.os }}-modules-
 
     # Install dependencies when the cache has not been retrieved
@@ -128,17 +127,13 @@ jobs:
 
     # Cache build to share it between jobs
     # path: The file path on the runner to cache or restore.
-    # key: Create cache key using the run_id to create a new build for every run.
-    # restore-keys: An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key
+    # key: Create cache key using the branch and run_id to create a new build for every run.
     - name: Cache build
       id: cache-build
       uses: actions/cache@v3
       with:
         path: build
         key: ${{ runner.os }}-build-${{ github.ref_name }}-${{ github.run_id }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ github.ref_name }}-
-          ${{ runner.os }}-build-
 
   # Deploy to development environment
   deploy: 
@@ -154,9 +149,6 @@ jobs:
       with:
         path: build
         key: ${{ runner.os }}-build-${{ github.ref_name }}-${{ github.run_id }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ github.ref_name }}-
-          ${{ runner.os }}-build-
 
     # Configure AWS credential and region environment variables for use in next steps
     - name: Configure AWS Credentials
