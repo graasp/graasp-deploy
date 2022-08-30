@@ -1,11 +1,11 @@
-name: cypress tests
+name: Reusable workflow that runs Cypress tests
+
 # Control when the action will run
 on:
   # Allow the workflow to be reusable
   workflow_call:
     # Define inputs which can be passed from the caller workflow
     inputs:
-      # build-folder: path to build folder inside repository, if needed
       graasp-compose-host-test:
         required: false
         type: string
@@ -60,8 +60,12 @@ on:
         required: false
 
 jobs:
-  cypress-run:
+  cypress:
+    name: Cypress
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
@@ -75,6 +79,10 @@ jobs:
         node-version: '16'
         check-latest: true
 
+    # Cache dependencies to speed up workflow
+    # path: The file path on the runner to cache or restore.
+    # key: Create cache key using the hashFiles function to create a new cache when dependencies change.
+    # restore-keys: An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key
     - name: Cache dependencies
       id: cache-node-modules
       uses: actions/cache@v3
@@ -86,6 +94,10 @@ jobs:
             ${{ runner.os }}-modules-
             ${{ runner.os }}-
 
+    # Cache cypress binary to speed up workflow
+    # path: The file path on the runner to cache or restore.
+    # key: Create cache key using the hashFiles function to create a new cache when dependencies change.
+    # restore-keys: An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key
     - name: Cache Cypress Binary
       id: cache-cypress-binary
       uses: actions/cache@v3
@@ -96,11 +108,13 @@ jobs:
             ${{ runner.os }}-cypress-binary-${{ github.ref_name }}-
             ${{ runner.os }}-cypress-binary-
 
+    # Install dependencies when the cache has not been retrieved
     - name: Install dependencies
       id: install
       if: (steps.cache-node-modules.outputs.cache-hit != 'true') || (steps.cache-cypress-binary.outputs.cache-hit != 'true')
       run: yarn install
 
+    #  use the Cypress GitHub Action to run Cypress tests within the chrome browser
     - name: Cypress run
       uses: cypress-io/github-action@v4
       with:
