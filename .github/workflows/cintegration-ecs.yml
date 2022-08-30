@@ -32,6 +32,11 @@ on:
       # env-variable-name:
       #   required: true or false
 
+# Saving computation time by stopping obsolete workflows
+concurrency: 
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
 # Set environment variables that are available to the steps of all jobs in the workflow
 env:        
   ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}

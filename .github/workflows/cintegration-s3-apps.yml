@@ -37,6 +37,11 @@ on:
       sentry-dsn:
         required: false
 
+# Saving computation time by stopping obsolete workflows
+concurrency: 
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
 # Set environment variables that are available to the steps of all jobs in the workflow
 env:
   BUILD_FOLDER: '${{ inputs.build-folder }}'
