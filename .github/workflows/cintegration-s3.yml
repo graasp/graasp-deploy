@@ -203,7 +203,14 @@ jobs:
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
+    # Download and cache distribution of the requested Node.js version, and add it to the PATH
+    - name: Setup node
+      id: setup-node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        check-latest: true
 
     - name: Cache dependencies
       id: cache-node-modules
@@ -219,7 +226,7 @@ jobs:
       id: cache-cypress-binary
       uses: actions/cache@v3
       with:
-        path: ~/.cache/Cypress
+        path: '~/.cache/Cypress'
         key: ${{ runner.os }}-cypress-binary-${{ github.ref_name }}-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
             ${{ runner.os }}-cypress-binary-${{ github.ref_name }}-
@@ -229,6 +236,13 @@ jobs:
       id: install
       if: steps.cache-node-modules.outputs.cache-hit != 'true'
       run: yarn install
+
+    - name: Install dependencies
+      if: steps.cache-cypress-binary.outputs.cache-hit != 'true'
+      uses: cypress-io/github-action@v4
+      with:
+        # just perform install
+        runTests: false
 
     - name: Cypress run
       uses: cypress-io/github-action@v4
