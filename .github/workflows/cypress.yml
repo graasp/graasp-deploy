@@ -92,11 +92,9 @@ jobs:
       uses: actions/cache@v3
       with:
         path: '**/node_modules'
-        key: ${{ runner.os }}-modules-${{ github.ref_name }}-${{ hashFiles('**/yarn.lock') }}
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
-            ${{ runner.os }}-modules-${{ github.ref_name }}-
             ${{ runner.os }}-modules-
-            ${{ runner.os }}-
 
     # Cache cypress binary to speed up workflow
     # path: The file path on the runner to cache or restore.
@@ -107,9 +105,8 @@ jobs:
       uses: actions/cache@v3
       with:
         path: '~/.cache/Cypress'
-        key: ${{ runner.os }}-cypress-binary-${{ github.ref_name }}-${{ hashFiles('**/yarn.lock') }}
+        key: ${{ runner.os }}-cypress-binary-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
-            ${{ runner.os }}-cypress-binary-${{ github.ref_name }}-
             ${{ runner.os }}-cypress-binary-
 
     # Install dependencies when the cache has not been retrieved
