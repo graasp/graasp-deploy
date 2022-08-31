@@ -151,6 +151,19 @@ jobs:
         restore-keys: |
             ${{ runner.os }}-modules-
 
+    # Cache cypress binary to speed up workflow
+    # path: The file path on the runner to cache or restore.
+    # key: Create cache key using the hashFiles function to create a new cache when dependencies change.
+    # restore-keys: An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key
+    - name: Cache Cypress Binary
+      id: cache-cypress-binary
+      uses: actions/cache@v3
+      with:
+        path: '~/.cache/Cypress'
+        key: ${{ runner.os }}-cypress-binary-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+            ${{ runner.os }}-cypress-binary-
+
     # Install dependencies when the cache has not been retrieved
     - name: Install dependencies
       id: install
@@ -191,7 +204,7 @@ jobs:
         key: ${{ runner.os }}-build-${{ github.ref_name }}-${{ github.run_id }}
 
   test:
-    name: Cypress
+    name: Test
     needs: build
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
