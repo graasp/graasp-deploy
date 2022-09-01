@@ -140,36 +140,40 @@ jobs:
       with:
         node-version: '16'
         check-latest: true
-        cache: 'yarn'
 
-    # # Cache dependencies to speed up workflow. Only for development branches
-    # # path: The file path on the runner to cache or restore.
-    # # key: Create cache key using the hashFiles function to create a new cache when dependencies change.
-    # # restore-keys: An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key
-    # - name: Cache dependencies
-    #   id: cache-node-modules
-    #   if: (github.ref_name != 'main') && (github.ref_name != 'master')
-    #   uses: actions/cache@v3
-    #   with:
-    #     path: '**/node_modules'
-    #     key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-    #     restore-keys: |
-    #         ${{ runner.os }}-modules-
+    # Get the yarn cache path.
+    - name: Get yarn cache directory
+      id: yarn-cache-dir-path
+      run: |
+        echo "::set-output name=dir::$(yarn config get cacheFolder)"
 
-    # Cache cypress binary to speed up workflow
+    # Cache dependencies to speed up workflow. Only for development branches
     # path: The file path on the runner to cache or restore.
     # key: Create cache key using the hashFiles function to create a new cache when dependencies change.
     # restore-keys: An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key
+    - name: Cache dependencies
+      id: cache-yarn
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+
+    # Cache cypress binary to speed up workflow. Only for development branches
+    # path: The file path on the runner to cache or restore.
+    # key: Create cache key using the hashFiles function to create a new cache when dependencies change.
+    # To avoid snowballing Cypress binary cache we use the exact key and not the restore keys.
     - name: Cache Cypress Binary
       id: cache-cypress-binary
-      if: (github.ref_name != 'main') && (github.ref_name != 'master')
       uses: actions/cache@v3
       with:
         path: '~/.cache/Cypress'
         key: ${{ runner.os }}-cypress-binary-${{ hashFiles('**/yarn.lock') }}
 
-    # Install dependencies when the cache has not been retrieved
-    # if: steps.cache-node-modules.outputs.cache-hit != 'true'
+    # Install dependencies
+    # The --cached flag with 'yarn add' is used  to use cached downloads (in the cache directory mentioned above) 
+    # during installation whenever possible instead of downloading them.
     - name: Install dependencies
       id: install
       run: yarn add --cached
@@ -193,7 +197,7 @@ jobs:
         REACT_APP_SHOW_NOTIFICATIONS: ${{ secrets.show-notifications }}
         REACT_APP_SENTRY_DSN: ${{ secrets.sentry-dsn }}
         REACT_APP_STRIPE_PUBLISHABLE_KEY: ${{ secrets.stripe-publishable-key }}
-      # Run a set of commands using the runners shell to perform install and build
+      # Run a set of commands using the runners shell to perform build
       run: yarn run build
 
     # Cache build to share it between jobs
@@ -226,20 +230,25 @@ jobs:
       with:
         node-version: '16'
         check-latest: true
-        cache: 'yarn'
 
-    # # Cache dependencies to speed up workflow
-    # # path: The file path on the runner to cache or restore.
-    # # key: Create cache key using the hashFiles function to create a new cache when dependencies change.
-    # # restore-keys: An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key
-    # - name: Cache dependencies
-    #   id: cache-node-modules
-    #   uses: actions/cache@v3
-    #   with:
-    #     path: '**/node_modules'
-    #     key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-    #     restore-keys: |
-    #         ${{ runner.os }}-modules-
+    # Get the yarn cache path.
+    - name: Get yarn cache directory
+      id: yarn-cache-dir-path
+      run: |
+        echo "::set-output name=dir::$(yarn config get cacheFolder)"
+
+    # Cache dependencies to speed up workflow. Only for development branches
+    # path: The file path on the runner to cache or restore.
+    # key: Create cache key using the hashFiles function to create a new cache when dependencies change.
+    # restore-keys: An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key
+    - name: Cache dependencies
+      id: cache-yarn
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
 
     # Cache cypress binary to speed up workflow
     # path: The file path on the runner to cache or restore.
@@ -252,8 +261,7 @@ jobs:
         path: '~/.cache/Cypress'
         key: ${{ runner.os }}-cypress-binary-${{ hashFiles('**/yarn.lock') }}
 
-    # Install dependencies when the cache has not been retrieved
-    # if: (steps.cache-node-modules.outputs.cache-hit != 'true') || (steps.cache-cypress-binary.outputs.cache-hit != 'true')
+    # Install dependencies
     - name: Install dependencies
       id: install
       run: yarn add --cached
@@ -304,9 +312,9 @@ jobs:
 
   # Deploy to development environment
   deploy: 
-    needs: test
     name: Deploy
-    if: (github.event_name == 'workflow_dispatch') || (github.ref_name == 'main') || (github.ref_name == 'master')
+    needs: [build, test]
+    if: ${{ always() && ((github.event_name == 'workflow_dispatch') || (github.ref_name == 'main') || (github.ref_name == 'master')) }}
     runs-on: ubuntu-latest
 
     steps:
