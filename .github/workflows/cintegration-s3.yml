@@ -172,7 +172,7 @@ jobs:
     # if: steps.cache-node-modules.outputs.cache-hit != 'true'
     - name: Install dependencies
       id: install
-      run: yarn --cached
+      run: yarn add --cached
 
     - name: Yarn build dev
       id: build-image
@@ -256,7 +256,7 @@ jobs:
     # if: (steps.cache-node-modules.outputs.cache-hit != 'true') || (steps.cache-cypress-binary.outputs.cache-hit != 'true')
     - name: Install dependencies
       id: install
-      run: yarn --cached
+      run: yarn add --cached
 
     #  use the Cypress GitHub Action to run Cypress tests within the chrome browser
     - name: Cypress run
