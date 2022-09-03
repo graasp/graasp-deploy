@@ -1,0 +1,160 @@
+name: Reusable workflow that runs Cypress tests
+
+# Control when the action will run
+on:
+  # Allow the workflow to be reusable
+  workflow_call:
+    # Define inputs which can be passed from the caller workflow
+    inputs:
+      graasp-compose-host-test:
+        required: false
+        type: string
+      graasp-authentication-host-test:
+        required: false
+        type: string
+      node-env-test:
+        required: false
+        type: string
+      hidden-item-tag-id-test:
+        required: false
+        type: string
+      public-tag-id-test:
+        required: false
+        type: string
+      next-public-google-analytics-id-test:
+        required: false
+        type: string
+      next-public-published-tag-id-test:
+        required: false
+        type: string
+      next-public-api-host-test:
+        required: false
+        type: string
+      next-public-graasp-perform-host-test:
+        required: false
+        type: string
+      next-public-graasp-authentication-host-test:
+        required: false
+        type: string
+      next-public-node-env-test:
+        required: false
+        type: string
+      graasper-id-test:
+        required: false
+        type: string
+      graasp-domain-test:
+        required: false
+        type: string
+      graasp-app-id-test:
+        required: false
+        type: string
+      mock-api-test:
+        required: false
+        type: string
+      enable-mock-api-test:
+        required: false
+        type: string
+    # Define secrets which can be passed from the caller workflow
+    secrets:
+      api-host-test: 
+        required: false
+
+concurrency: 
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  cypress:
+    name: Cypress
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    # Download and cache distribution of the requested Node.js version, and add it to the PATH
+    - name: Setup node
+      id: setup-node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        check-latest: true
+
+    # Cache dependencies to speed up workflow
+    # path: The file path on the runner to cache or restore.
+    # key: Create cache key using the hashFiles function to create a new cache when dependencies change.
+    # restore-keys: An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key
+    - name: Cache dependencies
+      id: cache-node-modules
+      uses: actions/cache@v3
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+            ${{ runner.os }}-modules-
+
+    # Cache cypress binary to speed up workflow
+    # path: The file path on the runner to cache or restore.
+    # key: Create cache key using the hashFiles function to create a new cache when dependencies change.
+    # restore-keys: An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key
+    - name: Cache Cypress Binary
+      id: cache-cypress-binary
+      uses: actions/cache@v3
+      with:
+        path: '~/.cache/Cypress'
+        key: ${{ runner.os }}-cypress-binary-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+            ${{ runner.os }}-cypress-binary-
+
+    # Install dependencies when the cache has not been retrieved
+    - name: Install dependencies
+      id: install
+      if: (steps.cache-node-modules.outputs.cache-hit != 'true') || (steps.cache-cypress-binary.outputs.cache-hit != 'true')
+      run: yarn install
+
+    #  use the Cypress GitHub Action to run Cypress tests within the chrome browser
+    - name: Cypress run
+      uses: cypress-io/github-action@v4
+      with:
+        install: false
+        config: baseUrl=http://localhost:3000
+        start: yarn start:ci
+        wait-on: 'http://localhost:3000'
+        wait-on-timeout: 180
+        browser: chrome
+        quiet: true
+      env:
+        REACT_APP_API_HOST: ${{ secrets.api-host-test }}
+        REACT_APP_GRAASP_COMPOSE_HOST: ${{ inputs.graasp-compose-host-test }}
+        REACT_APP_AUTHENTICATION_HOST: ${{ inputs.graasp-authentication-host-test }}
+        REACT_APP_NODE_ENV: ${{ inputs.node-env-test }}
+        REACT_APP_HIDDEN_ITEM_TAG_ID: ${{ inputs.hidden-item-tag-id-test }}
+        REACT_APP_PUBLIC_TAG_ID: ${{ inputs.public-tag-id-test }}
+        NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: ${{ inputs.next-public-google-analytics-id-test }}
+        NEXT_PUBLIC_PUBLISHED_TAG_ID: ${{ inputs.next-public-published-tag-id-test }}
+        NEXT_PUBLIC_API_HOST: ${{ inputs.next-public-api-host-test }}
+        NEXT_PUBLIC_GRAASP_AUTH_HOST: ${{ inputs.next-public-graasp-authentication-host-test }}
+        NEXT_PUBLIC_GRAASP_PERFORM_HOST: ${{ inputs.next-public-graasp-perform-host-test }}
+        GRAASPER_ID: ${{ inputs.graasper-id-test }}
+        NEXT_PUBLIC_NODE_ENV: ${{ inputs.next-public-node-env-test }}
+        REACT_APP_GRAASP_DOMAIN: ${{ inputs.graasp-domain-test }}
+        REACT_APP_GRAASP_APP_ID: ${{ inputs.graasp-app-id-test }}
+        REACT_APP_MOCK_API: ${{ inputs.mock-api-test }}
+        NODE_ENV: ${{ inputs.node-env-test}}
+        REACT_APP_ENABLE_MOCK_API: ${{ inputs.enable-mock-api-test }}
+
+    # after the test run completes
+    # store any screenshots
+    # NOTE: screenshots will be generated only if E2E test failed
+    # thus we store screenshots only on failures
+    - uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: cypress-screenshots
+        path: cypress/screenshots
+
+    - name: coverage report
+      run: npx nyc report --reporter=text-summary
