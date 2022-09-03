@@ -69,25 +69,42 @@ jobs:
         node-version: '16'
         check-latest: true
 
+    # Get the yarn cache path.
+    - name: Get yarn cache directory
+      id: yarn-cache-dir-path
+      run: |
+        echo "::set-output name=dir::$(yarn config get cacheFolder)"
+
     # Cache dependencies to speed up workflow. Only for development branches
     # path: The file path on the runner to cache or restore.
     # key: Create cache key using the hashFiles function to create a new cache when dependencies change.
     # restore-keys: An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key
     - name: Cache dependencies
-      id: cache-node-modules
-      if: (github.ref_name != 'main') && (github.ref_name != 'master')
+      id: cache-yarn
       uses: actions/cache@v3
       with:
-        path: '**/node_modules'
-        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
-            ${{ runner.os }}-modules-
+          ${{ runner.os }}-yarn-
 
-    # Install dependencies when the cache has not been retrieved
+    # Cache cypress binary to speed up workflow. Only for development branches
+    # path: The file path on the runner to cache or restore.
+    # key: Create cache key using the hashFiles function to create a new cache when dependencies change.
+    # To avoid snowballing Cypress binary cache we use the exact key and not the restore keys.
+    - name: Cache Cypress Binary
+      id: cache-cypress-binary
+      uses: actions/cache@v3
+      with:
+        path: '~/.cache/Cypress'
+        key: ${{ runner.os }}-cypress-binary-${{ hashFiles('**/yarn.lock') }}
+
+    # Install dependencies
+    # The --cached flag with 'yarn add' is used  to use cached downloads (in the cache directory mentioned above) 
+    # during installation whenever possible instead of downloading them.
     - name: Install dependencies
       id: install
-      if: steps.cache-node-modules.outputs.cache-hit != 'true'
-      run: yarn install
+      run: yarn add --cached
 
     - name: Yarn build dev
       id: build-image
