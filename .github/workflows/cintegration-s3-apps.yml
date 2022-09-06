@@ -241,7 +241,7 @@ jobs:
   deploy: 
     name: Deploy
     needs: [build, test]
-    if: ${{ always() && ((github.event_name == 'workflow_dispatch') || (github.ref_name == 'main') || (github.ref_name == 'master')) }}
+    if: ${{ always() && needs.build.result == 'success' && ((github.event_name == 'workflow_dispatch') || (github.ref_name == 'main') || (github.ref_name == 'master')) }}
     runs-on: ubuntu-latest
 
     steps:
