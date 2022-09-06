@@ -10,6 +10,12 @@ on:
 
   # Allows to run the workflow manually from the Actions tab
   workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      test-execution:
+        type: boolean
+        default: true
+        description: 'Execute test job (Default: yes)'
 
 # This workflow is made up of one job that calls the reusable workflow in graasp-deploy
 jobs:
@@ -21,6 +27,15 @@ jobs:
     # Replace input ecs-task-definition with template file. Format: '.aws/<name>-dev.json'
     with:
       ecs-task-definition:
+      # Test values
+      graasper-id-test:
+      next-public-api-host-test:
+      next-public-graasp-authentication-host-test:
+      next-public-graasp-perform-host-test:
+      next-public-google-analytics-id-test:
+      next-public-node-env-test:
+      next-public-published-tag-id-test:
+      test-execution: ${{ inputs.test-execution }}
     # Insert required secrets based on repository with the following format: ${{ secrets.SECRET_NAME }}
     secrets:
       aws-access-key-id:
