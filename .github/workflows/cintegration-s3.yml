@@ -77,8 +77,9 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        key: ${{ runner.os }}-yarn-${{ github.ref_name }}-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
+          ${{ runner.os }}-yarn-${{ github.ref_name }}-
           ${{ runner.os }}-yarn-
 
     # Cache cypress binary to speed up workflow. Only for development branches
