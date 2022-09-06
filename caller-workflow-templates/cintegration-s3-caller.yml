@@ -29,20 +29,9 @@ jobs:
     with:
       build-folder: 'build'
       # Test values
-      enable-mock-api-test:
-      graasper-id-test:
-      graasp-app-id-test:
       graasp-authentication-host-test:
       graasp-compose-host-test:
-      graasp-domain-test:
       hidden-item-tag-id-test:
-      mock-api-test:
-      next-public-api-host-test:
-      next-public-google-analytics-id-test:
-      next-public-graasp-perform-host-test:
-      next-public-graasp-authentication-host-test:
-      next-public-node-env-test:
-      next-public-published-tag-id-test:
       node-env-test: 
       public-tag-id-test:
       test-execution: ${{ inputs.test-execution }}
