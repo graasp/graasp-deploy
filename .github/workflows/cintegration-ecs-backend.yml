@@ -50,6 +50,10 @@ on:
       websockets-plugin:
         required: true
         type: string
+      test-execution:
+        required: true
+        type: boolean
+        default: true
     # Define secrets which can be passed from the caller workflow
     secrets:
       # AWS credentials and variables
@@ -175,10 +179,18 @@ on:
         required: true
       thumbnails-path-prefix:
         required: true
+      mock-secure-session-secret-key:
+        required: true
+      mock-jwt-secret:
+        required: true
+      mock-refresh-token-jwt-secret:
+        required: true
+      mock-auth-token-jwt-secret:
+        required: true
 
 # Saving computation time by stopping obsolete workflows
 concurrency: 
-  group: ${{ github.workflow }}
+  group: ${{ github.ref }}
   cancel-in-progress: true
 
 # Set environment variables that are available to the steps of all jobs in the workflow
@@ -194,6 +206,7 @@ jobs:
   # Build image and push to ECR
   build:
     name: Build
+    if: ((github.event_name == 'workflow_dispatch') || (github.ref_name == 'main') || (github.ref_name == 'master'))
     runs-on: ubuntu-latest
     # Define job output that is available to all downstream jobs that depend on this job
     outputs: 
@@ -233,10 +246,75 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f .stagingcontainer/Dockerfile .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
+  test:
+    name: Test
+    needs: build
+    if: inputs.test-execution == true
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    # Download and cache distribution of the requested Node.js version, and add it to the PATH
+    - name: Setup node
+      id: setup-node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.x
+
+    # Get the yarn cache path.
+    - name: Get yarn cache directory
+      id: yarn-cache-dir-path
+      run: |
+        echo "::set-output name=dir::$(yarn config get cacheFolder)"
+
+    # Cache dependencies to speed up workflow. Only for development branches
+    # path: The file path on the runner to cache or restore.
+    # key: Create cache key using the hashFiles function to create a new cache when dependencies change.
+    # restore-keys: An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key
+    - name: Cache dependencies
+      id: cache-yarn
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+
+    # Install dependencies
+    - name: yarn install and build
+      run: |
+        yarn
+        yarn build --if-present
+
+    - name: yarn test
+      run: 
+        yarn test
+      env:
+        CI: true
+        # random keys
+        SECURE_SESSION_SECRET_KEY: ${{ secrets.mock-secure-session-secret-key }}
+        JWT_SECRET: ${{ secrets.mock-jwt-secret }}
+        REFRESH_TOKEN_JWT_SECRET: ${{ secrets.mock-refresh-token-jwt-secret }}
+        AUTH_TOKEN_JWT_SECRET: ${{ secrets.mock-auth-token-jwt-secret }}
+        STRIPE_SECRET_KEY: ${{ secrets.stripe-secret-key }}
+        STRIPE_DEFAULT_PLAN_PRICE_ID: ${{ secrets.stripe-default-plan-price-id }}
+        FILE_STORAGE_ROOT_PATH: /
+        H5P_PATH_PREFIX: h5p
+        SAVE_ACTIONS: true
+        BUILDER_CLIENT_HOST: 'http://localhost:3111'
+        PLAYER_CLIENT_HOST: 'http://localhost:3112'
+        EXPLORER_CLIENT_HOST: 'http://localhost:3113'
+
   # Deploy to dev environment
   deploy: 
-    needs: build
     name: Deploy
+    needs: [build, test]
+    if: ${{ always() && needs.build.result == 'success' && ((github.event_name == 'workflow_dispatch') || (github.ref_name == 'main') || (github.ref_name == 'master')) }}
     runs-on: ubuntu-latest
 
     steps:

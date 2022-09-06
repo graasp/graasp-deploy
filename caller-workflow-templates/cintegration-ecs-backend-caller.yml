@@ -8,8 +8,14 @@ on:
       - main
       - master
 
-  # Allows you to run this workflow manually from the Actions tab
+  # Allows to run the workflow manually from the Actions tab
   workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      test-execution:
+        type: boolean
+        default: true
+        description: 'Execute test job (Default: yes)'
 
 # This workflow is made up of one job that calls the reusable workflow in graasp-deploy
 jobs:
@@ -34,6 +40,7 @@ jobs:
       subscriptions-plugin: true
       token-based-auth: true
       websockets-plugin: true
+      test-execution: ${{ inputs.test-execution }}
     # Insert required secrets based on repository with the following format: ${{ secrets.SECRET_NAME }}
     secrets:
       aws-access-key-id:
@@ -95,3 +102,7 @@ jobs:
       stripe-secret-key:
       stripe-default-plan-price-id:
       thumbnails-path-prefix:
+      mock-secure-session-secret-key:
+      mock-jwt-secret:
+      mock-refresh-token-jwt-secret:
+      mock-auth-token-jwt-secret:
