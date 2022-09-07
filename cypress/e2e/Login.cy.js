@@ -1,16 +1,16 @@
 import { MEMBERS } from "../fixtures/members";
 
 describe("Login behaviour Test", () => {
-  const { UNKNOWN_EMAIL, UNKNOWN_PASSWORD, WRONG_PASSWORD } = MEMBERS;
+  const { UNKNOWN_EMAIL, UNKNOWN_PASSWORD, WRONG_PASSWORD, TEST_USER } = MEMBERS;
 
   beforeEach(() => {
     // Include `cy.visit()` command in the beforeEach function
     // so that it runs before each test to visit the same URL at the start of all the tests
-    cy.visit(Cypress.env("REACT_APP_GRAASP_COMPOSE_HOST_STAGE"));
+    cy.visit(Cypress.env("REACT_APP_GRAASP_COMPOSE_HOST"));
     // Perform an assertion with `should` to verify redirection
     cy.url().should(
       "be.equal",
-      Cypress.env("REACT_APP_AUTHENTICATION_HOST_STAGE") + "/signin"
+      Cypress.env("REACT_APP_AUTHENTICATION_HOST") + "/signin"
     );
   });
 
@@ -23,7 +23,7 @@ describe("Login behaviour Test", () => {
     });
 
     cy.intercept("POST", "/login-password").as("login");
-    cy.login(email, password); // custom command that hanldes signIn wth password
+    cy.signIn(email, password); // custom command that hanldes signIn wth password
     // wait for API after button click
     cy.wait('@login').then((xhr) => {
       expect(xhr.response.statusCode).to.equal(statusCode);
@@ -39,7 +39,7 @@ describe("Login behaviour Test", () => {
     });
 
     cy.intercept("POST", "/login-password").as("login");
-    cy.login(email, password); // custom command that hanldes signIn wth password
+    cy.signIn(email, password); // custom command that hanldes signIn wth password
     // wait for API after button click
     cy.wait('@login').then((xhr) => {
       expect(xhr.response.statusCode).to.equal(statusCode);
@@ -56,7 +56,7 @@ describe("Login behaviour Test", () => {
 
     // Spy network requests
     cy.intercept("POST", "/login-password").as("login");
-    cy.login(email, password); // custom command that hanldes signIn wth password
+    cy.signIn(email, password); // custom command that hanldes signIn wth password
     // wait for API after button click
     cy.wait('@login').then((xhr) => {
       expect(xhr.response.statusCode).to.equal(statusCode);
@@ -64,6 +64,8 @@ describe("Login behaviour Test", () => {
   });
 
   it("Signing in with a valid email and valid password passes", () => {
+    const { email, password, statusCode } = TEST_USER;
+
     // Listen for uncaught exceptions and prevent Cypress from failing the test
     cy.on("uncaught:exception", (err, runnable) => {
       return false;
@@ -71,11 +73,15 @@ describe("Login behaviour Test", () => {
 
     // Spy network requests
     cy.intercept("POST", "/login-password").as("login");
-    cy.login(Cypress.env("TEST_EMAIL"), Cypress.env("TEST_PASSWORD")); // custom command that hanldes signIn wth password
+    cy.signIn(email, password); // custom command that hanldes signIn wth password
     // wait for API after button click
     cy.wait('@login').then((xhr) => {
-      expect(xhr.response.statusCode).to.equal(303);
+      expect(xhr.response.statusCode).to.equal(statusCode);
       expect(xhr.response.body.resource).to.exist;
     });
   });
+
+  after(() => {
+    cy.logout()
+  })
 });
