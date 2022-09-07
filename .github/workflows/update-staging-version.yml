@@ -31,10 +31,31 @@ jobs:
       with:
         token: ${{ secrets.token }}
 
-    # Run a set of commands using the runners shell to install yarn
+    # Get the yarn cache path.
+    - name: Get yarn cache directory
+      id: yarn-cache-dir-path
+      run: |
+        echo "::set-output name=dir::$(yarn config get cacheFolder)"
+
+    # Cache dependencies to speed up workflow. Only for development branches
+    # path: The file path on the runner to cache or restore.
+    # key: Create cache key using the hashFiles function to create a new cache when dependencies change.
+    # restore-keys: An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key
+    - name: Cache dependencies
+      id: cache-yarn
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+
+    # Install dependencies
+    # The --cached flag with 'yarn add' is used  to use cached downloads (in the cache directory mentioned above) 
+    # during installation whenever possible instead of downloading them.
     - name: Yarn install
       id: yarn-install
-      run: yarn
+      run: yarn add --cached
 
     # Run a set of commands using the runners shell to configure bot user
     - name: Git config
