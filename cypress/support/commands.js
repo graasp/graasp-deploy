@@ -24,17 +24,10 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 Cypress.Commands.add('signIn', (email, password) => {
-    // Create dummy window.__location object before the application loads
-    // to modify auth application's code to avoid using the window.location.href method completely.
-    cy.on('window:before:load', (win) => {
-        win.__location = {
-          replace: cy.stub().as('replace')
-        }
-    })
     cy.url().should(
         "be.equal",
-        Cypress.env("REACT_APP_AUTHENTICATION_HOST") + "/signin"
-      );
+        Cypress.env("REACT_APP_AUTHENTICATION_HOST") + "/"
+    );
     // Select Sign In method
     cy.get("#passwordSignInMethodButton").should("exist") //making sure the button is visible
     cy.get("#passwordSignInMethodButton").click()

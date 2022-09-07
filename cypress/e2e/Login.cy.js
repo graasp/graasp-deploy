@@ -6,11 +6,11 @@ describe("Login behaviour Test", () => {
   beforeEach(() => {
     // Include `cy.visit()` command in the beforeEach function
     // so that it runs before each test to visit the same URL at the start of all the tests
-    cy.visit(Cypress.env("REACT_APP_GRAASP_COMPOSE_HOST"));
+    cy.visit(Cypress.env("REACT_APP_AUTHENTICATION_HOST"));
     // Perform an assertion with `should` to verify redirection
     cy.url().should(
       "be.equal",
-      Cypress.env("REACT_APP_AUTHENTICATION_HOST") + "/signin"
+      Cypress.env("REACT_APP_AUTHENTICATION_HOST") + "/"
     );
   });
 
@@ -79,6 +79,7 @@ describe("Login behaviour Test", () => {
       expect(xhr.response.statusCode).to.equal(statusCode);
       expect(xhr.response.body.resource).to.exist;
     });
+    cy.wait(Cypress.config('defaultCommandTimeout'))
   });
 
   after(() => {
