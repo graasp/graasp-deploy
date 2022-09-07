@@ -4,6 +4,8 @@ describe("Login behaviour Test", () => {
   const { UNKNOWN_EMAIL, UNKNOWN_PASSWORD, WRONG_PASSWORD, TEST_USER } = MEMBERS;
 
   beforeEach(() => {
+    // Spy network requests
+    cy.intercept("POST", "/login-password").as("login");
     // Include `cy.visit()` command in the beforeEach function
     // so that it runs before each test to visit the same URL at the start of all the tests
     cy.visit(Cypress.env("REACT_APP_AUTHENTICATION_HOST"));
@@ -11,7 +13,7 @@ describe("Login behaviour Test", () => {
     cy.url().should(
       "be.equal",
       Cypress.env("REACT_APP_AUTHENTICATION_HOST") + "/"
-    );
+      );
   });
 
   it("Sign in with unknown email does not pass", () => {
@@ -21,8 +23,7 @@ describe("Login behaviour Test", () => {
     cy.on("uncaught:exception", (err, runnable) => {
       return false;
     });
-
-    cy.intercept("POST", "/login-password").as("login");
+    
     cy.signIn(email, password); // custom command that hanldes signIn wth password
     // wait for API after button click
     cy.wait('@login').then((xhr) => {
@@ -38,7 +39,6 @@ describe("Login behaviour Test", () => {
       return false;
     });
 
-    cy.intercept("POST", "/login-password").as("login");
     cy.signIn(email, password); // custom command that hanldes signIn wth password
     // wait for API after button click
     cy.wait('@login').then((xhr) => {
@@ -54,8 +54,6 @@ describe("Login behaviour Test", () => {
       return false;
     });
 
-    // Spy network requests
-    cy.intercept("POST", "/login-password").as("login");
     cy.signIn(email, password); // custom command that hanldes signIn wth password
     // wait for API after button click
     cy.wait('@login').then((xhr) => {
@@ -71,8 +69,6 @@ describe("Login behaviour Test", () => {
       return false;
     });
 
-    // Spy network requests
-    cy.intercept("POST", "/login-password").as("login");
     cy.signIn(email, password); // custom command that hanldes signIn wth password
     // wait for API after button click
     cy.wait('@login').then((xhr) => {
