@@ -201,7 +201,7 @@ env:
   # Allows to increase Node's max heap size
   NODE_OPTIONS: '--max_old_space_size=8192'
 
-# This workflow is made up of two jobs that run sequentially, called build and deploy
+# This workflow is made up of three jobs that run sequentially, called build test and deploy
 jobs:
   # Build image and cache dist directory
   build:
