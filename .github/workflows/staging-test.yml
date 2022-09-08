@@ -109,7 +109,6 @@ jobs:
     # Run a set of commands using the runners shell to perform tests
     - name: Run newman
       id: newman
-      continue-on-error: true
       run: |
         FILE_NAME=$(echo "`date +"%Y-%m-%d-%H-%M"`"-run.html)
         echo "FILE_NAME=$FILE_NAME" >> $GITHUB_ENV
@@ -125,6 +124,7 @@ jobs:
 
     - name: Commit step
       id: commit
+      if: always()
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: 'API test run ${{ env.DATE }}'
