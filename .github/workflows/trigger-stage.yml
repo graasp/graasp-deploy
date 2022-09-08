@@ -146,7 +146,9 @@ jobs:
     # The environment that the job will reference
     environment: 
       name: staging
-    uses: graasp/graasp-deploy/.github/workflows/staging-test.yml@main
+    runs-on: ubuntu-latest
+    steps:
+      - uses: graasp/graasp-deploy/.github/workflows/staging-test.yml@main
 
   promote:
     name: Promote stack to release ready
