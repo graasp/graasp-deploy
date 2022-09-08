@@ -2,7 +2,7 @@
   "include": [
     {
       "repository": "graasp/graasp",
-      "tag": "v0.1.1"
+      "tag": "v0.1.2"
     },
     {
       "repository": "graasp/graasp-explore",
@@ -10,7 +10,7 @@
     },
     {
       "repository": "graasp/graasp-compose",
-      "tag": "v0.1.2"
+      "tag": "v0.1.4"
     },
     {
       "repository": "graasp/graasp-perform",
