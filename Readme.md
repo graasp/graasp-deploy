@@ -1,6 +1,9 @@
 # Graasp Deploy
-Deploy Graasp ecosystem in AWS using Github workflows and Github actions. 
+
 [![staging-test](https://github.com/graasp/graasp-deploy/actions/workflows/staging-test.yml/badge.svg)](https://github.com/graasp/graasp-deploy/actions/workflows/staging-test.yml)
+
+Deploy Graasp ecosystem in AWS using Github workflows and Github actions. 
+
 
 ## Contents
 - [What Graasp Deploy does](#what-graasp-deploy-does)
