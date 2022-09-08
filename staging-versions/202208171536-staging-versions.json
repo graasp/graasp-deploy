@@ -54,15 +54,11 @@
     },
     {
       "repository": "graasp/graasp-app-survey",
-      "tag": "v0.1.1"
+      "tag": "v0.1.0"
     },
     {
       "repository": "graasp/graasp-library",
-      "tag": "v0.1.5"
-    },
-    {
-      "repository": "graasp/graasp-app-sketchfab",
-      "tag": "v0.6.1"
+      "tag": "v0.1.3"
     }
   ]
 }

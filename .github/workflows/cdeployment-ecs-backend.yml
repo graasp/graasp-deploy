@@ -45,6 +45,9 @@ on:
       save-actions:
         required: true
         type: string
+      subscriptions-plugin: 
+        required: true
+        type: string
       token-based-auth:
         required: true
         type: string
@@ -303,6 +306,7 @@ jobs:
             SECURE_SESSION_SECRET_KEY=${{ secrets.secure-session-secret-key }}
             STRIPE_SECRET_KEY=${{ secrets.stripe-secret-key }}
             STRIPE_DEFAULT_PLAN_PRICE_ID=${{ secrets.stripe-default-plan-price-id }}
+            SUBSCRIPTIONS_PLUGIN=${{ secrets.subscriptions-plugin }}
             THUMBNAILS_PATH_PREFIX=${{ secrets.thumbnails-path-prefix }}
             TOKEN_BASED_AUTH=${{ inputs.token-based-auth }}
             WEBSOCKETS_PLUGIN=${{ inputs.websockets-plugin }}

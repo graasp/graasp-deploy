@@ -1,6 +1,6 @@
 # This workflow creates a new YYYYMMddhhmm-staging-versions.json file inside the staging-versions folder 
 # with the latest tag pushed by the repository that triggered the workflow. 
-name: Update staging versions
+name: Update staging stack
 
 # Controls when the action will run
 on:

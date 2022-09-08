@@ -4,7 +4,23 @@ name: Deploy stack to prod
 
 # Controls when the action will run.
 on:
+  # Allow the workflow to be automatically triggered every Thursday at 9 a.m.
+  schedule:
+    - cron: '0 9 * * 4'
+  # Allow the workflow to be manually triggered
   workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      stack:
+        # Description to be shown in the UI instead of 'stack'
+        description: '(Optional) Specify a stack. Format: YYYYMMddhhmm-release-versions.json'
+        # Default value if no value is explicitly provided
+        default: ''
+        # Input does not have to be provided for the workflow to run
+        required: false
+
+env:        
+  STACK: ${{ inputs.stack }}
 
 jobs:
   generate-matrix:
@@ -15,16 +31,27 @@ jobs:
       latest: ${{ steps.latest-release-file.outputs.latest }}
 
     steps:
+    - name: Deploying a specific stack
+      if: "${{ env.STACK != '' }}"
+      run: echo ${{ env.STACK }}
+
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
       uses: actions/checkout@v2
 
+    # Set the appropriate job output based on the stack that is being deployed: custom or latest. 
     - name: Get latest release versions file
       id: latest-release-file
       run: |
-        cd ./release-versions
-        LATEST_FILE_NAME_RELEASE=$(ls -Ar | head -n 1)
-        echo ::set-output name=latest::${LATEST_FILE_NAME_RELEASE}
+        if [[ "${{ inputs.stack }}" == "" ]]; then
+          cd ./release-versions
+          LATEST_FILE_NAME_RELEASE=$(ls -Ar | head -n 1)
+          echo ::set-output name=latest::${LATEST_FILE_NAME_RELEASE}
+        fi
+        if [[ "${{ inputs.stack }}" != "" ]]; then
+          LATEST_FILE_NAME_RELEASE=${{ env.STACK }}
+          echo ::set-output name=latest::${LATEST_FILE_NAME_RELEASE}
+        fi
 
     # Install the python version needed
     - name: Setup python
@@ -83,7 +110,7 @@ jobs:
         client-payload: ${{steps.set-json.outputs.json}}
 
   update:
-    name: Upate stack to production ready
+    name: Update stack to production ready
     needs: [generate-matrix, dispatch]
     runs-on: ubuntu-latest
     # The environment that the job will reference
