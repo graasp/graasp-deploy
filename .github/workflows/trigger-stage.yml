@@ -143,12 +143,9 @@ jobs:
   test:
     name: Test
     needs: [dispatch, update-deployed-stack]
-    # The environment that the job will reference
-    environment: 
-      name: staging
     runs-on: ubuntu-latest
     steps:
-      - uses: graasp/graasp-deploy/.github/workflows/staging-test.yml@main
+      - run: echo 'Test job'
 
   promote:
     name: Promote stack to release ready
