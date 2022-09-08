@@ -1,6 +1,6 @@
 # This workflow takes the latest YYYYMMddhhmm-release-versions.json file inside the release-versions folder 
 # and triggers all the cdeployment workflows in the different repositories. 
-name: Deploy to production environment
+name: Deploy stack to prod
 
 # Controls when the action will run.
 on:
