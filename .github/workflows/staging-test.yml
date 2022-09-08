@@ -65,7 +65,7 @@ jobs:
       if: always()
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_message: 'Staging test run ${{ env.DATE }}'
+        commit_message: 'Smoke test run ${{ env.DATE }}'
         branch: gh-pages
         file_pattern: newman/*
 
@@ -113,7 +113,7 @@ jobs:
       run: |
         FILE_NAME=$(echo "`date +"%Y-%m-%d-%H-%M"`"-run.html)
         echo "FILE_NAME=$FILE_NAME" >> $GITHUB_ENV
-        node_modules/newman/bin/newman.js run postman/GraaspAPITest.postman_collection.json -e postman/staging.postman_environment.json -r htmlextra --reporter-htmlextra-export ./newman/$FILE_NAME
+        node_modules/newman/bin/newman.js run postman/GraaspAPITest.postman_collection.json -e postman/staging.postman_environment.json -r htmlextra --reporter-htmlextra-export ./newman/api-test/$FILE_NAME
 
     - name: Generate job summary markdown
       env:
@@ -127,6 +127,6 @@ jobs:
       id: commit
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_message: 'Staging test run ${{ env.DATE }}'
+        commit_message: 'API test run ${{ env.DATE }}'
         branch: gh-pages
         file_pattern: newman/*
