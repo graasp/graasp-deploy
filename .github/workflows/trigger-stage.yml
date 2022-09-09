@@ -109,6 +109,12 @@ jobs:
         event-type: staging-deployment
         client-payload: ${{steps.set-json.outputs.json}}
 
+    - name: Generate step summary markdown
+      env:
+        BADGE: 'https://badgen.net/badge/icon/See%20workflow/blue?icon=github&label'
+      run: |
+        echo '[![See workflow](${{env.BADGE}})](https://github.com/${{matrix.repository}}/actions/)' >> $GITHUB_STEP_SUMMARY
+
   update-deployed-stack:
     name: Update deployed staging stack
     needs: [generate-matrix, dispatch]
