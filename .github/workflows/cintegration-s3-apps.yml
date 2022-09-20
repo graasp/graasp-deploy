@@ -35,7 +35,7 @@ on:
         required: false
         type: string
       test-execution:
-        required: true
+        required: false
         type: boolean
         default: true
     # Define secrets which can be passed from the caller workflow
