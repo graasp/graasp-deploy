@@ -36,8 +36,8 @@ on:
         type: string
       test-execution:
         required: false
-        type: boolean
-        default: true
+        type: string
+        default: 'true'
     # Define secrets which can be passed from the caller workflow
     secrets:
       # AWS credentials and variables
