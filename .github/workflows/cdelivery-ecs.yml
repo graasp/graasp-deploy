@@ -44,7 +44,7 @@ env:
   # Allows to increase Node's max heap size
   NODE_OPTIONS: '--max_old_space_size=8192'
 
-# This workflow is made up of one jobs called build-deploy
+# This workflow is made up of one job called build-deploy
 jobs:
   # Build image, push to ECR and deploy to staging environment
   build-deploy:
