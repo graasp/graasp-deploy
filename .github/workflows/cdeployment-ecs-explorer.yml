@@ -6,6 +6,13 @@ on:
   workflow_call:
     # Define inputs which can be passed from the caller workflow
     inputs:
+      # automatic npm env variables
+      app-name:
+        required: true
+        type: string
+      app-version:
+        required: true
+        type: string
       # ecs-task-definition: path to task definition json template. 
       ecs-task-definition:
         required: true
@@ -56,6 +63,8 @@ on:
 
 # Set environment variables that are available to the steps of all jobs in the workflow
 env:        
+  APP_NAME: ${{ inputs.app-name }}
+  APP_VERSION: ${{ inputs.app-version }}
   ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
   CONTAINER_NAME: ${{ secrets.container-name-explorer }}
   ECR_REPOSITORY: ${{ secrets.ecr-repository }}
@@ -133,6 +142,8 @@ jobs:
             NEXT_PUBLIC_PUBLISHED_TAG_ID=${{ secrets.next-public-published-tag-id }}
             NEXT_PUBLIC_SENTRY_DSN=${{ secrets.next-public-sentry-dsn }}
             NEXT_PUBLIC_DOMAIN=${{ secrets.next-public-domain }}
+            NEXT_PUBLIC_APP_NAME=${{ env.APP_NAME }}
+            NEXT_PUBLIC_APP_VERSION=${{ env.APP_VERSION }}
             PORT=${{ secrets.port }}
 
     # Use latest revision of the task-definition to deploy the application to ECS
