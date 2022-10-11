@@ -23,6 +23,9 @@ on:
       embedded-link-item-plugin:
         required: true
         type: string
+      hidden-items-plugin:
+        required: true
+        type: string
       node-env:
         required: true
         type: string
@@ -307,6 +310,7 @@ jobs:
             H5P_CONTENT_REGION=${{ secrets.h5p-content-region }}
             H5P_CONTENT_SECRET_ACCESS_KEY=${{ secrets.h5p-content-secret-access-key }}
             H5P_PATH_PREFIX=${{ secrets.h5p-path-prefix }}
+            HIDDEN_ITEMS_PLUGIN=${{ inputs.hidden-items-plugin }}
             HIDDEN_TAG_ID=${{ secrets.hidden-tag-id }}
             HOSTNAME=${{ secrets.hostname }}
             IMAGE_CLASSIFIER_API=${{ secrets.image-classifier-api }}
