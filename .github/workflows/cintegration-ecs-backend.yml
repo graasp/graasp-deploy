@@ -6,7 +6,7 @@ on:
   workflow_call:
     # Define inputs which can be passed from the caller workflow
     inputs:
-      # ecs-task-definition: path to task definition json template. 
+      # ecs-task-definition: path to task definition json template.
       ecs-task-definition:
         required: true
         type: string
@@ -44,7 +44,7 @@ on:
       save-actions:
         required: true
         type: string
-      subscriptions-plugin: 
+      subscriptions-plugin:
         required: true
         type: string
       token-based-auth:
@@ -180,7 +180,7 @@ on:
         required: true
 
 # Set environment variables that are available to the steps of all jobs in the workflow
-env:        
+env:
   ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
   CONTAINER_NAME: ${{ secrets.container-name-graasp }}
   ECR_REPOSITORY: ${{ secrets.ecr-repository }}
@@ -198,7 +198,7 @@ jobs:
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     # This step runs a single command to execute unitary testing
     - name: Test job
@@ -211,13 +211,13 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     # Define job output that is available to all downstream jobs that depend on this job
-    outputs: 
+    outputs:
       tag: ${{ steps.tag-number.outputs.tag }}
 
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     # Set output variable tag with the current checked out ref
     - name: Set Tag Number
@@ -237,8 +237,8 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr-build
       uses: aws-actions/amazon-ecr-login@v1
-    
-    # Build and tag the docker image 
+
+    # Build and tag the docker image
     - name: Build, tag and push image to AWS ECR
       id: build-image
       env:
@@ -249,7 +249,7 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
   # Deploy to dev environment
-  deploy: 
+  deploy:
     needs: build
     name: Deploy
     runs-on: ubuntu-latest
@@ -257,7 +257,7 @@ jobs:
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     # Configure AWS credential and region environment variables for use in next steps
     - name: Configure AWS credentials

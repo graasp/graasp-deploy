@@ -13,7 +13,7 @@ on:
       app-version:
         required: true
         type: string
-      # ecs-task-definition: path to task definition json template. 
+      # ecs-task-definition: path to task definition json template.
       ecs-task-definition:
         required: true
         type: string
@@ -29,7 +29,7 @@ on:
       aws-secret-access-key:
         required: true
       aws-region:
-        required: true           
+        required: true
       ecs-cluster:
         required: true
       ecs-service:
@@ -40,11 +40,11 @@ on:
       container-name-explorer:
         required: true
       # Environment variables
-      next-public-api-host: 
+      next-public-api-host:
         required: true
       next-public-google-analytics-id:
         required: true
-      next-public-graasp-auth-host: 
+      next-public-graasp-auth-host:
         required: true
       next-public-graasp-builder-host:
         required: true
@@ -62,7 +62,7 @@ on:
         required: true
 
 # Set environment variables that are available to the steps of all jobs in the workflow
-env:        
+env:
   APP_NAME: ${{ inputs.app-name }}
   APP_VERSION: ${{ inputs.app-version }}
   ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
@@ -79,14 +79,14 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Define job output that is available to all downstream jobs that depend on this job
-    outputs: 
+    outputs:
       tag: ${{ steps.tag-number.outputs.tag }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         ref: ${{ inputs.tag }}
 
@@ -153,4 +153,4 @@ jobs:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: ${{ secrets.ecs-service }}
           cluster: ${{ secrets.ecs-cluster }}
-          wait-for-service-stability: true       
+          wait-for-service-stability: true

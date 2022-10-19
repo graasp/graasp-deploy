@@ -1,4 +1,4 @@
-name: Reusable workflow that runs Continuous Integration pipeline for S3 deployments. 
+name: Reusable workflow that runs Continuous Integration pipeline for S3 deployments.
 
 # Control when the action will run
 on:
@@ -73,7 +73,7 @@ jobs:
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     # This step runs a single command to execute unitary testing
     - name: Test job
@@ -89,7 +89,7 @@ jobs:
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     # Download and cache distribution of the requested Node.js version, and add it to the PATH
     - name: Setup node
@@ -102,7 +102,7 @@ jobs:
     - name: Yarn build dev
       id: build-image
       # Set environment variables required to perform the build. These are only available to this step
-      env: 
+      env:
         PORT: ${{ secrets.port }}
         REACT_APP_API_HOST: ${{ secrets.api-host }}
         REACT_APP_AUTHENTICATION_HOST: ${{ secrets.authentication-host }}
@@ -139,12 +139,12 @@ jobs:
       env:
         APP_DIR: '${{ secrets.aws-s3-bucket-name }}'
       run: aws s3 sync ${{env.BUILD_FOLDER}} s3://${APP_DIR} --acl public-read --follow-symlinks --delete
-      # --acl public-read makes files publicly readable 
+      # --acl public-read makes files publicly readable
       # --follow-symlinks fixes some weird symbolic link problems that may come up
       # --delete permanently deletes files in the S3 bucket that are not present in the latest version of the repository/build.
 
   # Deploy to development environment
-  deploy: 
+  deploy:
     needs: build
     name: Deploy
     runs-on: ubuntu-latest

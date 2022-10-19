@@ -59,7 +59,7 @@ jobs:
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         ref: ${{ inputs.tag }}
 
@@ -74,7 +74,7 @@ jobs:
     - name: Yarn build staging version
       id: build-image
       # Set environment variables required to perform the build. These are only available to this step
-      env: 
+      env:
         REACT_APP_GRAASP_DOMAIN: ${{ secrets.graasp-domain }}
         REACT_APP_GRAASP_APP_ID: ${{ secrets.app-id }}
         REACT_APP_SENTRY_DSN: ${{ secrets.sentry-dsn }}
@@ -100,7 +100,7 @@ jobs:
       env:
         APP_DIR: '${{ secrets.aws-s3-bucket-name }}/${{ secrets.app-id }}/${{env.VERSION}}/'
       run: aws s3 sync ${{env.BUILD_FOLDER}} s3://${APP_DIR} --acl public-read --follow-symlinks --delete
-      # --acl public-read makes files publicly readable 
+      # --acl public-read makes files publicly readable
       # --follow-symlinks fixes some weird symbolic link problems that may come up
       # --delete permanently deletes files in the S3 bucket that are not present in the latest version of the repository/build.
 
@@ -117,7 +117,7 @@ jobs:
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         ref: ${{ inputs.tag }}
 
