@@ -6,7 +6,7 @@ on:
   workflow_call:
     # Define inputs which can be passed from the caller workflow
     inputs:
-      # ecs-task-definition: path to task definition json template. 
+      # ecs-task-definition: path to task definition json template.
       ecs-task-definition:
         required: true
         type: string
@@ -48,7 +48,7 @@ on:
       save-actions:
         required: true
         type: string
-      subscriptions-plugin: 
+      subscriptions-plugin:
         required: true
         type: string
       token-based-auth:
@@ -65,7 +65,7 @@ on:
       aws-secret-access-key:
         required: true
       aws-region:
-        required: true           
+        required: true
       ecs-cluster:
         required: true
       ecs-service:
@@ -184,7 +184,7 @@ on:
         required: true
 
 # Set environment variables that are available to the steps of all jobs in the workflow
-env:        
+env:
   ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
   CONTAINER_NAME: ${{ secrets.container-name-graasp }}
   ECR_REPOSITORY: ${{ secrets.ecr-repository }}
@@ -206,7 +206,7 @@ jobs:
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         ref: ${{ inputs.tag }}
 
@@ -315,7 +315,7 @@ jobs:
             TOKEN_BASED_AUTH=${{ inputs.token-based-auth }}
             WEBSOCKETS_PLUGIN=${{ inputs.websockets-plugin }}
 
-    # Insert a second container image URI into previously created Amazon ECS task definition JSON file. 
+    # Insert a second container image URI into previously created Amazon ECS task definition JSON file.
     - name: Modify Amazon ECS task definition with second container
       id: task-def-2
       uses: aws-actions/amazon-ecs-render-task-definition@v1
@@ -326,7 +326,7 @@ jobs:
           environment-variables: |
             NODE_ENV=${{ inputs.node-env-iframely }}
 
-    # Insert a third container image URI into previously created Amazon ECS task definition JSON file. 
+    # Insert a third container image URI into previously created Amazon ECS task definition JSON file.
     - name: Modify Amazon ECS task definition with third container
       id: task-def-3
       uses: aws-actions/amazon-ecs-render-task-definition@v1
@@ -342,7 +342,7 @@ jobs:
           task-definition: ${{ steps.task-def-3.outputs.task-definition }}
           service: ${{ secrets.ecs-service }}
           cluster: ${{ secrets.ecs-cluster }}
-          wait-for-service-stability: true       
+          wait-for-service-stability: true
 
   test:
     name: Test
@@ -352,7 +352,7 @@ jobs:
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         ref: ${{ inputs.tag }}
 

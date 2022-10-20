@@ -1,5 +1,5 @@
-# This workflow takes the latest YYYYMMddhhmm-staging-versions.json file inside the staging-versions folder 
-# and triggers all the cdelivery workflows in the different repositories. 
+# This workflow takes the latest YYYYMMddhhmm-staging-versions.json file inside the staging-versions folder
+# and triggers all the cdelivery workflows in the different repositories.
 name: Deploy stack to stage
 
 # Controls when the action will run.
@@ -19,7 +19,7 @@ on:
         # Input does not have to be provided for the workflow to run
         required: false
 
-env:        
+env:
   STACK: ${{ inputs.stack }}
 
 jobs:
@@ -37,9 +37,9 @@ jobs:
 
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
-    # Set the appropriate job output based on the stack that is being deployed: custom or latest. 
+    # Set the appropriate job output based on the stack that is being deployed: custom or latest.
     - name: Get latest staging versions file
       id: latest-staging-file
       run: |
@@ -57,10 +57,10 @@ jobs:
     - name: Setup python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.8 
+        python-version: 3.8
 
     # Run compare.py to get the difference between the newer and the already deployed versions
-    - name: Execute py script 
+    - name: Execute py script
       env:
         LATEST_FILE_NAME_STAGING: ${{ steps.latest-staging-file.outputs.latest }}
       run: |
@@ -87,7 +87,7 @@ jobs:
     needs: generate-matrix
     runs-on: ubuntu-latest
     # The environment that the job will reference
-    environment: 
+    environment:
       name: staging
     strategy:
       # Uses fromJson to parse the output and set a matrix variable.
@@ -119,7 +119,7 @@ jobs:
     name: Update deployed staging stack
     needs: [generate-matrix, dispatch]
     runs-on: ubuntu-latest
-    environment: 
+    environment:
       name: staging
     outputs:
       commit-hash: ${{ steps.commit.outputs.commit_hash }}
@@ -127,7 +127,7 @@ jobs:
       LATEST_FILE_NAME_STAGING: ${{ needs.generate-matrix.outputs.latest }}
     steps:
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Update current-staging-versions file
       id: update-current-staging-versions-file
@@ -157,19 +157,19 @@ jobs:
     name: Promote stack to release ready
     needs: [generate-matrix, dispatch, update-deployed-stack, test]
     runs-on: ubuntu-latest
-    environment: 
+    environment:
       name: staging
     env:
       LATEST_FILE_NAME_STAGING: ${{ needs.generate-matrix.outputs.latest }}
     steps:
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         ref: ${{ needs.update-deployed-stack.outputs.commit-hash }}
 
     # Create new staging-versions.json file
     - name: Create new release-versions.json file name
-      run: | 
+      run: |
         RELEASE_FILE_NAME=$(echo "`date +"%Y%m%d%H%M"`"-release-versions.json)
         echo "RELEASE_FILE_NAME=$RELEASE_FILE_NAME" >> $GITHUB_ENV
 
@@ -179,7 +179,7 @@ jobs:
         RELEASE_FILE_NAME: ${{ env.RELEASE_FILE_NAME }}
       run: |
         cd ./staging-versions
-        cp $LATEST_FILE_NAME_STAGING ../release-versions/$RELEASE_FILE_NAME 
+        cp $LATEST_FILE_NAME_STAGING ../release-versions/$RELEASE_FILE_NAME
 
     - name: Keep changes in detached HEAD step
       run: |

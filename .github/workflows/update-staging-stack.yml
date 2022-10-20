@@ -1,5 +1,5 @@
-# This workflow creates a new YYYYMMddhhmm-staging-versions.json file inside the staging-versions folder 
-# with the latest tag pushed by the repository that triggered the workflow. 
+# This workflow creates a new YYYYMMddhhmm-staging-versions.json file inside the staging-versions folder
+# with the latest tag pushed by the repository that triggered the workflow.
 name: Update staging stack
 
 # Controls when the action will run
@@ -10,7 +10,7 @@ on:
 
 # This workflow is made up of one job called create
 jobs:
-  # Create a new YYYYMMddhhmm-staging-versions.json file with latest pushed tag. 
+  # Create a new YYYYMMddhhmm-staging-versions.json file with latest pushed tag.
   create:
     name: Create staging-versions.json file
     # The type of runner that the job will run on
@@ -19,7 +19,7 @@ jobs:
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     # Get the latest modified file in the staging-versions working directory.
     - name: Get latest versions file
@@ -35,19 +35,19 @@ jobs:
     - name: Create new staging-versions.json file
       # Set environment variables required to create the file. These are only available to this step
       env:
-        # REPOSITORY: repository that will update current version. 
+        # REPOSITORY: repository that will update current version.
         REPOSITORY: ${{ github.event.client_payload.repository }}
-        # TAG: tag pushed by the repository. 
+        # TAG: tag pushed by the repository.
         TAG: ${{ github.event.client_payload.tag }}
-        # LATEST_FILE_NAME: latest staging-versions.json file created. It will be used as template. 
+        # LATEST_FILE_NAME: latest staging-versions.json file created. It will be used as template.
         LATEST_FILE_NAME: ${{ steps.latest-file.outputs.latest }}
-      run: | 
+      run: |
         FILE_NAME=$(echo "`date +"%Y%m%d%H%M"`"-staging-versions.json)
         echo "FILE_NAME=$FILE_NAME" >> $GITHUB_ENV
         jq --arg tag "$TAG" --arg repository "$REPOSITORY" \
         'if ((.include[] | select(.repository == $repository)) // null) != null then (.include[] | select(.repository == $repository) | .tag) |= $tag else .include += [{"repository": $repository, "tag": $tag}] end' \
         ./staging-versions/$LATEST_FILE_NAME > ./staging-versions/$FILE_NAME
-    
+
     # Detect changed files during a Workflow run and commit and push them back to the GitHub repository
     - name: Commit step
       id: commit
@@ -55,5 +55,3 @@ jobs:
       with:
          # Commit message for the created commit.
         commit_message: ${{ env.FILE_NAME }}
-
-

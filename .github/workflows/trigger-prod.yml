@@ -1,5 +1,5 @@
-# This workflow takes the latest YYYYMMddhhmm-release-versions.json file inside the release-versions folder 
-# and triggers all the cdeployment workflows in the different repositories. 
+# This workflow takes the latest YYYYMMddhhmm-release-versions.json file inside the release-versions folder
+# and triggers all the cdeployment workflows in the different repositories.
 name: Deploy stack to prod
 
 # Controls when the action will run.
@@ -19,7 +19,7 @@ on:
         # Input does not have to be provided for the workflow to run
         required: false
 
-env:        
+env:
   STACK: ${{ inputs.stack }}
 
 jobs:
@@ -37,9 +37,9 @@ jobs:
 
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
-    # Set the appropriate job output based on the stack that is being deployed: custom or latest. 
+    # Set the appropriate job output based on the stack that is being deployed: custom or latest.
     - name: Get latest release versions file
       id: latest-release-file
       run: |
@@ -57,10 +57,10 @@ jobs:
     - name: Setup python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.8 
+        python-version: 3.8
 
     # Run compare.py to get the difference between the newer and the already deployed versions
-    - name: Execute py script 
+    - name: Execute py script
       env:
         LATEST_FILE_NAME_RELEASE: ${{ steps.latest-release-file.outputs.latest }}
       run: |
@@ -87,7 +87,7 @@ jobs:
     needs: generate-matrix
     runs-on: ubuntu-latest
     # The environment that the job will reference
-    environment: 
+    environment:
       name: production
     strategy:
       # Uses fromJson to parse the output and set a matrix variable.
@@ -120,17 +120,17 @@ jobs:
     needs: [generate-matrix, dispatch]
     runs-on: ubuntu-latest
     # The environment that the job will reference
-    environment: 
+    environment:
       name: production
     env:
       LATEST_FILE_NAME_RELEASE: ${{ needs.generate-matrix.outputs.latest }}
     steps:
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     # Create new production-versions.json file. Use jq to write to stdout and pipe the output to a newly created file.
     - name: Create new production-versions.json file name
-      run: | 
+      run: |
         PRODUCTION_FILE_NAME=$(echo "`date +"%Y%m%d%H%M"`"-production-versions.json)
         echo "PRODUCTION_FILE_NAME=$PRODUCTION_FILE_NAME" >> $GITHUB_ENV
 

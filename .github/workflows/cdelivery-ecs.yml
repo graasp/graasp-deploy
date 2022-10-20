@@ -6,7 +6,7 @@ on:
   workflow_call:
     # Define inputs which can be passed from the caller workflow
     inputs:
-      # ecs-task-definition: path to task definition json template. 
+      # ecs-task-definition: path to task definition json template.
       ecs-task-definition:
         required: true
         type: string
@@ -22,7 +22,7 @@ on:
       aws-secret-access-key:
         required: true
       aws-region:
-        required: true           
+        required: true
       ecs-cluster:
         required: true
       ecs-service:
@@ -37,7 +37,7 @@ on:
       #   required: true or false
 
 # Set environment variables that are available to the steps of all jobs in the workflow
-env:        
+env:
   ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
   CONTAINER_NAME: ${{ secrets.container-name }}
   ECR_REPOSITORY: ${{ secrets.ecr-repository }}
@@ -52,21 +52,21 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Define job output that is available to all downstream jobs that depend on this job
-    outputs: 
+    outputs:
       tag: ${{ steps.tag-number.outputs.tag }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         ref: ${{ inputs.tag }}
-      
+
     # Set output variable tag with the current checked out ref
     - name: Set Tag Number
       id: tag-number
       run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
-    
+
     # Configure AWS credential and region environment variables for use in next steps
     - name: Configure AWS Credentials
       id: configure-aws
@@ -104,11 +104,11 @@ jobs:
           container-name: ${{ secrets.container-name }}
           image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
           # Uncomment next lines to set environment variables here.
-          # Follow the specified format. 
+          # Follow the specified format.
           # environment-variables: |
           #   ENV_VARIABLE=${{ secrets.env-variable-name }}
 
-    # Uncomment and replicate the following section for every container you want to add to your ECS deployment. 
+    # Uncomment and replicate the following section for every container you want to add to your ECS deployment.
     # # Modify Amazon ECS task definition with second container
     # - name: Modify Amazon ECS task definition
     #   id: task-def-2
@@ -118,7 +118,7 @@ jobs:
     #       container-name: ${{ secrets.container-name-iframely }}
     #       image: ${{ secrets.container-image-iframely}}
     #       # Uncomment next lines to set environment variables here.
-    #       # Follow the specified format. 
+    #       # Follow the specified format.
     #       # environment-variables: |
     #       #   ENV_VARIABLE_2=${{ secrets.env-variable-name-2 }}
 
@@ -129,7 +129,7 @@ jobs:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: ${{ secrets.ecs-service }}
           cluster: ${{ secrets.ecs-cluster }}
-          wait-for-service-stability: true       
+          wait-for-service-stability: true
 
   test:
     name: Test
@@ -139,7 +139,7 @@ jobs:
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         ref: ${{ inputs.tag }}
 
