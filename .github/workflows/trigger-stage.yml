@@ -46,11 +46,11 @@ jobs:
         if [[ "${{ inputs.stack }}" == "" ]]; then
           cd ./staging-versions
           LATEST_FILE_NAME_STAGING=$(ls -Ar | head -n 1)
-          echo ::set-output name=latest::${LATEST_FILE_NAME_STAGING}
+          echo "latest=${LATEST_FILE_NAME_STAGING}" >> $GITHUB_OUTPUT
         fi
         if [[ "${{ inputs.stack }}" != "" ]]; then
           LATEST_FILE_NAME_STAGING=${{ env.STACK }}
-          echo ::set-output name=latest::${LATEST_FILE_NAME_STAGING}
+          echo "latest=${LATEST_FILE_NAME_STAGING}" >> $GITHUB_OUTPUT
         fi
 
     # Install the python version needed
@@ -73,7 +73,7 @@ jobs:
         STACK_LENGTH=$(cat diff.json | jq '.include | length')
         if [[ "$STACK_LENGTH" -gt 0 ]]; then
           LATEST_FILE=$(cat diff.json)
-          echo ::set-output name=matrix::${LATEST_FILE//'%'/'%25'}
+          echo "matrix=${LATEST_FILE//'%'/'%25'}" >> $GITHUB_OUTPUT
           echo '### New versions detected! :bookmark:' >> $GITHUB_STEP_SUMMARY
           NEW_STACK=$(cat diff.json | jq -r '.include[] | {repository,tag}| join(" - tag: ")')
           echo $NEW_STACK >> $GITHUB_STEP_SUMMARY
@@ -99,7 +99,7 @@ jobs:
         TAG: ${{matrix.tag}}
       run: |
         JSON=$(jq --null-input --arg tag "$TAG" '{"tag": $tag}')
-        echo ::set-output name=json::${JSON//'%'/'%25'}
+        echo "json=${JSON//'%'/'%25'}" >> $GITHUB_OUTPUT
 
     - name: Repository Dispatch
       uses: peter-evans/repository-dispatch@v2
@@ -143,7 +143,7 @@ jobs:
 
     - name: Set commit hash output
       run: |
-        echo ::set-output name=commit-hash::${{ steps.commit.outputs.commit_hash }}
+        echo "commit-hash=${{ steps.commit.outputs.commit_hash }}" >> $GITHUB_OUTPUT
         echo '### New stack deployed! :rocket:' >> $GITHUB_STEP_SUMMARY
 
   test:

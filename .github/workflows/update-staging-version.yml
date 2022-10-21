@@ -22,7 +22,7 @@ env:
 
 # This workflow is made up of one job called create-release-candidate
 jobs:
-  # Create a json with the repository name and tag and pass it to graasp-deploy repository 
+  # Create a json with the repository name and tag and pass it to graasp-deploy repository
   create-release-candidate:
     name: Create new candidate
     # The type of runner that the job will run on
@@ -40,7 +40,7 @@ jobs:
     - name: Get yarn cache directory
       id: yarn-cache-dir-path
       run: |
-        echo "::set-output name=dir::$(yarn config get cacheFolder)"
+        echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
 
     # Cache dependencies to speed up workflow. Only for development branches
     # path: The file path on the runner to cache or restore.
@@ -56,7 +56,7 @@ jobs:
           ${{ runner.os }}-yarn-
 
     # Install dependencies
-    # The --cached flag with 'yarn add' is used  to use cached downloads (in the cache directory mentioned above) 
+    # The --cached flag with 'yarn add' is used  to use cached downloads (in the cache directory mentioned above)
     # during installation whenever possible instead of downloading them.
     - name: Yarn install
       id: yarn-install
@@ -90,14 +90,14 @@ jobs:
       run: git push --follow-tags
 
     # Get the latest tag and create a json with the repository name and tag
-    # ::set-output name={name}::{value} Sets an output parameter for this step.
+    # "{name}={value}" >> $GITHUB_OUTPUT Sets an output parameter for this step.
     - name: Set tag
       id: set-tag
       run: |
         REPOSITORY=$(echo '${{ github.repository }}')
         TAG=$(git tag)
         JSON=$(jq --null-input --arg repository "$REPOSITORY" --arg tag "$TAG" '{"repository": $repository, "tag": $tag}')
-        echo ::set-output name=json::${JSON//'%'/'%25'}
+        echo "json=${JSON//'%'/'%25'}" >> $GITHUB_OUTPUT
 
     # Trigger an 'on: repository_dispatch' workflow to run in graasp-deploy repository
     - name: Repository Dispatch
