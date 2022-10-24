@@ -55,7 +55,7 @@ jobs:
 
     # Install the python version needed
     - name: Setup python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: 3.8
 
