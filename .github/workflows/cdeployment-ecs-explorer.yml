@@ -93,7 +93,7 @@ jobs:
     # Set output variable tag with the current checked out ref
     - name: Set Tag Number
       id: tag-number
-      run: echo ::set-output name=tag::${{ inputs.tag }}
+      run: echo "tag=${{ inputs.tag }}" >> $GITHUB_OUTPUT
 
     # Configure AWS credential and region environment variables for use in next steps
     - name: Configure AWS Credentials
