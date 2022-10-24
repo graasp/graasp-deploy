@@ -1,0 +1,45 @@
+name: Cache yarn and install
+
+description: "Yarn install and cache modules and cypress binaries"
+inputs:
+  cypress: 
+    required: false
+    type: string
+    default: false
+
+runs:
+  using: "composite"
+  steps:
+    # Cache dependencies to speed up workflow
+    # path: The file path on the runner to cache or restore.
+    # key: Create cache key using the hashFiles function to create a new cache when dependencies change.
+    # restore-keys: An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key
+    - name: Cache dependencies
+      id: cache-node-modules
+      uses: actions/cache@v3
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+            ${{ runner.os }}-modules-
+
+    # Cache cypress binary to speed up workflow
+    # path: The file path on the runner to cache or restore.
+    # key: Create cache key using the hashFiles function to create a new cache when dependencies change.
+    # restore-keys: An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key
+    - name: Cache Cypress Binary
+      id: cache-cypress-binary
+      if: inputs.cypress == 'true'
+      uses: actions/cache@v3
+      with:
+        path: '~/.cache/Cypress'
+        key: ${{ runner.os }}-cypress-binary-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+            ${{ runner.os }}-cypress-binary-
+
+    # Install dependencies when the cache has not been retrieved
+    - name: Install dependencies
+      id: install
+      if: (steps.cache-node-modules.outputs.cache-hit != 'true') || (inputs.cypress == 'true' && steps.cache-cypress-binary.outputs.cache-hit != 'true')
+      run: yarn install
+      shell: bash

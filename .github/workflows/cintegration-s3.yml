@@ -100,6 +100,9 @@ jobs:
       with:
         node-version: '16'
         check-latest: true
+        
+    - name: Yarn install and Cache dependencies
+      uses: graasp/graasp-deploy/.github/actions/yarn-install-and-cache@v1
 
     - name: Yarn build dev
       id: build-image
@@ -121,9 +124,7 @@ jobs:
         REACT_APP_SENTRY_DSN: ${{ secrets.sentry-dsn }}
         REACT_APP_STRIPE_PUBLISHABLE_KEY: ${{ secrets.stripe-publishable-key }}
       # Run a set of commands using the runners shell to perform install and build
-      run: |
-        yarn install
-        yarn run build
+      run: yarn run build
 
     # Configure AWS credential and region environment variables for use in next steps
     - name: Configure AWS Credentials
