@@ -54,4 +54,4 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
          # Commit message for the created commit.
-        commit_message: ${{ env.FILE_NAME }}
+        commit_message: 'chore: updated staging stack ${{ env.FILE_NAME }}'
