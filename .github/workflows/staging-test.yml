@@ -1,6 +1,6 @@
 name: Integration tests in stage
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   # Allow the workflow to be reusable
   workflow_call:
@@ -27,7 +27,7 @@ jobs:
         echo "DATE=$DATE" >> $GITHUB_ENV
 
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
-    - name: Git checkout 
+    - name: Git checkout
       uses: actions/checkout@v3
 
     # Download and cache distribution of the requested Node.js version, and add it to the PATH
@@ -65,14 +65,14 @@ jobs:
       if: always()
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_message: 'Smoke test run ${{ env.DATE }}'
+        commit_message: 'chore(test): Smoke test run ${{ env.DATE }}'
         branch: gh-pages
         file_pattern: newman/*
 
   api-test:
     name: Graasp API Test
     runs-on: ubuntu-latest
-    env:        
+    env:
       PASSWORD: ${{ secrets.STAGING_PASSWORD }}
       EMAIL: ${{ secrets.STAGING_EMAIL }}
       API_HOST: ${{ secrets.REACT_APP_API_HOST_STAGE }}
@@ -84,7 +84,7 @@ jobs:
         DATE=$(echo "`date +"%Y-%m-%d-%H-%M"`")
         echo "DATE=$DATE" >> $GITHUB_ENV
 
-    - name: Git checkout 
+    - name: Git checkout
       uses: actions/checkout@v3
 
     - name: Setup node
@@ -127,6 +127,6 @@ jobs:
       if: always()
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_message: 'API test run ${{ env.DATE }}'
+        commit_message: 'chore(test): run API tests ${{ env.DATE }}'
         branch: gh-pages
         file_pattern: newman/*

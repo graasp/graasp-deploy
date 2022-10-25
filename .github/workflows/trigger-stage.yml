@@ -139,7 +139,7 @@ jobs:
       id: commit
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_message: Deploy new stack to staging environment
+        commit_message: 'chore(deploy): deploy new stack to staging environment'
 
     - name: Set commit hash output
       run: |
@@ -192,7 +192,7 @@ jobs:
       id: commit
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_message: Promote new stack to release ready
+        commit_message: 'chore: promote new stack to release ready'
 
     - name: Generate job summary markdown
       run: |
