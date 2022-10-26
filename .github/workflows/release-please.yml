@@ -8,7 +8,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: google-github-actions/release-please-action@v3
+        id: release
         with:
           release-type: simple
           package-name: graasp-deploy
           changelog-types: '[{"type":"feat","section":"Features","hidden":false},{"type":"fix","section":"Bug Fixes","hidden":false},{"type":"docs","section":"Documentation","hidden":false}]'
+      - uses: actions/checkout@v3
+      - name: Tag major and minor versions
+        uses: jacobsvante/tag-major-minor-action@v0.1
+        if: ${{ steps.release.outputs.release_created }}
+        with:
+          major: ${{ steps.release.outputs.major }}
+          minor: ${{ steps.release.outputs.minor }}
