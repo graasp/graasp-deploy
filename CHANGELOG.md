@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/graasp/graasp-deploy/compare/v1.0.0...v1.1.0) (2022-10-26)
+
+
+### Features
+
+* add minor and major tag that follow latest release ([#75](https://github.com/graasp/graasp-deploy/issues/75)) ([067fe29](https://github.com/graasp/graasp-deploy/commit/067fe295c20de64a97dc30344dddf19974796397))
+
 ## 1.0.0 (2022-10-26)
 
 
