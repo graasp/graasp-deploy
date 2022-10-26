@@ -60,7 +60,7 @@ on:
 env:
   BUILD_FOLDER: '${{ inputs.build-folder }}'
   # Allows to increase Node's max heap size
-  NODE_OPTIONS: '--max_old_space_size=16384'
+  NODE_OPTIONS: '--max_old_space_size=8192'
   # Prevent react to generate source maps
   GENERATE_SOURCEMAP: false
 
