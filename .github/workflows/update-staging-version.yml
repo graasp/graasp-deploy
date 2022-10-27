@@ -96,8 +96,8 @@ jobs:
       run: |
         REPOSITORY=$(echo '${{ github.repository }}')
         TAG=$(git tag)
-        JSON=$(jq --null-input --arg repository "$REPOSITORY" --arg tag "$TAG" '{"repository": $repository, "tag": $tag}')
-        echo "json=${JSON//'%'/'%25'}" >> $GITHUB_OUTPUT
+        JSON=$(jq -c --null-input --arg repository "$REPOSITORY" --arg tag "$TAG" '{"repository": $repository, "tag": $tag}')
+        echo "json=$JSON" >> $GITHUB_OUTPUT
 
     # Trigger an 'on: repository_dispatch' workflow to run in graasp-deploy repository
     - name: Repository Dispatch
