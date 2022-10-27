@@ -73,7 +73,7 @@ jobs:
         STACK_LENGTH=$(cat diff.json | jq '.include | length')
         if [[ "$STACK_LENGTH" -gt 0 ]]; then
           LATEST_FILE=$(cat diff.json)
-          echo "matrix=${LATEST_FILE//'%'/'%25'}" >> $GITHUB_OUTPUT
+          echo "matrix=$LATEST_FILE" >> $GITHUB_OUTPUT
           echo '### New versions detected! :bookmark:' >> $GITHUB_STEP_SUMMARY
           NEW_STACK=$(cat diff.json | jq -r '.include[] | {repository,tag}| join(" - tag: ")')
           echo $NEW_STACK >> $GITHUB_STEP_SUMMARY
