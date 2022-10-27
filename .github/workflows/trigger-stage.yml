@@ -98,7 +98,8 @@ jobs:
       env:
         TAG: ${{matrix.tag}}
       run: |
-        echo "json=\{\"tag\": \"$TAG\"\}" >> $GITHUB_OUTPUT
+        JSON=$(jq -c --null-input --arg tag "$TAG" '{"tag": $tag}')
+        echo "json=$JSON" >> $GITHUB_OUTPUT
 
     - name: Repository Dispatch
       uses: peter-evans/repository-dispatch@v2
