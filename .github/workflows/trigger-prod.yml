@@ -104,6 +104,9 @@ jobs:
     - name: Repository Dispatch
       uses: peter-evans/repository-dispatch@v2
       with:
+        # this token has to be a PAT because we dispatch to another repo
+        # https://github.com/peter-evans/repository-dispatch
+        # this token expires every now and then, so it has to be renew
         token: ${{ secrets.REPO_ACCESS_TOKEN }}
         repository: ${{ matrix.repository }}
         event-type: production-deployment
