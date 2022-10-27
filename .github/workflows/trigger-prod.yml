@@ -46,11 +46,11 @@ jobs:
         if [[ "${{ inputs.stack }}" == "" ]]; then
           cd ./release-versions
           LATEST_FILE_NAME_RELEASE=$(ls -Ar | head -n 1)
-          echo "latest=${LATEST_FILE_NAME_RELEASE}" >> $GITHUB_OUTPUT
+          echo "latest=$LATEST_FILE_NAME_RELEASE" >> $GITHUB_OUTPUT
         fi
         if [[ "${{ inputs.stack }}" != "" ]]; then
           LATEST_FILE_NAME_RELEASE=${{ env.STACK }}
-          echo "latest=${LATEST_FILE_NAME_RELEASE}" >> $GITHUB_OUTPUT
+          echo "latest=$LATEST_FILE_NAME_RELEASE" >> $GITHUB_OUTPUT
         fi
 
     # Install the python version needed
@@ -98,7 +98,7 @@ jobs:
       env:
         TAG: ${{matrix.tag}}
       run: |
-        echo json=\{\"tag\": \"$TAG\"\} >> $GITHUB_OUTPUT
+        echo "json=\{\"tag\": \"$TAG\"\}" >> $GITHUB_OUTPUT
 
     - name: Repository Dispatch
       uses: peter-evans/repository-dispatch@v2
