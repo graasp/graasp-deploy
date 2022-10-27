@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.1.1](https://github.com/graasp/graasp-deploy/compare/v1.1.0...v1.1.1) (2022-10-27)
+
+
+### Bug Fixes
+
+* bring back jq with single line output (-c) and remove braces escape ([908d539](https://github.com/graasp/graasp-deploy/commit/908d5392226e71c29aeaaf8ab7674cda4a7cb17e))
+* **ci:** remove indentation from diff.json and following minification ([e675a0f](https://github.com/graasp/graasp-deploy/commit/e675a0ff444d9d380d6323328620b71ee0237963))
+* remaining substitutions and schenanigans ([36e980e](https://github.com/graasp/graasp-deploy/commit/36e980e56d55b7ff44b9f8f039163920097ba7cd))
+
+
+### Documentation
+
+* add documentation about PAT ([#87](https://github.com/graasp/graasp-deploy/issues/87)) ([199376e](https://github.com/graasp/graasp-deploy/commit/199376e1e03a27010652417459fe22cf88d7a4b5))
+
 ## [1.1.0](https://github.com/graasp/graasp-deploy/compare/v1.0.0...v1.1.0) (2022-10-26)
 
 
