@@ -26,6 +26,7 @@ Deploy Graasp ecosystem in AWS using Github workflows and Github actions.
 - [Why use workflows](#why-use-workflows)
 - [Why use reusable workflows](#why-use-reusable-workflows)
 - [Why refer to a fixed workflow commit](#why-refer-to-a-fixed-workflow-commit)
+- [How to solve Bad Credentials error](#how-to-solve-bad-credentials-error)
 
 ## What Graasp Deploy does
 
@@ -391,3 +392,7 @@ For more information see Github Docs "[Reusing workflows](https://docs.github.co
 It is a good practice to specify exactly what commit you want to use, as it points to a specific version of the reusable workflow. Using the commit SHA is the safest for stability and security.
 
 Therefore, it’s safer to use it like this so if there are changes on the main branch, the hash always points to the same file, and you never have to worry about the action changing or behaving differently.
+
+## How to solve Bad Credentials error
+
+Every now and then, the given Personal Access Token expires. This token is used to dispatch an event to other repositories (eg. Graasp Deploy instructs Graasp Player to deploy to staging). Someone should [create a new token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) and replace it in the organization's secrets.
