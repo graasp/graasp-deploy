@@ -23,13 +23,13 @@ for new_item in new_file['include']:
                 print('New tag')
                 print(new_item['tag'])
                 output['include'].append(new_item)
-            else: 
+            else:
                 break
 
     if new_item['repository'] not in visited:
         print(f"Found new repository in stack: {new_item['repository']}")
-        output['include'].append(new_item)        
+        output['include'].append(new_item)
 
 # New file
 output_file = open("diff.json", "w")
-json.dump(output, output_file, indent=2)
+json.dump(output, output_file)
