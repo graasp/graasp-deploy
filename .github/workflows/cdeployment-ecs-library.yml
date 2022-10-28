@@ -37,7 +37,7 @@ on:
       ecr-repository:
         required: true
       #container name that will be included in the cluster
-      container-name-explorer:
+      container-name-library:
         required: true
       # Environment variables
       next-public-api-host:
@@ -68,7 +68,7 @@ env:
   APP_NAME: ${{ inputs.app-name }}
   APP_VERSION: ${{ inputs.app-version }}
   ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
-  CONTAINER_NAME: ${{ secrets.container-name-explorer }}
+  CONTAINER_NAME: ${{ secrets.container-name-library }}
   ECR_REPOSITORY: ${{ secrets.ecr-repository }}
   # Allows to increase Node's max heap size
   NODE_OPTIONS: '--max_old_space_size=8192'
@@ -131,7 +131,7 @@ jobs:
         IMAGE_TAG: ${{ steps.tag-number.outputs.tag }}
       with:
           task-definition: ${{ inputs.ecs-task-definition }}
-          container-name: ${{ secrets.container-name-explorer }}
+          container-name: ${{ secrets.container-name-library }}
           image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
           environment-variables: |
             NEXT_PUBLIC_API_HOST=${{ secrets.next-public-api-host }}
