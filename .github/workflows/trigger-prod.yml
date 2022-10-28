@@ -75,8 +75,9 @@ jobs:
           LATEST_FILE=$(cat diff.json)
           echo "matrix=$LATEST_FILE" >> $GITHUB_OUTPUT
           echo '### New versions detected! :bookmark:' >> $GITHUB_STEP_SUMMARY
-          NEW_STACK=$(cat diff.json | jq -r '.include[] | {repository,tag}| join(" - tag: ")')
-          echo $NEW_STACK >> $GITHUB_STEP_SUMMARY
+          # this line joins the repo - tag values to produce a nice output
+          NEW_STACK=$(cat diff.json | jq -r '[ .include[] | {repository,tag} | join(" - tag: ") ] |  join("  \n")')
+          echo "$NEW_STACK" >> $GITHUB_STEP_SUMMARY
         else
           echo '### No new versions detected! :hankey:' >> $GITHUB_STEP_SUMMARY
           exit 1
