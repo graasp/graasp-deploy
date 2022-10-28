@@ -1,4 +1,4 @@
-name: Reusable workflow that runs Continuous Delivery pipeline for ECS
+name: Reusable workflow that runs Continuous Deployment pipeline for ECS
 
 # Control when the action will run
 on:
@@ -42,6 +42,8 @@ on:
       # Environment variables
       next-public-api-host:
         required: true
+      next-public-ga-measurement-id:
+        required: true
       next-public-google-analytics-id:
         required: true
       next-public-graasp-auth-host:
@@ -71,9 +73,9 @@ env:
   # Allows to increase Node's max heap size
   NODE_OPTIONS: '--max_old_space_size=8192'
 
-# This workflow is made up of two jobs that run sequentially, called: build-deploy and test
+# This workflow is made up of one job called: build-deploy
 jobs:
-  # Build image, push to ECR and deploy to staging environment
+  # Build image, push to ECR and deploy to production environment
   build-deploy:
     name: Build-push-deploy
     # The type of runner that the job will run on
@@ -94,7 +96,6 @@ jobs:
     - name: Set Tag Number
       id: tag-number
       run: echo "tag=${{ inputs.tag }}" >> $GITHUB_OUTPUT
-
 
     # Configure AWS credential and region environment variables for use in next steps
     - name: Configure AWS Credentials
@@ -142,6 +143,7 @@ jobs:
             NEXT_PUBLIC_GRAASPER_ID=${{ secrets.next-public-graasper-id }}
             NEXT_PUBLIC_PUBLISHED_TAG_ID=${{ secrets.next-public-published-tag-id }}
             NEXT_PUBLIC_SENTRY_DSN=${{ secrets.next-public-sentry-dsn }}
+            NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ secrets.next-public-ga-measurement-id }}
             NEXT_PUBLIC_DOMAIN=${{ secrets.next-public-domain }}
             NEXT_PUBLIC_APP_NAME=${{ env.APP_NAME }}
             NEXT_PUBLIC_APP_VERSION=${{ env.APP_VERSION }}
@@ -155,20 +157,3 @@ jobs:
           service: ${{ secrets.ecs-service }}
           cluster: ${{ secrets.ecs-cluster }}
           wait-for-service-stability: true
-
-  test:
-    name: Test
-    needs: build-deploy
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-    steps:
-    # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
-    - name: Check out code
-      uses: actions/checkout@v3
-      with:
-        ref: ${{ inputs.tag }}
-
-    # This step runs a single command to execute integation testing
-    - name: Test
-      run: |
-        echo "This is the integration test step"
