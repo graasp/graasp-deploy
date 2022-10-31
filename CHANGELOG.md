@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/graasp/graasp-deploy/compare/v1.1.1...v1.1.2) (2022-10-31)
+
+
+### Bug Fixes
+
+* fix library ([2480c77](https://github.com/graasp/graasp-deploy/commit/2480c77ad4c8f9d14a5c943478af1840f9527b7b))
+
 ## [1.1.1](https://github.com/graasp/graasp-deploy/compare/v1.1.0...v1.1.1) (2022-10-27)
 
 
