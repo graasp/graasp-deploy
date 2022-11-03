@@ -14,14 +14,15 @@ runs:
     # path: The file path on the runner to cache or restore.
     # key: Create cache key using the hashFiles function to create a new cache when dependencies change.
     # restore-keys: An ordered list of alternative keys to use for finding the cache if no cache hit occurred for key
+    # we don't use restore-keys because yarn lock might change, which prevent install to resume
     - name: Cache dependencies
       id: cache-node-modules
       uses: actions/cache@v3
       with:
         path: '**/node_modules'
         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-            ${{ runner.os }}-modules-
+        # restore-keys: |
+        #     ${{ runner.os }}-modules-
 
     # Cache cypress binary to speed up workflow
     # path: The file path on the runner to cache or restore.
