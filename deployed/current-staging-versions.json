@@ -34,11 +34,11 @@
     },
     {
       "repository": "graasp/graasp-app-sticky-notes",
-      "tag": "v0.4.0"
+      "tag": "v0.4.1"
     },
     {
       "repository": "graasp/graasp-app-task-management",
-      "tag": "v0.1.0"
+      "tag": "v0.2.0"
     },
     {
       "repository": "graasp/graasp-app-text-input",
@@ -66,11 +66,15 @@
     },
     {
       "repository": "graasp/graasp-builder",
-      "tag": "v0.2.1"
+      "tag": "v0.2.2"
     },
     {
       "repository": "graasp/graasp-app-quiz",
       "tag": "v0.1.1"
+    },
+    {
+      "repository": "graasp/graasp-player",
+      "tag": "v0.1.8"
     }
   ]
 }
