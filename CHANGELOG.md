@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://github.com/graasp/graasp-deploy/compare/v1.1.2...v1.2.0) (2022-11-03)
+
+
+### Features
+
+* create compose action for cache ([#73](https://github.com/graasp/graasp-deploy/issues/73)) ([2574938](https://github.com/graasp/graasp-deploy/commit/2574938a281b45161a9394efa842e078b5de6202))
+
+
+### Bug Fixes
+
+* remove restore keys for node modules ([42878c0](https://github.com/graasp/graasp-deploy/commit/42878c0d2b346daf99c483e25283558a43251bf1))
+
 ## [1.1.2](https://github.com/graasp/graasp-deploy/compare/v1.1.1...v1.1.2) (2022-10-31)
 
 
