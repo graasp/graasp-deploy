@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/graasp/graasp-deploy/compare/v1.2.0...v1.2.1) (2022-11-03)
+
+
+### Bug Fixes
+
+* add checkout in install step in cypress.yml ([aac0df4](https://github.com/graasp/graasp-deploy/commit/aac0df4e0a3b9c93ae7c067ab2142d72cb6a8321))
+
 ## [1.2.0](https://github.com/graasp/graasp-deploy/compare/v1.1.2...v1.2.0) (2022-11-03)
 
 
