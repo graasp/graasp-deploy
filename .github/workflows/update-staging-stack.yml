@@ -55,3 +55,8 @@ jobs:
       with:
          # Commit message for the created commit.
         commit_message: 'chore: updated staging stack ${{ env.FILE_NAME }}'
+
+    - name: Summary step
+      run: |
+        LATEST_FILE_LINK="https://github.com/${{ github.repository }}/blob/main/staging-versions/${{ env.FILE_NAME }}"
+        echo "### :postbox: Updated $REPOSITORY to `$TAG`\n\n[Go to generated staging version file]($LATEST_FILE_LINK)" >> $GITHUB_STEP_SUMMARY
