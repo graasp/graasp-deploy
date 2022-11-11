@@ -37,6 +37,8 @@ on:
         required: false
       graasp-analyzer-host:
         required: false
+      graasp-assets-url:
+        required: false
       graasp-compose-host:
         required: false
       graasp-explorer-host:
@@ -115,6 +117,7 @@ jobs:
         REACT_APP_GA_MEASUREMENT_ID: ${{ secrets.ga-measurement-id }}
         REACT_APP_GOOGLE_KEY_DEV: ${{ secrets.google-key }}
         REACT_APP_GRAASP_ANALYZER_HOST: ${{ secrets.graasp-analyzer-host }}
+        REACT_APP_GRAASP_ASSETS_URL: ${{ secrets.graasp-assets-url }}
         REACT_APP_GRAASP_COMPOSE_HOST: ${{ secrets.graasp-compose-host }}
         REACT_APP_GRAASP_EXPLORE_HOST: ${{ secrets.graasp-explorer-host }}
         REACT_APP_GRAASP_PERFORM_HOST: ${{ secrets.graasp-perform-host }}
