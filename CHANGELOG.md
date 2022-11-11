@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/graasp/graasp-deploy/compare/v1.2.1...v1.2.2) (2022-11-11)
+
+
+### Bug Fixes
+
+* summary step update staging stack ([9a5635c](https://github.com/graasp/graasp-deploy/commit/9a5635c2d7847890b56d4c0a4a22835396da0964))
+
 ## [1.2.1](https://github.com/graasp/graasp-deploy/compare/v1.2.0...v1.2.1) (2022-11-03)
 
 
