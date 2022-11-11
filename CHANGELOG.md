@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/graasp/graasp-deploy/compare/v1.2.2...v1.3.0) (2022-11-11)
+
+
+### Features
+
+* add graasp assets url to s3 workflows ([#103](https://github.com/graasp/graasp-deploy/issues/103)) ([caccd85](https://github.com/graasp/graasp-deploy/commit/caccd85c225e9a9b189137d272ed9672a20b645e))
+
 ## [1.2.2](https://github.com/graasp/graasp-deploy/compare/v1.2.1...v1.2.2) (2022-11-11)
 
 
