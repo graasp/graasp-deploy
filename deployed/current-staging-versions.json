@@ -2,7 +2,7 @@
   "include": [
     {
       "repository": "graasp/graasp",
-      "tag": "v0.1.6"
+      "tag": "v0.1.7"
     },
     {
       "repository": "graasp/graasp-explore",
@@ -38,11 +38,11 @@
     },
     {
       "repository": "graasp/graasp-app-task-management",
-      "tag": "v0.2.0"
+      "tag": "v0.2.1"
     },
     {
       "repository": "graasp/graasp-app-text-input",
-      "tag": "v0.4.1"
+      "tag": "v0.4.2"
     },
     {
       "repository": "graasp/graasp-app-code-capsule",
@@ -58,7 +58,7 @@
     },
     {
       "repository": "graasp/graasp-library",
-      "tag": "v0.1.5"
+      "tag": "v0.1.6"
     },
     {
       "repository": "graasp/graasp-app-sketchfab",
@@ -74,7 +74,7 @@
     },
     {
       "repository": "graasp/graasp-player",
-      "tag": "v0.1.8"
+      "tag": "v0.1.9"
     }
   ]
 }
