@@ -42,7 +42,7 @@
     },
     {
       "repository": "graasp/graasp-app-text-input",
-      "tag": "v0.4.2"
+      "tag": "v0.4.3"
     },
     {
       "repository": "graasp/graasp-app-code-capsule",
@@ -75,6 +75,10 @@
     {
       "repository": "graasp/graasp-player",
       "tag": "v0.1.9"
+    },
+    {
+      "repository": "graasp/graasp-analytics",
+      "tag": "v0.1.12"
     }
   ]
 }
