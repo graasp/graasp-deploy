@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.0](https://github.com/graasp/graasp-deploy/compare/v1.3.0...v1.4.0) (2022-11-16)
+
+
+### Features
+
+* add REACT_APP_VERSION to s3 apps workflows ([2500854](https://github.com/graasp/graasp-deploy/commit/2500854f814e4cd6e3854296ec39956875fc7642))
+* add REACT_APP_VERSION to s3 workflows ([4cc7ac1](https://github.com/graasp/graasp-deploy/commit/4cc7ac1d5c9fc05e94662c1773b388f9daaa8682))
+
 ## [1.3.0](https://github.com/graasp/graasp-deploy/compare/v1.2.2...v1.3.0) (2022-11-11)
 
 
