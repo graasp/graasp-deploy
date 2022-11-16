@@ -132,6 +132,9 @@ jobs:
     steps:
     - name: Check out code
       uses: actions/checkout@v3
+      with:
+        # checkout the latest commits of main -> this is where we will commit to
+        ref: main
 
     - name: Update current-staging-versions file
       id: update-current-staging-versions-file
