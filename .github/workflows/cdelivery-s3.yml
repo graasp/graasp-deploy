@@ -106,7 +106,7 @@ jobs:
         REACT_APP_AUTHENTICATION_HOST: ${{ secrets.authentication-host }}
         REACT_APP_DOMAIN: ${{ secrets.domain }}
         REACT_APP_GA_MEASUREMENT_ID: ${{ secrets.ga-measurement-id }}
-        REACT_APP_GOOGLE_KEY_DEV: ${{ secrets.google-key }}
+        REACT_APP_GOOGLE_KEY: ${{ secrets.google-key }}
         REACT_APP_GRAASP_ANALYZER_HOST: ${{ secrets.graasp-analyzer-host }}
         REACT_APP_GRAASP_ASSETS_URL: ${{ secrets.graasp-assets-url }}
         REACT_APP_GRAASP_COMPOSE_HOST: ${{ secrets.graasp-compose-host }}
