@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/graasp/graasp-deploy/compare/v1.4.0...v1.4.1) (2022-11-17)
+
+
+### Bug Fixes
+
+* checkout latest commits of main branch after suspend in staging ([b817055](https://github.com/graasp/graasp-deploy/commit/b8170557a90d97e6911f478891000e321c7f0546))
+
 ## [1.4.0](https://github.com/graasp/graasp-deploy/compare/v1.3.0...v1.4.0) (2022-11-16)
 
 
