@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/graasp/graasp-deploy/compare/v1.4.1...v1.4.2) (2022-11-17)
+
+
+### Bug Fixes
+
+* fix google maps key ([#115](https://github.com/graasp/graasp-deploy/issues/115)) ([43e7264](https://github.com/graasp/graasp-deploy/commit/43e7264528e0bedc5e2360618029dabd3dd4fa00))
+
 ## [1.4.1](https://github.com/graasp/graasp-deploy/compare/v1.4.0...v1.4.1) (2022-11-17)
 
 
