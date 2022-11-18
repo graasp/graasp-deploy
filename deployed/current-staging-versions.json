@@ -34,7 +34,7 @@
     },
     {
       "repository": "graasp/graasp-app-sticky-notes",
-      "tag": "v0.4.1"
+      "tag": "v0.4.2"
     },
     {
       "repository": "graasp/graasp-app-task-management",
@@ -74,7 +74,7 @@
     },
     {
       "repository": "graasp/graasp-player",
-      "tag": "v0.1.10"
+      "tag": "v0.1.11"
     },
     {
       "repository": "graasp/graasp-analytics",
