@@ -54,19 +54,19 @@ jobs:
 
     - name: Configuration for major release type
       if: ${{ inputs.release-type == 'major' }}
-      run: yarn run release:major
+      run: yarn run release:major --no-verify
 
     - name: Configuration for minor release type
       if: ${{ inputs.release-type == 'minor' }}
-      run: yarn run release:minor
+      run: yarn run release:minor --no-verify
 
     - name: Configuration for patch release type
       if: ${{ inputs.release-type == 'patch' }}
-      run: yarn run release:patch
+      run: yarn run release:patch --no-verify
 
     - name: Configuration for first release type
       if: ${{ inputs.release-type == 'first' }}
-      run: yarn run release:first
+      run: yarn run release:first --no-verify
 
     # Run a set of commands using the runners shell to push the tag
     - name: Push tag
