@@ -43,7 +43,7 @@ on:
       next-public-graasp-perform-host-test:
         required: false
         type: string
-      next-public-graasp-authentication-host-test:
+      next-public-graasp-auth-host-test:
         required: false
         type: string
       next-public-node-env-test:
