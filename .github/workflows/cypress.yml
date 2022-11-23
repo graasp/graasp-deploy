@@ -46,6 +46,9 @@ on:
       next-public-node-env-test:
         required: false
         type: string
+      next-public-graasper-id-test:
+        required: false
+        type: string
       graasper-id-test:
         required: false
         type: string
@@ -143,11 +146,13 @@ jobs:
           NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: ${{ inputs.next-public-google-analytics-id-test }}
           NEXT_PUBLIC_PUBLISHED_TAG_ID: ${{ inputs.next-public-published-tag-id-test }}
           NEXT_PUBLIC_API_HOST: ${{ inputs.next-public-api-host-test }}
-          NEXT_PUBLIC_GRAASP_AUTH_HOST: ${{ inputs.next-public-graasp-authentication-host-test }}
+          NEXT_PUBLIC_GRAASP_ANALYTICS_HOST: ${{ inputs.next-public-graasp-analytics-host-test }}
+          NEXT_PUBLIC_GRAASP_AUTH_HOST: ${{ inputs.next-public-graasp-auth-host-test }}
           NEXT_PUBLIC_GRAASP_PERFORM_HOST: ${{ inputs.next-public-graasp-perform-host-test }}
           GRAASPER_ID: ${{ inputs.graasper-id-test }}
           NEXT_PUBLIC_NODE_ENV: ${{ inputs.next-public-node-env-test }}
           REACT_APP_GRAASP_DOMAIN: ${{ inputs.graasp-domain-test }}
+          NEXT_PUBLIC_GRAASPER_ID: ${{ inputs.next-public-graasper-id-test }}
           REACT_APP_GRAASP_APP_ID: ${{ inputs.graasp-app-id-test }}
           REACT_APP_MOCK_API: ${{ inputs.mock-api-test }}
           NODE_ENV: ${{ inputs.node-env-test}}
