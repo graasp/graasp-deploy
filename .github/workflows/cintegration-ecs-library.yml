@@ -42,6 +42,8 @@ on:
         required: true
       next-public-google-analytics-id:
         required: true
+      next-public-graasp-analytics-host:
+        required: true
       next-public-graasp-auth-host:
         required: true
       next-public-graasp-builder-host:
@@ -169,6 +171,7 @@ jobs:
           environment-variables: |
             NEXT_PUBLIC_API_HOST=${{ secrets.next-public-api-host }}
             NEXT_PUBLIC_GOOGLE_ANALYTICS_ID=${{ secrets.next-public-google-analytics-id }}
+            NEXT_PUBLIC_GOOGLE_ANALYTICS_HOST=${{ secrets.next-public-graasp-analytics-host }}
             NEXT_PUBLIC_GRAASP_AUTH_HOST=${{ secrets.next-public-graasp-auth-host }}
             NEXT_PUBLIC_GRAASP_BUILDER_HOST=${{ secrets.next-public-graasp-builder-host }}
             NEXT_PUBLIC_API_HOST=${{ secrets.next-public-api-host }}
