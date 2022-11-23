@@ -135,7 +135,7 @@ jobs:
           config: baseUrl=http://localhost:3000
           start: yarn start:ci
           wait-on: 'http://localhost:3000'
-          wait-on-timeout: 180
+          wait-on-timeout: 250
           browser: chrome
           quiet: true
           cache-key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
