@@ -37,6 +37,9 @@ on:
       next-public-api-host-test:
         required: false
         type: string
+      next-public-graasp-analytics-host-test:
+        required: false
+        type: string
       next-public-graasp-perform-host-test:
         required: false
         type: string
