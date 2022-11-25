@@ -140,7 +140,6 @@ jobs:
           quiet: true
           cache-key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
         env:
-          GRAASPER_ID: ${{ inputs.graasper-id-test }}
           NEXT_PUBLIC_API_HOST: ${{ inputs.next-public-api-host-test }}
           NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: ${{ inputs.next-public-google-analytics-id-test }}
           NEXT_PUBLIC_GRAASP_ANALYTICS_HOST: ${{ inputs.next-public-graasp-analytics-host-test }}
