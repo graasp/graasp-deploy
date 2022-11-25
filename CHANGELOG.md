@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.0](https://github.com/graasp/graasp-deploy/compare/v1.4.2...v1.5.0) (2022-11-24)
+
+
+### Features
+
+* a dd noverify in push tag workflow ([195b109](https://github.com/graasp/graasp-deploy/commit/195b109d6e5bdc062cba9c35f2d2b9726157b187))
+* add composite action ([944c2a7](https://github.com/graasp/graasp-deploy/commit/944c2a7b45b279de8781ff8cfceea47c44bb37e6))
+
 ## [1.4.2](https://github.com/graasp/graasp-deploy/compare/v1.4.1...v1.4.2) (2022-11-17)
 
 
