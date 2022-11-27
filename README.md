@@ -5,6 +5,8 @@
 
 Deploy Graasp ecosystem in AWS using Github workflows and Github actions.
 
+<a href="/current">View Deployed versions</a>
+
 ## Contents
 
 - [What Graasp Deploy does](#what-graasp-deploy-does)
