@@ -4,7 +4,7 @@ async function loadData() {
   return await Promise.all(
     VERSIONS.map((version) =>
       fetch(
-        `https://graasp.github.io/graasp-deploy/deployed/current-${version}-versions.json`
+        `https://raw.githubusercontent.com/graasp/graasp-deploy/main/deployed/current-${version}-versions.json`
       ).then((res) => res.json())
     )
   );
