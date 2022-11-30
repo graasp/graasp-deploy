@@ -47,6 +47,7 @@ jobs:
         jq --arg tag "$TAG" --arg repository "$REPOSITORY" \
         'if ((.include[] | select(.repository == $repository)) // null) != null then (.include[] | select(.repository == $repository) | .tag) |= $tag else .include += [{"repository": $repository, "tag": $tag}] end' \
         ./staging-versions/$LATEST_FILE_NAME > ./staging-versions/$FILE_NAME
+        cat ./staging-versions/$FILE_NAME > ./staging-versions/latest.json
 
     # Detect changed files during a Workflow run and commit and push them back to the GitHub repository
     - name: Commit step

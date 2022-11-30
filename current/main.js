@@ -1,28 +1,33 @@
-const VERSIONS = ["staging", "production"];
+const DEPLOYED_VERSIONS = ["staging", "production"];
+const VERSIONS = ["latest", "staging", "production"];
 
 async function loadData() {
-  return await Promise.all(
-    VERSIONS.map((version) =>
+  return await Promise.all([
+    fetch(
+      "https://raw.githubusercontent.com/graasp/graasp-deploy/main/staging-versions/latest.json"
+    ).then((res) => res.json()),
+    ...DEPLOYED_VERSIONS.map((version) =>
       fetch(
         `https://raw.githubusercontent.com/graasp/graasp-deploy/main/deployed/current-${version}-versions.json`
       ).then((res) => res.json())
-    )
-  );
+    ),
+  ]);
 }
 
 function createVersionCell(row, key) {
   const node = document.createElement("td");
+  let elem;
   if (!row[key]) {
     node.className = "table-warning";
-    const content = document.createTextNode(row[key] || "Not deployed");
-    node.appendChild(content);
+    elem = document.createTextNode("Not deployed");
   } else {
-    const elem = document.createElement("a");
+    elem = document.createElement("a");
     elem.href = `https://github.com/${row.repo}/releases/tag/${row[key]}`;
-    elem.innerHTML = row[key];
     elem.target = "_blank";
-    node.appendChild(elem);
+    elem.className = "text-decoration-none text-primary";
+    elem.innerHTML = row[key];
   }
+  node.appendChild(elem);
   return node;
 }
 
@@ -37,8 +42,8 @@ function populateTable(data) {
     elem.href = "https://github.com/graasp/graasp/";
 
     elem.innerHTML = `${repoData.repo} ${
-      repoData.staging !== repoData.production
-        ? '<span class="badge bg-success">New</span>'
+      repoData.staging !== repoData.latest
+        ? '<span class="badge rounded-pill bg-success">New version</span>'
         : ""
     }`;
     elem.target = "_blank";
@@ -46,9 +51,14 @@ function populateTable(data) {
     repoCell.appendChild(elem);
 
     tableRow.appendChild(repoCell);
+    // fetch latest release
+
     VERSIONS.map((version) =>
       tableRow.appendChild(createVersionCell(repoData, version))
     );
+    if (repoData.staging !== repoData.production) {
+      tableRow.className = "table-success";
+    }
 
     tableElement.appendChild(tableRow);
   });

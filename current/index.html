@@ -16,15 +16,19 @@
       <h1>Currently deployed versions</h1>
       <p>
         This table presents the currently deployed versions on
-        <em>staging</em> and <em>production</em>. When staging has a newer
-        version than produciton, a
-        <span class="badge bg-success">New</span> badge is shown after the
-        repository name.
+        <em>staging</em> and <em>production</em>. When there is a new version
+        that is not yet on staging, a
+        <span class="badge rounded-pill bg-success">New version</span> badge is
+        shown after the repository name. When there is a new version that is not
+        yet on production, the line is highlighted with a
+        <span style="background-color: #d1e7dd; padding: 2px">green color</span>
+        .
       </p>
       <table class="table">
         <thead>
           <tr>
             <th scope="col">Repo</th>
+            <th scope="col">Latest version</th>
             <th scope="col">Staging version</th>
             <th scope="col">Prod version</th>
           </tr>
