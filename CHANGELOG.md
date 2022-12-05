@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.0](https://github.com/graasp/graasp-deploy/compare/v1.5.0...v1.6.0) (2022-12-05)
+
+
+### Features
+
+* visualize deployments ([#126](https://github.com/graasp/graasp-deploy/issues/126)) ([9e143d4](https://github.com/graasp/graasp-deploy/commit/9e143d4c716702a9ff15222ed6f1b234a0243d6e))
+
+
+### Bug Fixes
+
+* add shell to script run ([#130](https://github.com/graasp/graasp-deploy/issues/130)) ([4ee68cf](https://github.com/graasp/graasp-deploy/commit/4ee68cf9434703a1985c463a8f90045180fec58e))
+
 ## [1.5.0](https://github.com/graasp/graasp-deploy/compare/v1.4.2...v1.5.0) (2022-11-24)
 
 
