@@ -2,7 +2,7 @@ const DEPLOYED_VERSIONS = ["staging", "production"];
 const VERSIONS = ["latest", "staging", "production"];
 
 async function loadData() {
-  return await Promise.all([
+  return Promise.all([
     fetch(
       "https://raw.githubusercontent.com/graasp/graasp-deploy/main/staging-versions/latest.json"
     ).then((res) => res.json()),
@@ -83,8 +83,6 @@ async function main() {
   const repoArr = Object.keys(repoData)
     .sort()
     .map((repo) => ({ repo, ...repoData[repo] }));
-
-  console.log(repoArr);
 
   // populate table with versions
   populateTable(repoArr);
