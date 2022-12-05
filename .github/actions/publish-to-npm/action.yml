@@ -12,8 +12,10 @@ runs:
 
     - name: Ensure clean install
       run: yarn install --immutable
+      shell: bash
 
     - name: Publish to NPM
       run: npm publish
+      shell: bash
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
