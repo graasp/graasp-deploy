@@ -45,6 +45,10 @@ function populateTable(data) {
       repoData.staging !== repoData.latest
         ? '<span class="badge rounded-pill bg-success">New version</span>'
         : ""
+    } ${
+      repoData.production !== repoData.staging
+        ? '<span class="badge rounded-pill text-bg-warning">On Stage</span>'
+        : ""
     }`;
     elem.target = "_blank";
 
