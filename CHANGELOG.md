@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/graasp/graasp-deploy/compare/v1.6.0...v1.6.1) (2022-12-07)
+
+
+### Bug Fixes
+
+* add inputs for npm token ([3b8473f](https://github.com/graasp/graasp-deploy/commit/3b8473fefe4c4016fb4e4bb829ee738f00509b73))
+
 ## [1.6.0](https://github.com/graasp/graasp-deploy/compare/v1.5.0...v1.6.0) (2022-12-05)
 
 
