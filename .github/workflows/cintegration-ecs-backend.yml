@@ -142,6 +142,8 @@ on:
         required: true
       pg-connection-uri:
         required: true
+      pg-read-replicas-connection-uris:
+        required: true
       player-client-host:
         required: true
       port:
@@ -322,6 +324,7 @@ jobs:
             MAILER_CONFIG_USERNAME=${{ secrets.mailer-config-username }}
             NODE_ENV=${{ inputs.node-env }}
             PG_CONNECTION_URI=${{ secrets.pg-connection-uri }}
+            PG_READ_REPLICAS_CONNECTION_URIS=${{ secrets.pg-read-replicas-connection-uris }}
             PLAYER_CLIENT_HOST=${{ secrets.player-client-host }}
             PORT=${{ secrets.port }}
             PUBLIC_PLUGIN=${{ inputs.public-plugin }}
