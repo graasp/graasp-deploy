@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/graasp/graasp-deploy/compare/v1.6.1...v1.7.0) (2022-12-27)
+
+
+### Features
+
+* add PG_READ_REPLICAS_CONNECTION_URIS secret ([9a1b4b2](https://github.com/graasp/graasp-deploy/commit/9a1b4b2ba3603b2f8835720ee2d421c624e67e0c))
+
 ## [1.6.1](https://github.com/graasp/graasp-deploy/compare/v1.6.0...v1.6.1) (2022-12-07)
 
 
