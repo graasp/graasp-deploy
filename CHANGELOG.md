@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/graasp/graasp-deploy/compare/v1.7.0...v1.7.1) (2023-01-09)
+
+
+### Bug Fixes
+
+* step summary with tag ([c88b39c](https://github.com/graasp/graasp-deploy/commit/c88b39c5e9be6265eaa42b93a44d1227b5f48bf5))
+
 ## [1.7.0](https://github.com/graasp/graasp-deploy/compare/v1.6.1...v1.7.0) (2022-12-27)
 
 
