@@ -61,8 +61,8 @@ jobs:
       env:
         # REPOSITORY: repository that will update current version.
         REPOSITORY: ${{ github.event.client_payload.repository }}
-        # TAG: tag pushed by the repository.
-        TAG: ${{ github.event.client_payload.tag }}
+
       run: |
         LATEST_FILE_LINK="https://github.com/${{ github.repository }}/blob/main/staging-versions/${{ env.FILE_NAME }}"
-        echo "### :postbox: Updated $REPOSITORY to `$TAG`  \n[Go to generated staging version file]($LATEST_FILE_LINK)" >> $GITHUB_STEP_SUMMARY
+        echo "### :postbox: Updated $REPOSITORY to ${{ github.event.client_payload.tag }}" >> $GITHUB_STEP_SUMMARY
+        echo "[Go to generated staging version file]($LATEST_FILE_LINK)" >> $GITHUB_STEP_SUMMARY
