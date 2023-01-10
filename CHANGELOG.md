@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/graasp/graasp-deploy/compare/v1.7.1...v1.8.0) (2023-01-10)
+
+
+### Features
+
+* add etherpad env vars ([#143](https://github.com/graasp/graasp-deploy/issues/143)) ([f7d4881](https://github.com/graasp/graasp-deploy/commit/f7d4881abe6c6e9da7ec62fb2dc1a80947d6f488))
+
 ## [1.7.1](https://github.com/graasp/graasp-deploy/compare/v1.7.0...v1.7.1) (2023-01-09)
 
 
