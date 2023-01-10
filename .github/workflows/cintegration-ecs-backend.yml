@@ -106,6 +106,10 @@ on:
         required: true
       embedded-link-item-iframely-href-origin:
         required: true
+      etherpad-api-key:
+        required: true
+      etherpad-url:
+        required: true
       explorer-client-host:
         required: true
       file-storage-root-path:
@@ -304,6 +308,8 @@ jobs:
             EMAIL_LINKS_HOST=${{ secrets.email-links-host }}
             EMBEDDED_LINK_ITEM_IFRAMELY_HREF_ORIGIN=${{ secrets.embedded-link-item-iframely-href-origin }}
             EMBEDDED_LINK_ITEM_PLUGIN=${{ inputs.embedded-link-item-plugin }}
+            ETHERPAD_API_KEY=${{ secrets.etherpad-api-key }}
+            ETHERPAD_URL=${{ secrets.etherpad-url }}
             EXPLORER_CLIENT_HOST=${{ secrets.explorer-client-host }}
             FILE_STORAGE_ROOT_PATH=${{ secrets.file-storage-root-path }}
             FILES_PATH_PREFIX=${{ secrets.files-path-prefix }}
