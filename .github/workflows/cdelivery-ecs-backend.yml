@@ -27,6 +27,9 @@ on:
       embedded-link-item-plugin:
         required: true
         type: string
+      etherpad-cookie-domain:
+        required: true
+        type: string
       hidden-items-plugin:
         required: true
         type: string
@@ -275,6 +278,7 @@ jobs:
             EMAIL_LINKS_HOST=${{ secrets.email-links-host }}
             EMBEDDED_LINK_ITEM_IFRAMELY_HREF_ORIGIN=${{ secrets.embedded-link-item-iframely-href-origin }}
             ETHERPAD_API_KEY=${{ secrets.etherpad-api-key }}
+            ETHERPAD_COOKIE_DOMAIN=${{ inputs.etherpad-cookie-domain }}
             ETHERPAD_URL=${{ secrets.etherpad-url }}
             EMBEDDED_LINK_ITEM_PLUGIN=${{ inputs.embedded-link-item-plugin }}
             EXPLORER_CLIENT_HOST=${{ secrets.explorer-client-host }}
