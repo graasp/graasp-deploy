@@ -34,11 +34,11 @@
     },
     {
       "repository": "graasp/graasp-app-sticky-notes",
-      "tag": "v0.4.2"
+      "tag": "v0.5.0"
     },
     {
       "repository": "graasp/graasp-app-task-management",
-      "tag": "v0.2.2"
+      "tag": "v0.3.0"
     },
     {
       "repository": "graasp/graasp-app-text-input",
