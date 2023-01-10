@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/graasp/graasp-deploy/compare/v1.8.0...v1.9.0) (2023-01-10)
+
+
+### Features
+
+* add etherpad cookie domain input ([#147](https://github.com/graasp/graasp-deploy/issues/147)) ([b5c250b](https://github.com/graasp/graasp-deploy/commit/b5c250b9a9c4ff9275b7deae2a50d467ff3137e0))
+
 ## [1.8.0](https://github.com/graasp/graasp-deploy/compare/v1.7.1...v1.8.0) (2023-01-10)
 
 
