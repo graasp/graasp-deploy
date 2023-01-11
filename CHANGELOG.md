@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/graasp/graasp-deploy/compare/v1.9.0...v1.10.0) (2023-01-11)
+
+
+### Features
+
+* replace etherpad URL secret by input ([#148](https://github.com/graasp/graasp-deploy/issues/148)) ([acc187b](https://github.com/graasp/graasp-deploy/commit/acc187bdeb0e9097dffa7771d984c55d7a7bd75d))
+
 ## [1.9.0](https://github.com/graasp/graasp-deploy/compare/v1.8.0...v1.9.0) (2023-01-10)
 
 
