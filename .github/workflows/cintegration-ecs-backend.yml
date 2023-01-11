@@ -26,6 +26,9 @@ on:
       etherpad-cookie-domain:
         required: true
         type: string
+      etherpad-url:
+        required: true
+        type: string
       hidden-items-plugin:
         required: true
         type: string
@@ -110,8 +113,6 @@ on:
       embedded-link-item-iframely-href-origin:
         required: true
       etherpad-api-key:
-        required: true
-      etherpad-url:
         required: true
       explorer-client-host:
         required: true
@@ -313,7 +314,7 @@ jobs:
             EMBEDDED_LINK_ITEM_PLUGIN=${{ inputs.embedded-link-item-plugin }}
             ETHERPAD_API_KEY=${{ secrets.etherpad-api-key }}
             ETHERPAD_COOKIE_DOMAIN=${{ inputs.etherpad-cookie-domain }}
-            ETHERPAD_URL=${{ secrets.etherpad-url }}
+            ETHERPAD_URL=${{ inputs.etherpad-url }}
             EXPLORER_CLIENT_HOST=${{ secrets.explorer-client-host }}
             FILE_STORAGE_ROOT_PATH=${{ secrets.file-storage-root-path }}
             FILES_PATH_PREFIX=${{ secrets.files-path-prefix }}
