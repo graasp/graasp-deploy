@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/graasp/graasp-deploy/compare/v1.10.0...v1.11.0) (2023-01-23)
+
+
+### Features
+
+* add analytics host to library workflows ([#119](https://github.com/graasp/graasp-deploy/issues/119)) ([0f8d784](https://github.com/graasp/graasp-deploy/commit/0f8d784ad107d7d8ea7193a6b409e2b02b912410))
+
 ## [1.10.0](https://github.com/graasp/graasp-deploy/compare/v1.9.0...v1.10.0) (2023-01-11)
 
 
