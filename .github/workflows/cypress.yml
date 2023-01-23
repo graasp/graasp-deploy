@@ -37,13 +37,19 @@ on:
       next-public-api-host-test:
         required: false
         type: string
+      next-public-graasp-analytics-host-test:
+        required: false
+        type: string
       next-public-graasp-perform-host-test:
         required: false
         type: string
-      next-public-graasp-authentication-host-test:
+      next-public-graasp-auth-host-test:
         required: false
         type: string
       next-public-node-env-test:
+        required: false
+        type: string
+      next-public-graasper-id-test:
         required: false
         type: string
       graasper-id-test:
@@ -129,29 +135,30 @@ jobs:
           config: baseUrl=http://localhost:3000
           start: yarn start:ci
           wait-on: 'http://localhost:3000'
-          wait-on-timeout: 180
+          wait-on-timeout: 250
           browser: chrome
           quiet: true
           cache-key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
         env:
-          REACT_APP_API_HOST: ${{ secrets.api-host-test }}
-          REACT_APP_GRAASP_COMPOSE_HOST: ${{ inputs.graasp-compose-host-test }}
-          REACT_APP_AUTHENTICATION_HOST: ${{ inputs.graasp-authentication-host-test }}
-          REACT_APP_NODE_ENV: ${{ inputs.node-env-test }}
-          REACT_APP_HIDDEN_ITEM_TAG_ID: ${{ inputs.hidden-item-tag-id-test }}
-          REACT_APP_PUBLIC_TAG_ID: ${{ inputs.public-tag-id-test }}
-          NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: ${{ inputs.next-public-google-analytics-id-test }}
-          NEXT_PUBLIC_PUBLISHED_TAG_ID: ${{ inputs.next-public-published-tag-id-test }}
           NEXT_PUBLIC_API_HOST: ${{ inputs.next-public-api-host-test }}
-          NEXT_PUBLIC_GRAASP_AUTH_HOST: ${{ inputs.next-public-graasp-authentication-host-test }}
+          NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: ${{ inputs.next-public-google-analytics-id-test }}
+          NEXT_PUBLIC_GRAASP_ANALYTICS_HOST: ${{ inputs.next-public-graasp-analytics-host-test }}
+          NEXT_PUBLIC_GRAASP_AUTH_HOST: ${{ inputs.next-public-graasp-auth-host-test }}
           NEXT_PUBLIC_GRAASP_PERFORM_HOST: ${{ inputs.next-public-graasp-perform-host-test }}
-          GRAASPER_ID: ${{ inputs.graasper-id-test }}
+          NEXT_PUBLIC_GRAASPER_ID: ${{ inputs.next-public-graasper-id-test }}
           NEXT_PUBLIC_NODE_ENV: ${{ inputs.next-public-node-env-test }}
-          REACT_APP_GRAASP_DOMAIN: ${{ inputs.graasp-domain-test }}
-          REACT_APP_GRAASP_APP_ID: ${{ inputs.graasp-app-id-test }}
-          REACT_APP_MOCK_API: ${{ inputs.mock-api-test }}
+          NEXT_PUBLIC_PUBLISHED_TAG_ID: ${{ inputs.next-public-published-tag-id-test }}
           NODE_ENV: ${{ inputs.node-env-test}}
+          REACT_APP_API_HOST: ${{ secrets.api-host-test }}
+          REACT_APP_AUTHENTICATION_HOST: ${{ inputs.graasp-authentication-host-test }}
           REACT_APP_ENABLE_MOCK_API: ${{ inputs.enable-mock-api-test }}
+          REACT_APP_GRAASP_APP_ID: ${{ inputs.graasp-app-id-test }}
+          REACT_APP_GRAASP_COMPOSE_HOST: ${{ inputs.graasp-compose-host-test }}
+          REACT_APP_GRAASP_DOMAIN: ${{ inputs.graasp-domain-test }}
+          REACT_APP_HIDDEN_ITEM_TAG_ID: ${{ inputs.hidden-item-tag-id-test }}
+          REACT_APP_MOCK_API: ${{ inputs.mock-api-test }}
+          REACT_APP_NODE_ENV: ${{ inputs.node-env-test }}
+          REACT_APP_PUBLIC_TAG_ID: ${{ inputs.public-tag-id-test }}
 
       # after the test run completes
       # store any screenshots
