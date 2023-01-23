@@ -2,7 +2,7 @@
   "include": [
     {
       "repository": "graasp/graasp",
-      "tag": "v0.2.0"
+      "tag": "v0.2.1"
     },
     {
       "repository": "graasp/graasp-explore",
@@ -34,7 +34,7 @@
     },
     {
       "repository": "graasp/graasp-app-sticky-notes",
-      "tag": "v0.5.0"
+      "tag": "v0.6.0"
     },
     {
       "repository": "graasp/graasp-app-task-management",
@@ -66,7 +66,7 @@
     },
     {
       "repository": "graasp/graasp-builder",
-      "tag": "v0.3.0"
+      "tag": "v0.4.1"
     },
     {
       "repository": "graasp/graasp-app-quiz",
@@ -74,7 +74,7 @@
     },
     {
       "repository": "graasp/graasp-player",
-      "tag": "v0.2.0"
+      "tag": "v0.2.1"
     },
     {
       "repository": "graasp/graasp-analytics",
@@ -83,6 +83,10 @@
     {
       "repository": "graasp/graasp-app-text-analysis",
       "tag": "v0.5.2"
+    },
+    {
+      "repository": "graasp/graasp-app-excalidraw",
+      "tag": "v1.0.0"
     }
   ]
 }
