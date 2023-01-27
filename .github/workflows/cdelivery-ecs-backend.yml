@@ -14,14 +14,68 @@ on:
       tag:
         required: true
         type: string
-      # Environment variables
+      # env vars
+      analyzer-client-host:
+        required: true
+        type: string
       apps-plugin:
+        required: true
+        type: string
+      auth-client-host:
+        required: true
+        type: string
+      auth-token-expiration-in-minutes:
+        required: true
+        type: string
+      avatars-path-prefix:
+        required: true
+        type: string
+      aws-region:
+        required: true
+        type: string
+      builder-client-host:
         required: true
         type: string
       chatbox-plugin:
         required: true
         type: string
+      client-host:
+        required: true
+        type: string
+      container-image-classifier:
+        required: true
+        type: string
+      container-image-iframely:
+        required: true
+        type: string
+      container-name-classifier:
+        required: true
+        type: string
+      container-name-graasp:
+        required: true
+        type: string
+      container-name-iframely:
+        required: true
+        type: string
+      cookie-domain:
+        required: true
+        type: string
+      cors-origin-regex:
+        required: true
+        type: string
       database-logs:
+        required: true
+        type: string
+      ecs-cluster:
+        required: true
+        type: string
+      ecs-service:
+        required: true
+        type: string
+      email-links-host:
+        required: true
+        type: string
+      embedded-link-item-iframely-href-origin:
         required: true
         type: string
       embedded-link-item-plugin:
@@ -33,16 +87,46 @@ on:
       etherpad-url:
         required: true
         type: string
+      explorer-client-host:
+        required: true
+        type: string
+      file-storage-root-path:
+        required: true
+        type: string
+      files-path-prefix:
+        required: true
+        type: string
+      h5p-content-region:
+        required: true
+        type: string
+      h5p-path-prefix:
+        required: true
+        type: string
       hidden-items-plugin:
         required: true
         type: string
-      node-env:
+      hostname:
+        required: true
+        type: string
+      image-classifier-api:
         required: true
         type: string
       node-env-iframely:
         required: true
         type: string
+      node-env:
+        required: true
+        type: string
+      player-client-host:
+        required: true
+        type: string
+      port:
+        required: true
+        type: string
       public-plugin:
+        required: true
+        type: string
+      refresh-token-expiration-in-minutes:
         required: true
         type: string
       roarr-log:
@@ -51,10 +135,16 @@ on:
       s3-file-item-plugin:
         required: true
         type: string
+      s3-file-item-region:
+        required: true
+        type: string
       save-actions:
         required: true
         type: string
       subscriptions-plugin:
+        required: true
+        type: string
+      thumbnails-path-prefix:
         required: true
         type: string
       token-based-auth:
@@ -63,136 +153,103 @@ on:
       websockets-plugin:
         required: true
         type: string
-    # Define secrets which can be passed from the caller workflow
     secrets:
-      # AWS credentials and variables
-      aws-access-key-id:
         required: true
-      aws-secret-access-key:
-        required: true
-      aws-region:
-        required: true
-      ecs-cluster:
-        required: true
-      ecs-service:
-        required: true
-      ecr-repository:
-        required: true
-      #container and image names that will be included in the cluster
-      container-name-graasp:
-        required: true
-      container-name-iframely:
-        required: true
-      container-name-classifier:
-        required: true
-      container-image-iframely:
-        required: true
-      container-image-classifier:
-        required: true
-      # Environment variables
-      analyzer-client-host:
-        required: true
+        type: string
       apps-jwt-secret:
         required: true
+        type: string
       apps-publisher-id:
         required: true
-      auth-client-host:
-        required: true
-      auth-token-expiration-in-minutes:
-        required: true
+        type: string
       auth-token-jwt-secret:
         required: true
-      avatars-path-prefix:
+        type: string
+      aws-access-key-id:
         required: true
-      builder-client-host:
+        type: string
+      aws-secret-access-key:
         required: true
-      client-host:
+        type: string
+      ecr-repository:
         required: true
-      cookie-domain:
-        required: true
-      cors-origin-regex:
-        required: true
-      email-links-host:
-        required: true
-      embedded-link-item-iframely-href-origin:
-        required: true
+        type: string
       etherpad-api-key:
         required: true
-      explorer-client-host:
-        required: true
-      file-storage-root-path:
-        required: true
-      files-path-prefix:
-        required: true
+        type: string
       h5p-content-access-key-id:
         required: true
+        type: string
       h5p-content-bucket-name:
         required: true
-      h5p-content-region:
-        required: true
+        type: string
       h5p-content-secret-access-key:
         required: true
-      h5p-path-prefix:
-        required: true
+        type: string
       hidden-tag-id:
         required: true
-      hostname:
-        required: true
-      image-classifier-api:
-        required: true
+        type: string
       jwt-secret:
         required: true
+        type: string
       login-item-tag-id:
         required: true
+        type: string
       mailer-config-from-email:
         required: true
+        type: string
       mailer-config-password:
         required: true
+        type: string
       mailer-config-smtp-host:
         required: true
+        type: string
       mailer-config-username:
         required: true
+        type: string
       pg-connection-uri:
         required: true
+        type: string
       pg-read-replicas-connection-uris:
         required: true
-      player-client-host:
-        required: true
-      port:
-        required: true
+        type: string
       public-tag-id:
         required: true
+        type: string
       published-tag-id:
         required: true
+        type: string
       redis-host:
         required: true
+        type: string
       redis-port:
         required: true
-      redis-password:
-        required: false
+        type: string
       redis-username:
         required: true
-      refresh-token-expiration-in-minutes:
-        required: true
+        type: string
       refresh-token-jwt-secret:
         required: true
+        type: string
       s3-file-item-access-key-id:
         required: true
+        type: string
       s3-file-item-bucket:
         required: true
-      s3-file-item-region:
-        required: true
+        type: string
       s3-file-item-secret-access-key:
         required: true
+        type: string
       secure-session-secret-key:
         required: true
-      stripe-secret-key:
-        required: true
+        type: string
       stripe-default-plan-price-id:
         required: true
-      thumbnails-path-prefix:
+        type: string
+      stripe-secret-key:
         required: true
-
+        type: string
+  
 # Set environment variables that are available to the steps of all jobs in the workflow
 env:
   ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
