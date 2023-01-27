@@ -4,7 +4,6 @@ name: Reusable workflow that runs Continuous Integration pipeline for ECS deploy
 on:
   # Allow the workflow to be reusable
   workflow_call:
-    # Define inputs which can be passed from the caller workflow
     inputs:
       # ecs-task-definition: path to task definition json template.
       ecs-task-definition:
@@ -150,102 +149,69 @@ on:
         required: true
         type: string
     secrets:
-        required: true
-        type: string
       apps-jwt-secret:
         required: true
-        type: string
       apps-publisher-id:
         required: true
-        type: string
       auth-token-jwt-secret:
         required: true
-        type: string
       aws-access-key-id:
         required: true
-        type: string
       aws-secret-access-key:
         required: true
-        type: string
       ecr-repository:
         required: true
-        type: string
       etherpad-api-key:
         required: true
-        type: string
       h5p-content-access-key-id:
         required: true
-        type: string
       h5p-content-bucket-name:
         required: true
-        type: string
       h5p-content-secret-access-key:
         required: true
-        type: string
       hidden-tag-id:
         required: true
-        type: string
       jwt-secret:
         required: true
-        type: string
       login-item-tag-id:
         required: true
-        type: string
       mailer-config-from-email:
         required: true
-        type: string
       mailer-config-password:
         required: true
-        type: string
       mailer-config-smtp-host:
         required: true
-        type: string
       mailer-config-username:
         required: true
-        type: string
       pg-connection-uri:
         required: true
-        type: string
       pg-read-replicas-connection-uris:
         required: true
-        type: string
       public-tag-id:
         required: true
-        type: string
       published-tag-id:
         required: true
-        type: string
       redis-host:
         required: true
-        type: string
       redis-port:
         required: true
-        type: string
       redis-username:
         required: true
-        type: string
       refresh-token-jwt-secret:
         required: true
-        type: string
       s3-file-item-access-key-id:
         required: true
-        type: string
       s3-file-item-bucket:
         required: true
-        type: string
       s3-file-item-secret-access-key:
         required: true
-        type: string
       secure-session-secret-key:
         required: true
-        type: string
       stripe-default-plan-price-id:
         required: true
-        type: string
       stripe-secret-key:
         required: true
-        type: string
-  
+
 # Set environment variables that are available to the steps of all jobs in the workflow
 env:
   ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
