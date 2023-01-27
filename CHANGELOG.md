@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.12.0](https://github.com/graasp/graasp-deploy/compare/v1.11.0...v1.12.0) (2023-01-27)
+
+
+### Features
+
+* add sentry DSN secret ([#155](https://github.com/graasp/graasp-deploy/issues/155)) ([70f6f31](https://github.com/graasp/graasp-deploy/commit/70f6f31105ed89b98f9e1da0cde1dee05ebb004a))
+
+
+### Bug Fixes
+
+* checkout on main in last step of prod ([5c62d80](https://github.com/graasp/graasp-deploy/commit/5c62d807710a0d74e074b8264096de69985d2b40))
+
 ## [1.11.0](https://github.com/graasp/graasp-deploy/compare/v1.10.0...v1.11.0) (2023-01-23)
 
 
