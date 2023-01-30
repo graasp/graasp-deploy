@@ -16,6 +16,9 @@ on:
       apps-plugin:
         required: true
         type: string
+      apps-publisher-id:
+        required: true
+        type: string
       auth-client-host:
         required: true
         type: string
@@ -100,10 +103,16 @@ on:
       hidden-items-plugin:
         required: true
         type: string
+      hidden-tag-id:
+        required: true
+        type: string
       hostname:
         required: true
         type: string
       image-classifier-api:
+        required: true
+        type: string
+      login-item-tag-id:
         required: true
         type: string
       node-env-iframely:
@@ -119,6 +128,12 @@ on:
         required: true
         type: string
       public-plugin:
+        required: true
+        type: string
+      public-tag-id:
+        required: true
+        type: string
+      published-tag-id:
         required: true
         type: string
       refresh-token-expiration-in-minutes:
@@ -151,8 +166,6 @@ on:
     secrets:
       apps-jwt-secret:
         required: true
-      apps-publisher-id:
-        required: true
       auth-token-jwt-secret:
         required: true
       aws-access-key-id:
@@ -169,11 +182,7 @@ on:
         required: true
       h5p-content-secret-access-key:
         required: true
-      hidden-tag-id:
-        required: true
       jwt-secret:
-        required: true
-      login-item-tag-id:
         required: true
       mailer-config-from-email:
         required: true
@@ -186,10 +195,6 @@ on:
       pg-connection-uri:
         required: true
       pg-read-replicas-connection-uris:
-        required: true
-      public-tag-id:
-        required: true
-      published-tag-id:
         required: true
       redis-host:
         required: true
