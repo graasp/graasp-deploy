@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/graasp/graasp-deploy/compare/v1.12.0...v1.13.0) (2023-01-30)
+
+
+### Features
+
+* split secrets and env vars in deployment workflows ([#153](https://github.com/graasp/graasp-deploy/issues/153)) ([fbf2215](https://github.com/graasp/graasp-deploy/commit/fbf2215cf64a43405437820177fe3861d6752aef))
+
 ## [1.12.0](https://github.com/graasp/graasp-deploy/compare/v1.11.0...v1.12.0) (2023-01-27)
 
 
