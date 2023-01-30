@@ -13,7 +13,7 @@ on:
       tag:
         required: true
         type: string
-      # env vars
+      # Environment variables
       analyzer-client-host:
         required: true
         type: string
@@ -207,6 +207,8 @@ on:
       redis-username:
         required: true
       refresh-token-jwt-secret:
+        required: true
+      sentry-dsn:
         required: true
       s3-file-item-access-key-id:
         required: true
