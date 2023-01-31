@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.1](https://github.com/graasp/graasp-deploy/compare/v1.12.0...v1.12.1) (2023-01-31)
+
+
+### Bug Fixes
+
+* add missing sentry DSN in container vars ([#160](https://github.com/graasp/graasp-deploy/issues/160)) ([c9f3c74](https://github.com/graasp/graasp-deploy/commit/c9f3c74e7989b4ab500018c85d32cabf9cdd9e53))
+
 ## [1.12.0](https://github.com/graasp/graasp-deploy/compare/v1.11.0...v1.12.0) (2023-01-27)
 
 
