@@ -44,8 +44,6 @@ on:
         required: true
       next-public-ga-measurement-id:
         required: true
-      next-public-google-analytics-id:
-        required: true
       next-public-graasp-analytics-host:
         required: true
       next-public-graasp-auth-host:
