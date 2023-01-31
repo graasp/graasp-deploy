@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.2](https://github.com/graasp/graasp-deploy/compare/v1.12.1...v1.12.2) (2023-01-31)
+
+
+### Bug Fixes
+
+* remove legacy ga env vars ([#159](https://github.com/graasp/graasp-deploy/issues/159)) ([74592ce](https://github.com/graasp/graasp-deploy/commit/74592cec3d9c2d0923f22b00d72388f66c63d069)), closes [#158](https://github.com/graasp/graasp-deploy/issues/158) [#157](https://github.com/graasp/graasp-deploy/issues/157)
+
 ## [1.12.1](https://github.com/graasp/graasp-deploy/compare/v1.12.0...v1.12.1) (2023-01-31)
 
 
