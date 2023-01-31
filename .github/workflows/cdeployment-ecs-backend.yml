@@ -324,6 +324,7 @@ jobs:
             S3_FILE_ITEM_SECRET_ACCESS_KEY=${{ secrets.s3-file-item-secret-access-key }}
             SAVE_ACTIONS=${{ inputs.save-actions }}
             SECURE_SESSION_SECRET_KEY=${{ secrets.secure-session-secret-key }}
+            SENTRY_DSN=${{ secrets.sentry-dsn }}
             STRIPE_SECRET_KEY=${{ secrets.stripe-secret-key }}
             STRIPE_DEFAULT_PLAN_PRICE_ID=${{ secrets.stripe-default-plan-price-id }}
             SUBSCRIPTIONS_PLUGIN=${{ secrets.subscriptions-plugin }}
