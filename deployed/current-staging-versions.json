@@ -2,7 +2,7 @@
   "include": [
     {
       "repository": "graasp/graasp",
-      "tag": "v0.3.1"
+      "tag": "v0.3.2"
     },
     {
       "repository": "graasp/graasp-auth",
