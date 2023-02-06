@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/graasp/graasp-deploy/compare/v1.12.2...v1.13.0) (2023-02-06)
+
+
+### Features
+
+* add DEPLOY_ENV var ([#163](https://github.com/graasp/graasp-deploy/issues/163)) ([9c66ac9](https://github.com/graasp/graasp-deploy/commit/9c66ac9d600b55d0c3bdba90e27c77e905e90837))
+
 ## [1.12.2](https://github.com/graasp/graasp-deploy/compare/v1.12.1...v1.12.2) (2023-01-31)
 
 
