@@ -265,7 +265,6 @@ jobs:
           image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
           environment-variables: |
             DEPLOY_ENV=staging
-            # from inputs
             ANALYZER_CLIENT_HOST=${{ secrets.analyzer-client-host }}
             APPS_JWT_SECRET=${{ secrets.apps-jwt-secret }}
             APPS_PLUGIN=${{ inputs.apps-plugin }}
