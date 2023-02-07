@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.1](https://github.com/graasp/graasp-deploy/compare/v1.13.0...v1.13.1) (2023-02-07)
+
+
+### Bug Fixes
+
+* remove comment from illegal context ([67a4c99](https://github.com/graasp/graasp-deploy/commit/67a4c993d1fd817ebffd9d6a2037de163f9a788b))
+
 ## [1.13.0](https://github.com/graasp/graasp-deploy/compare/v1.12.2...v1.13.0) (2023-02-06)
 
 
