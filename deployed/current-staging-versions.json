@@ -2,7 +2,7 @@
   "include": [
     {
       "repository": "graasp/graasp",
-      "tag": "v0.3.2"
+      "tag": "v0.4.1"
     },
     {
       "repository": "graasp/graasp-auth",
@@ -66,7 +66,7 @@
     },
     {
       "repository": "graasp/graasp-analytics",
-      "tag": "v0.1.13"
+      "tag": "v0.1.14"
     },
     {
       "repository": "graasp/graasp-app-text-analysis",
