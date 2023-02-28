@@ -15,9 +15,10 @@ inputs:
   aws-s3-bucket-name:
     required: true
     description: AWS S3 bucket name
-  app-id:
-    required: true
-    description: Your app ID
+  graasp-app-id:
+    required: false
+    default: ''
+    description: App Id for deploying to the apps bucket. Do not specify to deploy to the root of the bucket.
   version:
     required: false
     default: 'latest'
@@ -35,6 +36,12 @@ inputs:
 runs:
   using: "composite"
   steps:
+
+    - name: Set s3 app dir and invalidation path
+      run: |
+        echo "APP_DIR=${{ inputs.graasp-app-id != '' && '/inputs.graasp-app-id/inputs.version' || '' }}" >> $GITHUB_ENV;
+      shell: bash
+
     # Configure AWS credential and region
     - name: Configure AWS Credentials
       id: configure-aws
@@ -47,10 +54,7 @@ runs:
     # Recursively copy new and updated files from the source directory to the destination
     - name: Sync files with AWS S3 Bucket
       id: sync-s3
-      # Set environment variable with the name of the destination bucket to perform sync. It is only available to this step
-      env:
-        APP_DIR: '${{ inputs.aws-s3-bucket-name }}/${{ inputs.app-id }}/${{ inputs.version }}/'
-      run: aws s3 sync ${{ inputs.build-folder }} s3://${APP_DIR} --acl public-read --follow-symlinks --delete
+      run: aws s3 sync ${{ inputs.build-folder }} s3://${{ inputs.aws-s3-bucket-name }}${APP_DIR}/ --acl public-read --follow-symlinks --delete
       # --acl public-read makes files publicly readable
       # --follow-symlinks fixes some weird symbolic link problems that may come up
       # --delete permanently deletes files in the S3 bucket that are not present in the latest version of the repository/build.
@@ -59,5 +63,5 @@ runs:
     # Create a new invalidation
     - name: Invalidate cloudfront distribution
       id: invalidate-cloudfront
-      run: aws cloudfront create-invalidation --distribution-id ${{ inputs.cloudfront-distribution-id }} --paths /${{ inputs.app-id }}/${{ inputs.version }}/*
+      run: aws cloudfront create-invalidation --distribution-id ${{ inputs.cloudfront-distribution-id }} --paths ${APP_DIR}/*
       shell: bash
