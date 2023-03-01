@@ -1,0 +1,276 @@
+name: Reusable workflow that deploys the backend core using github env 
+
+# Control when the action will run
+on:
+  # Allow the workflow to be reusable
+  workflow_call:
+    inputs:
+      # ecs-task-definition: path to task definition json template.
+      ecs-task-definition:
+        required: true
+        type: string
+      environment:
+        required: true
+        type: string
+        
+    secrets:
+      aws-access-key-id:
+        required: true
+      aws-secret-access-key:
+        required: true
+      apps-jwt-secret:
+        required: true
+      auth-token-jwt-secret:
+        required: true
+      ecr-repository:
+        required: true
+      etherpad-api-key:
+        required: true
+      h5p-content-access-key-id:
+        required: true
+      h5p-content-bucket-name:
+        required: true
+      h5p-content-secret-access-key:
+        required: true
+      jwt-secret:
+        required: true
+      mailer-config-from-email:
+        required: true
+      mailer-config-password:
+        required: true
+      mailer-config-smtp-host:
+        required: true
+      mailer-config-username:
+        required: true
+      pg-connection-uri:
+        required: true
+      pg-read-replicas-connection-uris:
+        required: true
+      redis-host:
+        required: true
+      redis-port:
+        required: true
+      redis-password:
+        required: true
+      redis-username:
+        required: true
+      refresh-token-jwt-secret:
+        required: true
+      sentry-dsn:
+        required: true
+      s3-file-item-access-key-id:
+        required: true
+      s3-file-item-bucket:
+        required: true
+      s3-file-item-secret-access-key:
+        required: true
+      secure-session-secret-key:
+        required: true
+      sentry-dsn:
+        required: true
+
+# Set environment variables that are available to the steps of all jobs in the workflow
+env:
+  # ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
+  # CONTAINER_NAME: ${{ secrets.CONTAINER_NAME_GRAASP }}
+  # Allows to increase Node's max heap size
+  NODE_OPTIONS: '--max_old_space_size=8192'
+  TEST: ${{ vars.CONTAINER_NAME_GRAASP }}
+
+# This workflow is made up of three jobs that run sequentially, called test, build and deploy
+jobs:
+
+  # Build image and push to ECR
+  build:
+    needs: test
+    name: Build
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    
+    # Define job output that is available to all downstream jobs that depend on this job
+    outputs:
+      tag: ${{ steps.tag-number.outputs.tag }}
+          
+    steps:
+    # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Use the value
+      run: |
+        echo "${{ vars.CONTAINER_NAME_GRAASP }}" 
+
+    - name: print FALSE secret
+      run: |
+        echo "${{ secrets.false-secret }}" 
+
+    - name: print vars
+      run: |
+        echo "${{ vars.AWS_REGION }}" 
+    - name: print vars from core
+      run: |
+        echo "${{ inputs.aws-region }}" 
+
+    # Set output variable tag with the current checked out ref
+    - name: Set Tag Number
+      id: tag-number
+      run: echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
+
+    # Configure AWS credential and region environment variables for use in next steps
+    - name: Configure AWS Credentials
+      id: configure-aws
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.aws-access-key-id }}
+        aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
+        aws-region: ${{ vars.AWS_REGION }}
+
+    # Log in the local Docker client
+    - name: Login to Amazon ECR
+      id: login-ecr-build
+      uses: aws-actions/amazon-ecr-login@v1
+
+    # Build and tag the docker image
+    - name: Build, tag and push image to AWS ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr-build.outputs.registry }}
+        IMAGE_TAG: ${{ steps.tag-number.outputs.tag }}
+        ECR_REPOSITORY: ${{ secrets.ecr-repository }}
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f .stagingcontainer/Dockerfile .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+  # Deploy to dev environment
+  deploy:
+    needs: build
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+
+    steps:
+    # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    # Configure AWS credential and region environment variables for use in next steps
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.aws-access-key-id }}
+        aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
+        aws-region: ${{ vars.AWS_REGION }}
+
+    # Log in the local Docker client
+    - name: Login to Amazon ECR
+      id: login-ecr-deploy
+      uses: aws-actions/amazon-ecr-login@v1
+
+    # Insert a container image URI into template Amazon ECS task definition JSON file, creating a new task definition file.
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def-1
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      # Set environment variables required to create the task definition file. These are only available to this step
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr-deploy.outputs.registry }}
+        IMAGE_TAG: ${{ needs.build.outputs.tag }}
+      with:
+          task-definition: ${{ inputs.ecs-task-definition }}
+          container-name: ${{ secrets.container-name-graasp }}
+          image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+          environment-variables: |
+            DEPLOY_ENV=development
+            ANALYZER_CLIENT_HOST=${{ vars.ANALYZER_CLIENT_HOST }}
+            APPS_PLUGIN=${{ vars.APPS_PLUGIN }}
+            APPS_PUBLISHER_ID=${{ vars.APPS_PUBLISHER_ID }}
+            AUTH_CLIENT_HOST=${{ vars.AUTH_CLIENT_HOST }}
+            AUTH_TOKEN_EXPIRATION_IN_MINUTES=${{ vars.AUTH_TOKEN_EXPIRATION_IN_MINUTES }}
+            AVATARS_PATH_PREFIX=${{ vars.AVATARS_PATH_PREFIX }}
+            BUILDER_CLIENT_HOST=${{ vars.BUILDER_CLIENT_HOST }}
+            CHATBOX_PLUGIN=${{ vars.CHATBOX_PLUGIN }}
+            CLIENT_HOST=${{ vars.CLIENT_HOST }}
+            COOKIE_DOMAIN=${{ vars.COOKIE_DOMAIN }}
+            CORS_ORIGIN_REGEX=${{ vars.CORS_ORIGIN_REGEX }}
+            DATABASE_LOGS=${{ vars.DATABASE_LOGS }}
+            EMBEDDED_LINK_ITEM_PLUGIN=${{ vars.EMBEDDED_LINK_ITEM_PLUGIN }}
+            ETHERPAD_COOKIE_DOMAIN=${{ vars.ETHERPAD_COOKIE_DOMAIN }}
+            ETHERPAD_URL=${{ vars.ETHERPAD_URL }}
+            EXPLORER_CLIENT_HOST=${{ vars.EXPLORER_CLIENT_HOST }}
+            FILES_PATH_PREFIX=${{ vars.FILES_PATH_PREFIX }}
+            H5P_PATH_PREFIX=${{ vars.H5P_PATH_PREFIX }}
+            HIDDEN_ITEMS_PLUGIN=${{ vars.HIDDEN_ITEMS_PLUGIN }}
+            HIDDEN_TAG_ID=${{ vars.HIDDEN_TAG_ID }}
+            HOSTNAME=${{ vars.HOSTNAME }}
+            LOGIN_ITEM_TAG_ID=${{ vars.LOGIN_ITEM_TAG_ID }}
+            NODE_ENV=${{ vars.NODE_ENV }}
+            PLAYER_CLIENT_HOST=${{ vars.PLAYER_CLIENT_HOST }}
+            PORT=${{ vars.PORT }}
+            PUBLIC_PLUGIN=${{ vars.PUBLIC_PLUGIN }}
+            PUBLIC_TAG_ID=${{ vars.PUBLIC_TAG_ID }}
+            PUBLISHED_TAG_ID=${{ vars.PUBLISHED_TAG_ID }}
+            ROARR_LOG=${{ vars.ROARR_LOG }}
+            S3_FILE_ITEM_PLUGIN=${{ vars.S3_FILE_ITEM_PLUGIN }}
+            SAVE_ACTIONS=${{ vars.SAVE_ACTIONS }}
+            THUMBNAILS_PATH_PREFIX=${{ vars.THUMBNAILS_PATH_PREFIX }}
+            TOKEN_BASED_AUTH=${{ vars.TOKEN_BASED_AUTH }}
+            EMAIL_LINKS_HOST=${{ vars.EMAIL_LINKS_HOST }}
+            WEBSOCKETS_PLUGIN=${{ vars.WEBSOCKETS_PLUGIN }}
+            EMBEDDED_LINK_ITEM_IFRAMELY_HREF_ORIGIN=${{ vars.EMBEDDED_LINK_ITEM_IFRAMELY_HREF_ORIGIN }}
+            FILE_STORAGE_ROOT_PATH=${{ vars.FILE_STORAGE_ROOT_PATH }}
+            H5P_CONTENT_REGION=${{ vars.H5P_CONTENT_REGION }}
+            IMAGE_CLASSIFIER_API=${{ vars.IMAGE_CLASSIFIER_API }}
+            REFRESH_TOKEN_EXPIRATION_IN_MINUTES=${{ vars.REFRESH_TOKEN_EXPIRATION_IN_MINUTES }}
+            S3_FILE_ITEM_REGION=${{ vars.S3_FILE_ITEM_REGION }}
+
+            APPS_JWT_SECRET=${{ secrets.apps-jwt-secret }}
+            AUTH_TOKEN_JWT_SECRET=${{ secrets.auth-token-jwt-secret }}
+            ETHERPAD_API_KEY=${{ secrets.etherpad-api-key }}
+            H5P_CONTENT_ACCESS_KEY_ID=${{ secrets.h5p-content-access-key-id }}
+            H5P_CONTENT_BUCKET=${{ secrets.h5p-content-bucket-name }}
+            H5P_CONTENT_SECRET_ACCESS_KEY=${{ secrets.h5p-content-secret-access-key }}
+            JWT_SECRET=${{ secrets.jwt-secret }}
+            MAILER_CONFIG_FROM_EMAIL=${{ secrets.mailer-config-from-email }}
+            MAILER_CONFIG_PASSWORD=${{ secrets.mailer-config-password }}
+            MAILER_CONFIG_SMTP_HOST=${{ secrets.mailer-config-smtp-host }}
+            MAILER_CONFIG_USERNAME=${{ secrets.mailer-config-username }}
+            PG_CONNECTION_URI=${{ secrets.pg-connection-uri }}
+            PG_READ_REPLICAS_CONNECTION_URIS=${{ secrets.pg-read-replicas-connection-uris }}
+            REDIS_HOST=${{ secrets.redis-host }}
+            REDIS_PASSWORD=${{ secrets.redis-password }}
+            REDIS_PORT=${{ secrets.redis-port }}
+            REDIS_USERNAME=${{ secrets.redis-username }}
+            REFRESH_TOKEN_JWT_SECRET=${{ secrets.refresh-token-jwt-secret }}
+            S3_FILE_ITEM_ACCESS_KEY_ID=${{ secrets.s3-file-item-access-key-id }}
+            S3_FILE_ITEM_BUCKET=${{ secrets.s3-file-item-bucket }}
+            S3_FILE_ITEM_SECRET_ACCESS_KEY=${{ secrets.s3-file-item-secret-access-key }}
+            SECURE_SESSION_SECRET_KEY=${{ secrets.secure-session-secret-key }}
+            SENTRY_DSN=${{ secrets.sentry-dsn }}
+
+    # Modify Amazon ECS task definition with second container
+    - name: Modify Amazon ECS task definition
+      id: task-def-2
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+          task-definition: ${{ steps.task-def-1.outputs.task-definition }}
+          container-name: ${{ secrets.container-name-iframely }}
+          image: ${{ secrets.container-image-iframely}}
+          environment-variables: |
+            NODE_ENV=${{ inputs.node-env-iframely }}
+
+    # Modify Amazon ECS task definition with third container
+    - name: Modify Amazon ECS task definition
+      id: task-def-3
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+          task-definition: ${{ steps.task-def-2.outputs.task-definition }}
+          container-name: ${{ secrets.container-name-classifier }}
+          image: ${{ secrets.container-image-classifier }}
+
+    # Use latest revision of the task-definition to deploy the application to ECS
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+          task-definition: ${{ steps.task-def-3.outputs.task-definition }}
+          service: ${{ secrets.ecs-service }}
+          cluster: ${{ secrets.ecs-cluster }}
+          wait-for-service-stability: true
