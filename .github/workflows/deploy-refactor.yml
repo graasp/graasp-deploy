@@ -56,8 +56,6 @@ on:
         required: true
       refresh-token-jwt-secret:
         required: true
-      sentry-dsn:
-        required: true
       s3-file-item-access-key-id:
         required: true
       s3-file-item-bucket:
