@@ -181,7 +181,7 @@ jobs:
         IMAGE_TAG: ${{ needs.build.outputs.tag }}
       with:
           task-definition: ${{ inputs.ecs-task-definition }}
-          container-name: ${{ vars.CONTAINER_NAME }}
+          container-name: ${{ vars.CONTAINER_NAME_GRAASP }}
           image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
           environment-variables: |
             DEPLOY_ENV=development
