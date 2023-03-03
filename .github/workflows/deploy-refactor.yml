@@ -26,6 +26,14 @@ on:
         required: true
       container-image-classifier:
         required: true
+      db-host:
+        required: true
+      db-name:
+        required: true
+      db-password:
+        required: true
+      db-username:
+        required: true
       ecr-repository:
         required: true
       ecs-cluster:
@@ -214,6 +222,10 @@ jobs:
 
             APPS_JWT_SECRET=${{ secrets.apps-jwt-secret }}
             AUTH_TOKEN_JWT_SECRET=${{ secrets.auth-token-jwt-secret }}
+            DB_HOST=${{ secrets.db-host }}
+            DB_NAME=${{ secrets.db-name }}
+            DB_PASSWORD=${{ secrets.db-password }}
+            DB_USERNAME=${{ secrets.db-username }}
             ETHERPAD_API_KEY=${{ secrets.etherpad-api-key }}
             H5P_CONTENT_ACCESS_KEY_ID=${{ secrets.h5p-content-access-key-id }}
             H5P_CONTENT_BUCKET=${{ secrets.h5p-content-bucket-name }}
