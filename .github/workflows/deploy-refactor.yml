@@ -28,6 +28,10 @@ on:
         required: true
       ecr-repository:
         required: true
+      ecs-cluster:
+        required: true
+      ecs-service:
+        required: true
       etherpad-api-key:
         required: true
       h5p-content-access-key-id:
