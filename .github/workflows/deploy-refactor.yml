@@ -171,6 +171,7 @@ jobs:
       # Set environment variables required to create the task definition file. These are only available to this step
       env:
         ECR_REGISTRY: ${{ steps.login-ecr-deploy.outputs.registry }}
+        ECR_REPOSITORY: ${{ secrets.ecr-repository }}
         IMAGE_TAG: ${{ needs.build.outputs.tag }}
       with:
           task-definition: ${{ inputs.ecs-task-definition }}
