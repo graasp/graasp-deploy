@@ -12,7 +12,7 @@ on:
       environment:
         required: true
         type: string
-        
+
     secrets:
       aws-access-key-id:
         required: true
@@ -22,7 +22,15 @@ on:
         required: true
       auth-token-jwt-secret:
         required: true
+      container-image-iframely:
+        required: true
+      container-image-classifier:
+        required: true
       ecr-repository:
+        required: true
+      ecs-cluster:
+        required: true
+      ecs-service:
         required: true
       etherpad-api-key:
         required: true
@@ -56,8 +64,6 @@ on:
         required: true
       refresh-token-jwt-secret:
         required: true
-      sentry-dsn:
-        required: true
       s3-file-item-access-key-id:
         required: true
       s3-file-item-bucket:
@@ -82,7 +88,6 @@ jobs:
 
   # Build image and push to ECR
   build:
-    needs: test
     name: Build
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
@@ -95,21 +100,6 @@ jobs:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
       uses: actions/checkout@v3
-
-    - name: Use the value
-      run: |
-        echo "${{ vars.CONTAINER_NAME_GRAASP }}" 
-
-    - name: print FALSE secret
-      run: |
-        echo "${{ secrets.false-secret }}" 
-
-    - name: print vars
-      run: |
-        echo "${{ vars.AWS_REGION }}" 
-    - name: print vars from core
-      run: |
-        echo "${{ inputs.aws-region }}" 
 
     # Set output variable tag with the current checked out ref
     - name: Set Tag Number
@@ -176,7 +166,7 @@ jobs:
         IMAGE_TAG: ${{ needs.build.outputs.tag }}
       with:
           task-definition: ${{ inputs.ecs-task-definition }}
-          container-name: ${{ secrets.container-name-graasp }}
+          container-name: ${{ vars.CONTAINER_NAME_GRAASP }}
           image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
           environment-variables: |
             DEPLOY_ENV=development
@@ -252,10 +242,10 @@ jobs:
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
           task-definition: ${{ steps.task-def-1.outputs.task-definition }}
-          container-name: ${{ secrets.container-name-iframely }}
+          container-name: ${{ vars.CONTAINER_NAME_IFRAMELY }}
           image: ${{ secrets.container-image-iframely}}
           environment-variables: |
-            NODE_ENV=${{ inputs.node-env-iframely }}
+            NODE_ENV=${{ vars.NODE_ENV_IFRAMELY }}
 
     # Modify Amazon ECS task definition with third container
     - name: Modify Amazon ECS task definition
@@ -263,7 +253,7 @@ jobs:
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
           task-definition: ${{ steps.task-def-2.outputs.task-definition }}
-          container-name: ${{ secrets.container-name-classifier }}
+          container-name: ${{ vars.CONTAINER_NAME_CLASSIFIER }}
           image: ${{ secrets.container-image-classifier }}
 
     # Use latest revision of the task-definition to deploy the application to ECS
@@ -271,6 +261,6 @@ jobs:
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
           task-definition: ${{ steps.task-def-3.outputs.task-definition }}
-          service: ${{ secrets.ecs-service }}
-          cluster: ${{ secrets.ecs-cluster }}
+          service: ${{ vars.ECS_SERVICE }}
+          cluster: ${{ vars.ECS_CLUSTER }}
           wait-for-service-stability: true
