@@ -101,21 +101,6 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v3
 
-    # - name: Use the value
-    #   run: |
-    #     echo "${{ vars.CONTAINER_NAME_GRAASP }}" 
-
-    # - name: print FALSE secret
-    #   run: |
-    #     echo "${{ secrets.false-secret }}" 
-
-    # - name: print vars
-    #   run: |
-    #     echo "${{ vars.AWS_REGION }}" 
-    # - name: print vars from core
-    #   run: |
-    #     echo "${{ inputs.aws-region }}" 
-
     # Set output variable tag with the current checked out ref
     - name: Set Tag Number
       id: tag-number
