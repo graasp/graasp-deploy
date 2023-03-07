@@ -63,5 +63,5 @@ runs:
     # Create a new invalidation
     - name: Invalidate cloudfront distribution
       id: invalidate-cloudfront
-      run: aws cloudfront create-invalidation --distribution-id ${{ inputs.cloudfront-distribution-id }} --paths ${APP_DIR}/*
+      run: aws cloudfront create-invalidation --distribution-id ${{ inputs.cloudfront-distribution-id }} --paths ${{ env.APP_DIR }}/*
       shell: bash
