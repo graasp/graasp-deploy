@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/graasp/graasp-deploy/compare/v1.13.1...v1.14.0) (2023-03-15)
+
+
+### Features
+
+* add composite workflow for s3 deploy ([#134](https://github.com/graasp/graasp-deploy/issues/134)) ([aded997](https://github.com/graasp/graasp-deploy/commit/aded9977de3fe7641a4a3186c639f141bf8502ee))
+
 ## [1.13.1](https://github.com/graasp/graasp-deploy/compare/v1.13.0...v1.13.1) (2023-02-07)
 
 
