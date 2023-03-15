@@ -1,0 +1,57 @@
+name: Deploy to S3
+description: Deploys static files to AWS S3
+
+inputs:
+  aws-access-key-id:
+    required: true
+    description: AWS access key ID
+  aws-secret-access-key:
+    required: true
+    description: AWS secret access key
+  aws-region:
+    required: true
+    description: AWS region
+
+  aws-s3-bucket-name:
+    required: true
+    description: AWS S3 bucket name
+  build-folder:
+    required: false
+    default: 'build'
+    description: The folder to push to aws (build by default)
+  path:
+    required: false
+    default: "/"
+    description: Path in the bucket where files should be uploaded
+  cloudfront-distribution-id:
+    required: true
+    description: Cloudfront distribution ID
+
+
+runs:
+  using: "composite"
+  steps:
+
+    # Configure AWS credential and region
+    - name: Configure AWS Credentials
+      id: configure-aws
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ inputs.aws-access-key-id }}
+        aws-secret-access-key: ${{ inputs.aws-secret-access-key }}
+        aws-region: ${{ inputs.aws-region }}
+
+    # Recursively copy new and updated files from the source directory to the destination
+    - name: Sync files with AWS S3 Bucket
+      id: sync-s3
+      run: aws s3 sync ${{ inputs.build-folder }} s3://${{ inputs.aws-s3-bucket-name }}${{ inputs.path }} --acl public-read --follow-symlinks --delete
+      # --acl public-read makes files publicly readable
+      # --follow-symlinks fixes some weird symbolic link problems that may come up
+      # --delete permanently deletes files in the S3 bucket that are not present in the latest version of the repository/build.
+      shell: bash
+
+    # Create a new invalidation
+    - name: Invalidate cloudfront distribution
+      id: invalidate-cloudfront
+      run: aws cloudfront create-invalidation --distribution-id ${{ inputs.cloudfront-distribution-id }} --paths "${{ inputs.path }}*"
+      shell: bash

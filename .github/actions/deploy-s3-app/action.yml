@@ -1,7 +1,16 @@
-name: Deploy frontend to S3
-description: Deploys static files to AWS S3
+name: Deploy App to S3
+description: Deploys static files of app to AWS S3
 
 inputs:
+  graasp-app-id:
+    required: false
+    default: ''
+    description: App Id for deploying to the apps bucket. Do not specify to deploy to the root of the bucket.
+  version:
+    required: false
+    default: 'latest'
+    description: The version of the app that will be deployed
+
   aws-access-key-id:
     required: true
     description: AWS access key ID
@@ -15,14 +24,6 @@ inputs:
   aws-s3-bucket-name:
     required: true
     description: AWS S3 bucket name
-  graasp-app-id:
-    required: false
-    default: ''
-    description: App Id for deploying to the apps bucket. Do not specify to deploy to the root of the bucket.
-  version:
-    required: false
-    default: 'latest'
-    description: The version of the app that will be deployed
   build-folder:
     required: false
     default: 'build'
@@ -32,36 +33,22 @@ inputs:
     required: true
     description: Cloudfront distribution ID
 
-
 runs:
   using: "composite"
   steps:
 
-    - name: Set s3 app dir and invalidation path
+    - name: Set s3 app dir
       run: |
-        echo "APP_DIR=${{ inputs.graasp-app-id != '' && '/inputs.graasp-app-id/inputs.version' || '' }}" >> $GITHUB_ENV;
+        echo "APP_DIR=/${{ inputs.graasp-app-id }}/${{ inputs.version }}" >> $GITHUB_ENV;
       shell: bash
 
-    # Configure AWS credential and region
-    - name: Configure AWS Credentials
-      id: configure-aws
-      uses: aws-actions/configure-aws-credentials@v1
+    - name: Deploy to S3
+      uses: graasp/graasp-deploy/.github/actions/deploy-s3-app@133-composite-build-apps
       with:
         aws-access-key-id: ${{ inputs.aws-access-key-id }}
         aws-secret-access-key: ${{ inputs.aws-secret-access-key }}
         aws-region: ${{ inputs.aws-region }}
-
-    # Recursively copy new and updated files from the source directory to the destination
-    - name: Sync files with AWS S3 Bucket
-      id: sync-s3
-      run: aws s3 sync ${{ inputs.build-folder }} s3://${{ inputs.aws-s3-bucket-name }}${APP_DIR}/ --acl public-read --follow-symlinks --delete
-      # --acl public-read makes files publicly readable
-      # --follow-symlinks fixes some weird symbolic link problems that may come up
-      # --delete permanently deletes files in the S3 bucket that are not present in the latest version of the repository/build.
-      shell: bash
-
-    # Create a new invalidation
-    - name: Invalidate cloudfront distribution
-      id: invalidate-cloudfront
-      run: aws cloudfront create-invalidation --distribution-id ${{ inputs.cloudfront-distribution-id }} --paths "${{ env.APP_DIR }}/*"
-      shell: bash
+        aws-s3-bucket-name: ${{ inputs.aws-s3-bucket-name }}
+        build-folder: ${{ inputs.build-folder }}
+        cloudfront-distribution-id: ${{ inputs.cloudfront-distribution-id }}
+        path: ${{ env.APP_DIR }}
