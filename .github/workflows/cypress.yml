@@ -11,7 +11,7 @@ on:
         required: false
         type: string
         default: true
-      
+
       # build specific inputs
       graasp-compose-host-test:
         required: false
@@ -67,12 +67,13 @@ on:
       enable-mock-api-test:
         required: false
         type: string
+
     # Define secrets which can be passed from the caller workflow
     secrets:
-      api-host-test: 
+      api-host-test:
         required: false
 
-concurrency: 
+concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 
@@ -81,7 +82,7 @@ env:
   # Allows to increase Node's max heap size
   NODE_OPTIONS: '--max_old_space_size=8192'
 
-jobs:   
+jobs:
   install:
     name: Yarn Install and Cache
     runs-on: ubuntu-latest
@@ -89,10 +90,10 @@ jobs:
       # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
       - name: Check out code
         uses: actions/checkout@v3
-        
+
       - name: Yarn Install and Cache
         uses: graasp/graasp-deploy/.github/actions/yarn-install-and-cache@v1
-        with: 
+        with:
           cypress: true
 
   tsc:
@@ -108,7 +109,7 @@ jobs:
       - name: Yarn install and Cache dependencies
         uses: graasp/graasp-deploy/.github/actions/yarn-install-and-cache@v1
 
-      # type check 
+      # type check
       - name: Check out code
         run: tsc --noEmit
 
@@ -121,12 +122,12 @@ jobs:
       # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
       - name: Check out code
         uses: actions/checkout@v3
-     
+
       - name: Yarn install and Cache dependencies
         uses: graasp/graasp-deploy/.github/actions/yarn-install-and-cache@v1
-        with: 
+        with:
           cypress: true
-              
+
       #  use the Cypress GitHub Action to run Cypress tests within the chrome browser
       - name: Cypress run
         uses: cypress-io/github-action@v4

@@ -1,0 +1,54 @@
+name: Deploy App to S3
+description: Deploys static files of app to AWS S3
+
+inputs:
+  graasp-app-id:
+    required: false
+    default: ''
+    description: App Id for deploying to the apps bucket. Do not specify to deploy to the root of the bucket.
+  version:
+    required: false
+    default: 'latest'
+    description: The version of the app that will be deployed
+
+  aws-access-key-id:
+    required: true
+    description: AWS access key ID
+  aws-secret-access-key:
+    required: true
+    description: AWS secret access key
+  aws-region:
+    required: true
+    description: AWS region
+
+  aws-s3-bucket-name:
+    required: true
+    description: AWS S3 bucket name
+  build-folder:
+    required: false
+    default: 'build'
+    description: The folder to push to aws (build by default)
+
+  cloudfront-distribution-id:
+    required: true
+    description: Cloudfront distribution ID
+
+runs:
+  using: "composite"
+  steps:
+
+    - name: Set s3 app dir
+      run: |
+        echo "APP_DIR=/${{ inputs.graasp-app-id }}/${{ inputs.version }}" >> $GITHUB_ENV;
+      shell: bash
+
+    - name: Deploy to S3
+      uses: graasp/graasp-deploy/.github/actions/deploy-s3@v1
+      with:
+        aws-access-key-id: ${{ inputs.aws-access-key-id }}
+        aws-secret-access-key: ${{ inputs.aws-secret-access-key }}
+        aws-region: ${{ inputs.aws-region }}
+        aws-s3-bucket-name: ${{ inputs.aws-s3-bucket-name }}
+        build-folder: ${{ inputs.build-folder }}
+        cloudfront-distribution-id: ${{ inputs.cloudfront-distribution-id }}
+        path: ${{ env.APP_DIR }}
