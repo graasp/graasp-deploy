@@ -73,6 +73,7 @@ jobs:
     needs: test
     name: Build
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     # Define job output that is available to all downstream jobs that depend on this job
     outputs:
       tag: ${{ steps.tag-number.outputs.tag }}
@@ -116,6 +117,7 @@ jobs:
     needs: build
     name: Deploy
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
 
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
