@@ -1,0 +1,54 @@
+name: Auto Tag Issues and PR after Release
+description: Auto tag 'un-released' issues and prs after release-please creates tag.
+
+inputs:
+  releases_created:
+    required: true
+    description: Output from the 'release' step. Should be the `steps.release.outputs.release_created`. This tells if release-please created a release or not.
+  tag_name:
+    required: true
+    description: Output from the 'release' step. Should be the `steps.release.outputs.tag_name`.
+
+
+runs:
+  using: "composite"
+  steps:
+    # tag all pr and issues that have the `un-released` label as `tag-name`, e.g. `v2.4.3`
+    - name: Auto Tag
+      id: auto-tag
+      if: ${{ inputs.releases_created }}
+      run: |
+        # force creation of the label associated to the current release
+        gh label create ${{ env.TAG_NAME }} -f --color 0E8A16 --repo ${{ env.REPO }};
+
+        # display summary information
+        echo '### `${{ env.TAG_NAME }}` :rocket:' >> $GITHUB_STEP_SUMMARY;
+        echo 'Tag all ${{ env.PRE_LABEL_NAME }} issues and prs as ${{ env.TAG_NAME }}';
+
+        # iterate over the issues and prs
+        for cmd in issue pr;
+        do
+          # fetch the id of issues/prs that have been labelled as `un-released` in the current repo
+          for nbr in $(gh $cmd list -l ${{ env.PRE_LABEL_NAME }} -s all --json number --jq '.[].number' --repo ${{ env.REPO }} );
+          do
+            URL=$(gh $cmd edit $nbr --add-label ${{ env.TAG_NAME }} --remove-label ${{ env.PRE_LABEL_NAME }} --repo ${{ env.REPO }} );
+            echo "- $cmd #$nbr $URL" >> $GITHUB_STEP_SUMMARY;
+          done
+        done
+
+        # print summary information
+        echo '' >> $GITHUB_STEP_SUMMARY;
+        echo ':rocket: All related issues and prs tagged !' >> $GITHUB_STEP_SUMMARY;
+        echo ':scroll: Check out [the created release](${{ env.RELEASE_URL }}) !' >> $GITHUB_STEP_SUMMARY;
+      shell: bash
+      env:
+        # the github token needs to be set in the envs in order to use the `gh` CLI
+        GITHUB_TOKEN: ${{ github.token }}
+        # tag that was released
+        TAG_NAME: ${{ inputs.tag_name }}
+        # current repository name
+        REPO: ${{ github.event.repository.full_name }}
+        # url of the release created by release-please
+        RELEASE_URL: ${{ github.event.repository.html_url }}/releases/tag/${{ inputs.tag_name }}
+        # name of the label to target
+        PRE_LABEL_NAME: un-released
