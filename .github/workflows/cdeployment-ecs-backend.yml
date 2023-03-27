@@ -54,6 +54,9 @@ on:
       save-actions:
         required: true
         type: string
+      sign-up-email-white-list:
+        required: false
+        type: string
       subscriptions-plugin:
         required: true
         type: string
@@ -163,6 +166,8 @@ on:
       public-tag-id:
         required: true
       published-tag-id:
+        required: true
+      recaptcha-secret-access-key: 
         required: true
       redis-host:
         required: true
@@ -311,6 +316,7 @@ jobs:
             PUBLIC_PLUGIN=${{ inputs.public-plugin }}
             PUBLIC_TAG_ID=${{ secrets.public-tag-id }}
             PUBLISHED_TAG_ID=${{ secrets.published-tag-id }}
+            RECAPTCHA_SECRET_ACCESS_KEY=${{ secrets.recaptcha-secret-access-key }}
             REDIS_HOST=${{ secrets.redis-host }}
             REDIS_PASSWORD=${{ secrets.redis-password }}
             REDIS_PORT=${{ secrets.redis-port }}
@@ -326,6 +332,7 @@ jobs:
             SAVE_ACTIONS=${{ inputs.save-actions }}
             SECURE_SESSION_SECRET_KEY=${{ secrets.secure-session-secret-key }}
             SENTRY_DSN=${{ secrets.sentry-dsn }}
+            SIGN_UP_EMAIL_WHITE_LIST=${{ vars.sign-up-email-white-list }}
             STRIPE_SECRET_KEY=${{ secrets.stripe-secret-key }}
             STRIPE_DEFAULT_PLAN_PRICE_ID=${{ secrets.stripe-default-plan-price-id }}
             SUBSCRIPTIONS_PLUGIN=${{ secrets.subscriptions-plugin }}
