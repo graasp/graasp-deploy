@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.15.0](https://github.com/graasp/graasp-deploy/compare/v1.14.0...v1.15.0) (2023-03-27)
+
+
+### Features
+
+* add auto-tag-after-release composite workflow ([#174](https://github.com/graasp/graasp-deploy/issues/174)) ([c2b2c0c](https://github.com/graasp/graasp-deploy/commit/c2b2c0c25f9b211b6f2179917736880e9a6197ce))
+* add auto-tag-after-release composite workflow ([#174](https://github.com/graasp/graasp-deploy/issues/174)) ([d1eda70](https://github.com/graasp/graasp-deploy/commit/d1eda70afc10b7db81ddcfbcdab4e8384a43a7f6))
+* add white list email for sign up to backend ([#178](https://github.com/graasp/graasp-deploy/issues/178)) ([8b225e9](https://github.com/graasp/graasp-deploy/commit/8b225e9976e896fc1b3a8a10a6025473806b6e94))
+
+
+### Bug Fixes
+
+* add recaptcha access key to deploy backend ([8b225e9](https://github.com/graasp/graasp-deploy/commit/8b225e9976e896fc1b3a8a10a6025473806b6e94))
+* add recaptcha key ([#180](https://github.com/graasp/graasp-deploy/issues/180)) ([e46389e](https://github.com/graasp/graasp-deploy/commit/e46389ed600c31af2fd4cb0a5514080d32c9f406))
+
 ## [1.14.0](https://github.com/graasp/graasp-deploy/compare/v1.13.1...v1.14.0) (2023-03-15)
 
 
