@@ -57,6 +57,8 @@ on:
         required: false
       stripe-publishable-key:
         required: false
+      recaptcha-site-key:
+        required: false
 
 # Set environment variables that are available to the steps of all jobs in the workflow
 env:
@@ -102,7 +104,7 @@ jobs:
       with:
         node-version: '16'
         check-latest: true
-        
+
     - name: Yarn install and Cache dependencies
       uses: graasp/graasp-deploy/.github/actions/yarn-install-and-cache@v1
 
@@ -126,6 +128,7 @@ jobs:
         REACT_APP_SHOW_NOTIFICATIONS: ${{ secrets.show-notifications }}
         REACT_APP_SENTRY_DSN: ${{ secrets.sentry-dsn }}
         REACT_APP_STRIPE_PUBLISHABLE_KEY: ${{ secrets.stripe-publishable-key }}
+        REACT_APP_RECAPTCHA_SITE_KEY: ${{ secrets.recaptcha-site-key }}
         REACT_APP_VERSION: ${{ github.sha }}
       # Run a set of commands using the runners shell to perform install and build
       run: yarn run build
