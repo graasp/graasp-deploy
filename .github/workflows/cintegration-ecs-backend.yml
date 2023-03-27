@@ -163,6 +163,8 @@ on:
         required: true
       published-tag-id:
         required: true
+      recaptcha-secret-access-key: 
+        required: true
       redis-host:
         required: true
       redis-port:
@@ -347,6 +349,7 @@ jobs:
             PUBLIC_PLUGIN=${{ inputs.public-plugin }}
             PUBLIC_TAG_ID=${{ secrets.public-tag-id }}
             PUBLISHED_TAG_ID=${{ secrets.published-tag-id }}
+            RECAPTCHA_SECRET_ACCESS_KEY=${{ secrets.recaptcha-secret-access-key }}
             REDIS_HOST=${{ secrets.redis-host }}
             REDIS_PASSWORD=${{ secrets.redis-password }}
             REDIS_PORT=${{ secrets.redis-port }}
