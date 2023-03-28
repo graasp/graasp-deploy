@@ -2,7 +2,7 @@
   "include": [
     {
       "repository": "graasp/graasp",
-      "tag": "v0.6.1"
+      "tag": "v0.8.1"
     },
     {
       "repository": "graasp/graasp-auth",
@@ -22,7 +22,7 @@
     },
     {
       "repository": "graasp/graasp-app-sticky-notes",
-      "tag": "v0.9.1"
+      "tag": "v0.9.2"
     },
     {
       "repository": "graasp/graasp-app-task-management",
@@ -46,7 +46,7 @@
     },
     {
       "repository": "graasp/graasp-library",
-      "tag": "v0.5.0"
+      "tag": "v0.6.0"
     },
     {
       "repository": "graasp/graasp-app-sketchfab",
