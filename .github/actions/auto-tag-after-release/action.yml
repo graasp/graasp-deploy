@@ -25,16 +25,20 @@ runs:
         echo '### `${{ env.TAG_NAME }}` :rocket:' >> $GITHUB_STEP_SUMMARY;
         echo 'Tag all ${{ env.PRE_LABEL_NAME }} issues and prs as ${{ env.TAG_NAME }}';
 
+        IFS=$'\n'
         # iterate over the issues and prs
         for cmd in issue pr;
         do
           # fetch the id of issues/prs that have been labelled as `un-released` in the current repo
-          for nbr in $(gh $cmd list -l ${{ env.PRE_LABEL_NAME }} -s all --json number --jq '.[].number' --repo ${{ env.REPO }} );
+          gh $cmd list -l ${{ env.PRE_LABEL_NAME }} -s all --json number,title --repo ${{ env.REPO }} | jq -c '.[]' | while read line;
           do
+            nrb=$(echo $line | jq '.number')
+            title=$(echo $line | jq '.title')
             URL=$(gh $cmd edit $nbr --add-label ${{ env.TAG_NAME }} --remove-label ${{ env.PRE_LABEL_NAME }} --repo ${{ env.REPO }} );
-            echo "- $cmd #$nbr $URL" >> $GITHUB_STEP_SUMMARY;
+            echo "- $cmd #$nbr $title $URL" >> $GITHUB_STEP_SUMMARY;
           done
         done
+        unset IFS
 
         # print summary information
         echo '' >> $GITHUB_STEP_SUMMARY;
