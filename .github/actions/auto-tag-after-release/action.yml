@@ -35,7 +35,7 @@ runs:
             nrb=$(echo $line | jq '.number')
             title=$(echo $line | jq '.title')
             URL=$(gh $cmd edit $nbr --add-label ${{ env.TAG_NAME }} --remove-label ${{ env.PRE_LABEL_NAME }} --repo ${{ env.REPO }} );
-            echo "- $cmd #$nbr $title $URL" >> $GITHUB_STEP_SUMMARY;
+            echo "- $cmd $title $URL" >> $GITHUB_STEP_SUMMARY;
           done
         done
         unset IFS
