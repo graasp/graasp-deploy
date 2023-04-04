@@ -27,6 +27,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
 
   tag-closed-issues:
+    needs: setup-labels
     runs-on: ubuntu-latest
     if: ${{ github.event.issue.state_reason == 'completed' }}
     env:
@@ -41,6 +42,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
 
   untag-reopened-issues:
+    needs: setup-labels
     runs-on: ubuntu-latest
     if: ${{ github.event.issue.state_reason == 'reopened' }}
     env:
@@ -55,6 +57,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
 
   tag-merged-prs:
+    needs: setup-labels
     runs-on: ubuntu-latest
     if: ${{ github.event.pull_request.merged }}
     env:
