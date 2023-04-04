@@ -32,10 +32,10 @@ runs:
           # fetch the id of issues/prs that have been labelled as `un-released` in the current repo
           gh $cmd list -l ${{ env.PRE_LABEL_NAME }} -s all --json number,title --repo ${{ env.REPO }} | jq -c '.[]' | while read line;
           do
-            nrb=$(echo $line | jq '.number')
+            number=$(echo $line | jq '.number')
             title=$(echo $line | jq '.title')
-            URL=$(gh $cmd edit $nbr --add-label ${{ env.TAG_NAME }} --remove-label ${{ env.PRE_LABEL_NAME }} --repo ${{ env.REPO }} );
-            echo "- $cmd $title $URL" >> $GITHUB_STEP_SUMMARY;
+            URL=$(gh $cmd edit $number --add-label ${{ env.TAG_NAME }} --remove-label ${{ env.PRE_LABEL_NAME }} --repo ${{ env.REPO }} );
+            echo "- $cmd #number $title $URL" >> $GITHUB_STEP_SUMMARY;
           done
         done
         unset IFS
