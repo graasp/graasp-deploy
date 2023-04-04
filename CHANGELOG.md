@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.3](https://github.com/graasp/graasp-deploy/compare/v1.15.2...v1.15.3) (2023-04-04)
+
+
+### Bug Fixes
+
+* job race in auto-tag ([#189](https://github.com/graasp/graasp-deploy/issues/189)) ([ab640de](https://github.com/graasp/graasp-deploy/commit/ab640de8211ddf92e5c7c631e4b86fbc7ae59317))
+
 ## [1.15.2](https://github.com/graasp/graasp-deploy/compare/v1.15.1...v1.15.2) (2023-04-04)
 
 
