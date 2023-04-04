@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.2](https://github.com/graasp/graasp-deploy/compare/v1.15.1...v1.15.2) (2023-04-04)
+
+
+### Bug Fixes
+
+* create re-usable workflow for auto-tag ([#186](https://github.com/graasp/graasp-deploy/issues/186)) ([00ee6dd](https://github.com/graasp/graasp-deploy/commit/00ee6ddf8f9bb2fc67efb44a85d0bac7953ff999))
+
 ## [1.15.1](https://github.com/graasp/graasp-deploy/compare/v1.15.0...v1.15.1) (2023-04-03)
 
 
