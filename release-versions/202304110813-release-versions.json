@@ -1,0 +1,80 @@
+{
+  "include": [
+    {
+      "repository": "graasp/graasp",
+      "tag": "v0.8.1"
+    },
+    {
+      "repository": "graasp/graasp-auth",
+      "tag": "v0.5.0"
+    },
+    {
+      "repository": "graasp/graasp-admin",
+      "tag": ""
+    },
+    {
+      "repository": "graasp/graasp-app-file-drop",
+      "tag": "v0.2.0"
+    },
+    {
+      "repository": "graasp/graasp-app-radiating-charge",
+      "tag": "v0.1.8"
+    },
+    {
+      "repository": "graasp/graasp-app-sticky-notes",
+      "tag": "v0.9.2"
+    },
+    {
+      "repository": "graasp/graasp-app-task-management",
+      "tag": "v0.3.0"
+    },
+    {
+      "repository": "graasp/graasp-app-text-input",
+      "tag": "v0.5.1"
+    },
+    {
+      "repository": "graasp/graasp-app-code-capsule",
+      "tag": "v1.5.1"
+    },
+    {
+      "repository": "graasp/graasp-app-calculator",
+      "tag": "v0.1.5"
+    },
+    {
+      "repository": "graasp/graasp-app-survey",
+      "tag": "v0.1.1"
+    },
+    {
+      "repository": "graasp/graasp-library",
+      "tag": "v0.6.0"
+    },
+    {
+      "repository": "graasp/graasp-app-sketchfab",
+      "tag": "v0.6.1"
+    },
+    {
+      "repository": "graasp/graasp-builder",
+      "tag": "v0.11.0"
+    },
+    {
+      "repository": "graasp/graasp-app-quiz",
+      "tag": "v0.1.1"
+    },
+    {
+      "repository": "graasp/graasp-player",
+      "tag": "v0.6.1"
+    },
+    {
+      "repository": "graasp/graasp-analytics",
+      "tag": "v0.1.15"
+    },
+    {
+      "repository": "graasp/graasp-app-text-analysis",
+      "tag": "v0.5.2"
+    },
+    {
+      "repository": "graasp/graasp-app-excalidraw",
+      "tag": "v2.0.0"
+    }
+  ]
+}
