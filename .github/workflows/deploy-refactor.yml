@@ -34,6 +34,8 @@ on:
         required: true
       db-username:
         required: true
+      db-read-replica-host:
+        required: true
       ecr-repository:
         required: true
       ecs-cluster:
@@ -227,6 +229,7 @@ jobs:
             DB_NAME=${{ secrets.db-name }}
             DB_PASSWORD=${{ secrets.db-password }}
             DB_USERNAME=${{ secrets.db-username }}
+            DB_READ_REPLICA_HOST=${{ secrets.db-read-replica-host }}
             ETHERPAD_API_KEY=${{ secrets.etherpad-api-key }}
             H5P_CONTENT_ACCESS_KEY_ID=${{ secrets.h5p-content-access-key-id }}
             H5P_CONTENT_BUCKET=${{ secrets.h5p-content-bucket-name }}
