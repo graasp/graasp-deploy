@@ -64,6 +64,8 @@ on:
         required: true
       pg-read-replicas-connection-uris:
         required: true
+      recaptcha-secret-access-key: 
+        required: true
       redis-host:
         required: true
       redis-port:
@@ -241,6 +243,7 @@ jobs:
             MAILER_CONFIG_USERNAME=${{ secrets.mailer-config-username }}
             PG_CONNECTION_URI=${{ secrets.pg-connection-uri }}
             PG_READ_REPLICAS_CONNECTION_URIS=${{ secrets.pg-read-replicas-connection-uris }}
+            RECAPTCHA_SECRET_ACCESS_KEY=${{ secrets.recaptcha-secret-access-key }}
             REDIS_HOST=${{ secrets.redis-host }}
             REDIS_PASSWORD=${{ secrets.redis-password }}
             REDIS_PORT=${{ secrets.redis-port }}
