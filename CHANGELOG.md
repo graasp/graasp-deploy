@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.4](https://github.com/graasp/graasp-deploy/compare/v1.15.3...v1.15.4) (2023-04-24)
+
+
+### Bug Fixes
+
+* issues with parsing titles in auto-tag-after-release ([#193](https://github.com/graasp/graasp-deploy/issues/193)) ([0ad9a6e](https://github.com/graasp/graasp-deploy/commit/0ad9a6e193d2172c6bda55e0cec75bf429dfcc79))
+
 ## [1.15.3](https://github.com/graasp/graasp-deploy/compare/v1.15.2...v1.15.3) (2023-04-04)
 
 
