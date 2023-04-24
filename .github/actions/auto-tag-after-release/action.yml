@@ -30,13 +30,9 @@ runs:
         for cmd in issue pr;
         do
           # fetch the id of issues/prs that have been labelled as `un-released` in the current repo
-          gh $cmd list -l ${{ env.PRE_LABEL_NAME }} -s all --json number,title --repo ${{ env.REPO }} | jq -c '.[]' | while read line;
-          do
-            number=$(echo $line | jq '.number')
-            title=$(echo $line | jq '.title')
-            URL=$(gh $cmd edit $number --add-label ${{ env.TAG_NAME }} --remove-label ${{ env.PRE_LABEL_NAME }} --repo ${{ env.REPO }} );
-            echo "- $cmd #number $title $URL" >> $GITHUB_STEP_SUMMARY;
-          done
+          gh $cmd list -l ${{ env.PRE_LABEL_NAME }} -s all --json number --jq '.[].number' --repo ${{ env.REPO }} | xargs -I % gh $cmd edit % --add-label ${{ env.TAG_NAME }} --remove-label ${{ env.PRE_LABEL_NAME }} --repo ${{ env.REPO }};
+          # format output for summary
+          gh $cmd list -l ${{ env.TAG_NAME }} --repo ${{ env.REPO }} -s closed --json number,title,closedAt --template '{{range .}}{{tablerow (printf "- #%v" .number) .title (timeago .closedAt)}}{{end}}' >> $GITHUB_STEP_SUMMARY;
         done
         unset IFS
 
