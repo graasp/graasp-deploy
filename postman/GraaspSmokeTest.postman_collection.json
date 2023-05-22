@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "7d4cdefc-4485-4612-98b1-bf618dd56ec3",
+		"_postman_id": "80c42077-fa5b-4e72-886a-a58e12139391",
 		"name": "GraaspSmokeTest",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "13967016"
+		"_exporter_id": "19813272"
 	},
 	"item": [
 		{
@@ -48,7 +48,7 @@
 					"response": []
 				},
 				{
-					"name": "explorer",
+					"name": "library",
 					"event": [
 						{
 							"listen": "test",
@@ -112,7 +112,7 @@
 									"pm.test(\"Verify item\", function () {",
 									"    const $ = cheerio.load(pm.response.text());",
 									"    // Use the jQuery selector API to get different elements on the page",
-									"    pm.expect($(\"title\").text()).to.eql(\"Graasp\");",
+									"    pm.expect($(\"title\").text()).to.eql(\"Graasp Auth\");",
 									"});",
 									""
 								],
@@ -158,7 +158,7 @@
 									"pm.test(\"Verify item\", function () {",
 									"    const $ = cheerio.load(pm.response.text());",
 									"    // Use the jQuery selector API to get different elements on the page",
-									"    pm.expect($(\"title\").text()).to.eql(\"Graasp\");",
+									"    pm.expect($(\"title\").text()).to.eql(\"Graasp Player\");",
 									"});"
 								],
 								"type": "text/javascript"
@@ -203,7 +203,7 @@
 									"pm.test(\"Verify item\", function () {",
 									"    const $ = cheerio.load(pm.response.text());",
 									"    // Use the jQuery selector API to get different elements on the page",
-									"    pm.expect($(\"title\").text()).to.eql(\"Graasp\");",
+									"    pm.expect($(\"title\").text()).to.eql(\"Graasp Builder\");",
 									"});"
 								],
 								"type": "text/javascript"
