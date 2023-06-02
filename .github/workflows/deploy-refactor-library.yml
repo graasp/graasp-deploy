@@ -47,7 +47,7 @@ env:
   # CONTAINER_NAME: ${{ vars.container-name-library }}
   ECR_REPOSITORY: ${{ secrets.ecr-repository }}
   # Allows to increase Node's max heap size
-  NODE_OPTIONS: '--max_old_space_size=16384'
+  NODE_OPTIONS: '--max_old_space_size=8192'
 
 # This workflow is made up of three jobs that run sequentially, called test, build and deploy
 jobs:
