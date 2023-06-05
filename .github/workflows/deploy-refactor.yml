@@ -48,7 +48,7 @@ on:
         required: true
       h5p-content-bucket-name:
         required: true
-      h5p-content-secret-access-key:
+      h5p-content-secret-access-key-id:
         required: true
       jwt-secret:
         required: true
@@ -201,6 +201,7 @@ jobs:
             EXPLORER_CLIENT_HOST=${{ vars.EXPLORER_CLIENT_HOST }}
             FILES_PATH_PREFIX=${{ vars.FILES_PATH_PREFIX }}
             H5P_PATH_PREFIX=${{ vars.H5P_PATH_PREFIX }}
+            H5P_FILE_STORAGE_TYPE=${{ vars.H5P_FILE_STORAGE_TYPE }}
             HIDDEN_ITEMS_PLUGIN=${{ vars.HIDDEN_ITEMS_PLUGIN }}
             HIDDEN_TAG_ID=${{ vars.HIDDEN_TAG_ID }}
             HOSTNAME=${{ vars.HOSTNAME }}
@@ -235,7 +236,7 @@ jobs:
             ETHERPAD_API_KEY=${{ secrets.etherpad-api-key }}
             H5P_CONTENT_ACCESS_KEY_ID=${{ secrets.h5p-content-access-key-id }}
             H5P_CONTENT_BUCKET=${{ secrets.h5p-content-bucket-name }}
-            H5P_CONTENT_SECRET_ACCESS_KEY=${{ secrets.h5p-content-secret-access-key }}
+            H5P_CONTENT_SECRET_ACCESS_KEY_ID=${{ secrets.h5p-content-secret-access-key-id }}
             JWT_SECRET=${{ secrets.jwt-secret }}
             MAILER_CONFIG_FROM_EMAIL=${{ secrets.mailer-config-from-email }}
             MAILER_CONFIG_PASSWORD=${{ secrets.mailer-config-password }}
