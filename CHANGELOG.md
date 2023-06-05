@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.5](https://github.com/graasp/graasp-deploy/compare/v1.15.4...v1.15.5) (2023-05-30)
+
+
+### Bug Fixes
+
+* postman tests expect title of page ([#197](https://github.com/graasp/graasp-deploy/issues/197)) ([8d6f5d7](https://github.com/graasp/graasp-deploy/commit/8d6f5d7650deed0ad8f7a8e48ec5c0cdaf27e482))
+
 ## [1.15.4](https://github.com/graasp/graasp-deploy/compare/v1.15.3...v1.15.4) (2023-04-24)
 
 
