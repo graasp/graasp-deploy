@@ -14,9 +14,6 @@ on:
       database-logs:
         required: true
         type: string
-      embedded-link-item-plugin:
-        required: true
-        type: string
       etherpad-cookie-domain:
         required: true
         type: string
@@ -103,7 +100,7 @@ on:
       db-username:
         required: true
       db-read-replica-host:
-        required: true
+        required: false
       email-links-host:
         required: true
       embedded-link-item-iframely-href-origin:
