@@ -23,6 +23,9 @@ on:
       etherpad-url:
         required: true
         type: string
+      h5p-file-storage-type:
+        required: true
+        type: string
       node-env:
         required: true
         type: string
@@ -120,8 +123,6 @@ on:
       h5p-content-secret-access-key-id:
         required: true
       h5p-path-prefix:
-        required: true
-      h5p-file-storage-type:
         required: true
       hostname:
         required: true
@@ -307,7 +308,7 @@ jobs:
             H5P_CONTENT_REGION=${{ secrets.h5p-content-region }}
             H5P_CONTENT_SECRET_ACCESS_KEY_ID=${{ secrets.h5p-content-secret-access-key-id }}
             H5P_PATH_PREFIX=${{ secrets.h5p-path-prefix }}
-            H5P_FILE_STORAGE_TYPE=${{ secrets.h5p-file-storage-type }}
+            H5P_FILE_STORAGE_TYPE=${{ inputs.h5p-file-storage-type }}
             HOSTNAME=${{ secrets.hostname }}
             IMAGE_CLASSIFIER_API=${{ secrets.image-classifier-api }}
             JWT_SECRET=${{ secrets.jwt-secret }}
