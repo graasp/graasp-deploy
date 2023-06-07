@@ -23,9 +23,6 @@ on:
       etherpad-url:
         required: true
         type: string
-      h5p-file-storage-type:
-        required: true
-        type: string
       node-env:
         required: true
         type: string
@@ -123,6 +120,8 @@ on:
       h5p-content-secret-access-key-id:
         required: true
       h5p-path-prefix:
+        required: true
+      h5p-file-storage-type:
         required: true
       hostname:
         required: true
@@ -298,7 +297,6 @@ jobs:
             DB_READ_REPLICA_HOST=${{ secrets.db-read-replica-host }}
             EMAIL_LINKS_HOST=${{ secrets.email-links-host }}
             EMBEDDED_LINK_ITEM_IFRAMELY_HREF_ORIGIN=${{ secrets.embedded-link-item-iframely-href-origin }}
-            EMBEDDED_LINK_ITEM_PLUGIN=${{ inputs.embedded-link-item-plugin }}
             ETHERPAD_API_KEY=${{ secrets.etherpad-api-key }}
             ETHERPAD_COOKIE_DOMAIN=${{ inputs.etherpad-cookie-domain }}
             ETHERPAD_URL=${{ inputs.etherpad-url }}
