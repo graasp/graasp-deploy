@@ -14,9 +14,6 @@ on:
       database-logs:
         required: true
         type: string
-      embedded-link-item-plugin:
-        required: true
-        type: string
       etherpad-cookie-domain:
         required: true
         type: string
@@ -103,7 +100,7 @@ on:
       db-username:
         required: true
       db-read-replica-host:
-        required: true
+        required: false
       email-links-host:
         required: true
       embedded-link-item-iframely-href-origin:
@@ -298,7 +295,6 @@ jobs:
             DB_READ_REPLICA_HOST=${{ secrets.db-read-replica-host }}
             EMAIL_LINKS_HOST=${{ secrets.email-links-host }}
             EMBEDDED_LINK_ITEM_IFRAMELY_HREF_ORIGIN=${{ secrets.embedded-link-item-iframely-href-origin }}
-            EMBEDDED_LINK_ITEM_PLUGIN=${{ inputs.embedded-link-item-plugin }}
             ETHERPAD_API_KEY=${{ secrets.etherpad-api-key }}
             ETHERPAD_COOKIE_DOMAIN=${{ inputs.etherpad-cookie-domain }}
             ETHERPAD_URL=${{ inputs.etherpad-url }}
@@ -309,7 +305,7 @@ jobs:
             H5P_CONTENT_REGION=${{ secrets.h5p-content-region }}
             H5P_CONTENT_SECRET_ACCESS_KEY_ID=${{ secrets.h5p-content-secret-access-key-id }}
             H5P_PATH_PREFIX=${{ secrets.h5p-path-prefix }}
-            H5P_FILE_STORAGE_TYPE=${{ secrets.h5p-file-storage-type }}
+            H5P_FILE_STORAGE_TYPE=${{ inputs.h5p-file-storage-type }}
             HOSTNAME=${{ secrets.hostname }}
             IMAGE_CLASSIFIER_API=${{ secrets.image-classifier-api }}
             JWT_SECRET=${{ secrets.jwt-secret }}
