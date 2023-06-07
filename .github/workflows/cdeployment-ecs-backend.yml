@@ -15,12 +15,6 @@ on:
         required: true
         type: string
       # Environment variables
-      apps-plugin:
-        required: true
-        type: string
-      chatbox-plugin:
-        required: true
-        type: string
       database-logs:
         required: true
         type: string
@@ -33,7 +27,7 @@ on:
       etherpad-url:
         required: true
         type: string
-      hidden-items-plugin:
+      h5p-file-storage-type:
         required: true
         type: string
       node-env:
@@ -42,20 +36,11 @@ on:
       node-env-iframely:
         required: true
         type: string
-      public-plugin:
-        required: true
-        type: string
       roarr-log:
         required: true
         type: string
       s3-file-item-plugin:
         required: true
-        type: string
-      save-actions:
-        required: true
-        type: string
-      sign-up-email-white-list:
-        required: false
         type: string
       subscriptions-plugin:
         required: true
@@ -105,8 +90,6 @@ on:
         required: true
       auth-token-jwt-secret:
         required: true
-      avatars-path-prefix:
-        required: true
       builder-client-host:
         required: true
       client-host:
@@ -114,6 +97,16 @@ on:
       cookie-domain:
         required: true
       cors-origin-regex:
+        required: true      
+      db-host:
+        required: true
+      db-name:
+        required: true
+      db-password:
+        required: true
+      db-username:
+        required: true
+      db-read-replica-host:
         required: true
       email-links-host:
         required: true
@@ -125,27 +118,21 @@ on:
         required: true
       file-storage-root-path:
         required: true
-      files-path-prefix:
-        required: true
       h5p-content-access-key-id:
         required: true
       h5p-content-bucket-name:
         required: true
       h5p-content-region:
-        required: true
-      h5p-content-secret-access-key:
+        required: true      
+      h5p-content-secret-access-key-id:
         required: true
       h5p-path-prefix:
-        required: true
-      hidden-tag-id:
         required: true
       hostname:
         required: true
       image-classifier-api:
         required: true
       jwt-secret:
-        required: true
-      login-item-tag-id:
         required: true
       mailer-config-from-email:
         required: true
@@ -155,17 +142,9 @@ on:
         required: true
       mailer-config-username:
         required: true
-      pg-connection-uri:
-        required: true
-      pg-read-replicas-connection-uris:
-        required: true
       player-client-host:
         required: true
       port:
-        required: true
-      public-tag-id:
-        required: true
-      published-tag-id:
         required: true
       recaptcha-secret-access-key: 
         required: true
@@ -196,8 +175,6 @@ on:
       stripe-secret-key:
         required: true
       stripe-default-plan-price-id:
-        required: true
-      thumbnails-path-prefix:
         required: true
 
 # Set environment variables that are available to the steps of all jobs in the workflow
@@ -272,18 +249,20 @@ jobs:
             DEPLOY_ENV=production
             ANALYZER_CLIENT_HOST=${{ secrets.analyzer-client-host }}
             APPS_JWT_SECRET=${{ secrets.apps-jwt-secret }}
-            APPS_PLUGIN=${{ inputs.apps-plugin }}
             APPS_PUBLISHER_ID=${{ secrets.apps-publisher-id }}
             AUTH_CLIENT_HOST=${{ secrets.auth-client-host }}
             AUTH_TOKEN_EXPIRATION_IN_MINUTES=${{ secrets.auth-token-expiration-in-minutes }}
             AUTH_TOKEN_JWT_SECRET=${{ secrets.auth-token-jwt-secret }}
-            AVATARS_PATH_PREFIX=${{ secrets.avatars-path-prefix }}
             BUILDER_CLIENT_HOST=${{ secrets.builder-client-host }}
-            CHATBOX_PLUGIN=${{ inputs.chatbox-plugin }}
             CLIENT_HOST=${{ secrets.client-host }}
             COOKIE_DOMAIN=${{ secrets.cookie-domain }}
             CORS_ORIGIN_REGEX=${{ secrets.cors-origin-regex }}
             DATABASE_LOGS=${{ inputs.database-logs }}
+            DB_HOST=${{ secrets.db-host }}
+            DB_NAME=${{ secrets.db-name }}
+            DB_PASSWORD=${{ secrets.db-password }}
+            DB_USERNAME=${{ secrets.db-username }}
+            DB_READ_REPLICA_HOST=${{ secrets.db-read-replica-host }}
             EMAIL_LINKS_HOST=${{ secrets.email-links-host }}
             EMBEDDED_LINK_ITEM_IFRAMELY_HREF_ORIGIN=${{ secrets.embedded-link-item-iframely-href-origin }}
             EMBEDDED_LINK_ITEM_PLUGIN=${{ inputs.embedded-link-item-plugin }}
@@ -292,30 +271,22 @@ jobs:
             ETHERPAD_URL=${{ inputs.etherpad-url }}
             EXPLORER_CLIENT_HOST=${{ secrets.explorer-client-host }}
             FILE_STORAGE_ROOT_PATH=${{ secrets.file-storage-root-path }}
-            FILES_PATH_PREFIX=${{ secrets.files-path-prefix }}
             H5P_CONTENT_ACCESS_KEY_ID=${{ secrets.h5p-content-access-key-id }}
             H5P_CONTENT_BUCKET=${{ secrets.h5p-content-bucket-name }}
             H5P_CONTENT_REGION=${{ secrets.h5p-content-region }}
-            H5P_CONTENT_SECRET_ACCESS_KEY=${{ secrets.h5p-content-secret-access-key }}
+            H5P_CONTENT_SECRET_ACCESS_KEY_ID=${{ secrets.h5p-content-secret-access-key-id }}
             H5P_PATH_PREFIX=${{ secrets.h5p-path-prefix }}
-            HIDDEN_ITEMS_PLUGIN=${{ inputs.hidden-items-plugin }}
-            HIDDEN_TAG_ID=${{ secrets.hidden-tag-id }}
+            H5P_FILE_STORAGE_TYPE=${{ secrets.h5p-file-storage-type }}
             HOSTNAME=${{ secrets.hostname }}
             IMAGE_CLASSIFIER_API=${{ secrets.image-classifier-api }}
             JWT_SECRET=${{ secrets.jwt-secret }}
-            LOGIN_ITEM_TAG_ID=${{ secrets.login-item-tag-id }}
             MAILER_CONFIG_FROM_EMAIL=${{ secrets.mailer-config-from-email }}
             MAILER_CONFIG_PASSWORD=${{ secrets.mailer-config-password }}
             MAILER_CONFIG_SMTP_HOST=${{ secrets.mailer-config-smtp-host }}
             MAILER_CONFIG_USERNAME=${{ secrets.mailer-config-username }}
             NODE_ENV=${{ inputs.node-env }}
-            PG_CONNECTION_URI=${{ secrets.pg-connection-uri }}
-            PG_READ_REPLICAS_CONNECTION_URIS=${{ secrets.pg-read-replicas-connection-uris }}
             PLAYER_CLIENT_HOST=${{ secrets.player-client-host }}
             PORT=${{ secrets.port }}
-            PUBLIC_PLUGIN=${{ inputs.public-plugin }}
-            PUBLIC_TAG_ID=${{ secrets.public-tag-id }}
-            PUBLISHED_TAG_ID=${{ secrets.published-tag-id }}
             RECAPTCHA_SECRET_ACCESS_KEY=${{ secrets.recaptcha-secret-access-key }}
             REDIS_HOST=${{ secrets.redis-host }}
             REDIS_PASSWORD=${{ secrets.redis-password }}
@@ -329,14 +300,11 @@ jobs:
             S3_FILE_ITEM_PLUGIN=${{ inputs.s3-file-item-plugin }}
             S3_FILE_ITEM_REGION=${{ secrets.s3-file-item-region }}
             S3_FILE_ITEM_SECRET_ACCESS_KEY=${{ secrets.s3-file-item-secret-access-key }}
-            SAVE_ACTIONS=${{ inputs.save-actions }}
             SECURE_SESSION_SECRET_KEY=${{ secrets.secure-session-secret-key }}
             SENTRY_DSN=${{ secrets.sentry-dsn }}
-            SIGN_UP_EMAIL_WHITE_LIST=${{ vars.sign-up-email-white-list }}
             STRIPE_SECRET_KEY=${{ secrets.stripe-secret-key }}
             STRIPE_DEFAULT_PLAN_PRICE_ID=${{ secrets.stripe-default-plan-price-id }}
             SUBSCRIPTIONS_PLUGIN=${{ secrets.subscriptions-plugin }}
-            THUMBNAILS_PATH_PREFIX=${{ secrets.thumbnails-path-prefix }}
             TOKEN_BASED_AUTH=${{ inputs.token-based-auth }}
             WEBSOCKETS_PLUGIN=${{ inputs.websockets-plugin }}
 
