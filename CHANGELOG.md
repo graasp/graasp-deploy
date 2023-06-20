@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.16.0](https://github.com/graasp/graasp-deploy/compare/v1.15.5...v1.16.0) (2023-06-20)
+
+
+### Features
+
+* add environments to backend workflows ([#201](https://github.com/graasp/graasp-deploy/issues/201)) ([4c63636](https://github.com/graasp/graasp-deploy/commit/4c63636c4c17679cf47c676dbdc16ea7406b0a70))
+* update backend deployment workflows for typeorm ([#199](https://github.com/graasp/graasp-deploy/issues/199)) ([c9ede1c](https://github.com/graasp/graasp-deploy/commit/c9ede1c3cf1b02267dddc954ccdc51c6263de0fd))
+
 ## [1.15.5](https://github.com/graasp/graasp-deploy/compare/v1.15.4...v1.15.5) (2023-05-30)
 
 
