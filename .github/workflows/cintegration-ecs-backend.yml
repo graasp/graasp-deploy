@@ -184,6 +184,7 @@ jobs:
     name: Test
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    environment: development
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -204,6 +205,7 @@ jobs:
     # Define job output that is available to all downstream jobs that depend on this job
     outputs:
       tag: ${{ steps.tag-number.outputs.tag }}
+    environment: development
 
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
@@ -244,6 +246,7 @@ jobs:
     needs: build
     name: Deploy
     runs-on: ubuntu-latest
+    environment: development
 
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it

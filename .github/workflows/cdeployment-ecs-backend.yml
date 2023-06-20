@@ -192,6 +192,7 @@ jobs:
     # Define job output that is available to all downstream jobs that depend on this job
     outputs:
       tag: ${{ steps.tag-number.outputs.tag }}
+    environment: production
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
