@@ -22,7 +22,7 @@
     },
     {
       "repository": "graasp/graasp-app-sticky-notes",
-      "tag": "v0.9.2"
+      "tag": "v1.0.0"
     },
     {
       "repository": "graasp/graasp-app-task-management",
@@ -70,7 +70,7 @@
     },
     {
       "repository": "graasp/graasp-app-text-analysis",
-      "tag": "v0.5.3"
+      "tag": "v1.0.0"
     },
     {
       "repository": "graasp/graasp-app-excalidraw",
