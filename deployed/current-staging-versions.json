@@ -54,7 +54,7 @@
     },
     {
       "repository": "graasp/graasp-builder",
-      "tag": "v1.1.1"
+      "tag": "v1.2.0"
     },
     {
       "repository": "graasp/graasp-app-quiz",
@@ -66,7 +66,7 @@
     },
     {
       "repository": "graasp/graasp-analytics",
-      "tag": "v1.0.0-rc.1"
+      "tag": "v1.1.0"
     },
     {
       "repository": "graasp/graasp-app-text-analysis",
