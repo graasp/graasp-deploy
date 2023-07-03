@@ -3,7 +3,7 @@
 Maintenance mode is currently setup at the infrastructure level. Go through the following steps to enable the maintenance:
 
 1. In Cloudfront, go into each distribution frontend you want to be affected
-2. Behavior > Edit the default behavior > Function association > Viewer request > Lambda@Edge > `arn:aws:lambda:us-east-1:592217263685:function:maintenance-check:2`
+2. Behavior > Edit the default behavior > Function association > Viewer request > Lambda@Edge > `arn:aws:lambda:us-east-1:592217263685:function:maintenance-check:2` (Lambda@Edge can only be defined in us-east region)
 3. Also add the `allowMaintenanceHeader` policy in "Origin request policy"
 4. In the backend load balancer, edit the `HTTPS:443` listener
 5. Rules > Edit the rule 1 > Add condition > HTTP Header > Use the same header name and value as in the Lambda code
@@ -49,7 +49,7 @@ exports.handler = async (event, context) => {
       headers: {
         'location': [{
           key: 'Location',
-          value: 'https://maintenance.dev.graasp.org',
+          value: 'https://maintenance.graasp.org',
         }],
       },
     };
