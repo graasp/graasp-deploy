@@ -228,7 +228,7 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr-build.outputs.registry }}
         IMAGE_TAG: ${{ steps.tag-number.outputs.tag }}
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f .stagingcontainer/Dockerfile .
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f docker/Dockerfile .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
     # Insert a container image URI into template Amazon ECS task definition JSON file, creating a new task definition file.

@@ -128,7 +128,7 @@ jobs:
         IMAGE_TAG: ${{ steps.tag-number.outputs.tag }}
         ECR_REPOSITORY: ${{ secrets.ecr-repository }}
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f .stagingcontainer/Dockerfile .
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f docker/Dockerfile .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
   # Deploy to dev environment
