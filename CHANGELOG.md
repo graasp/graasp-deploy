@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.0](https://github.com/graasp/graasp-deploy/compare/v1.16.0...v1.17.0) (2023-07-04)
+
+
+### Features
+
+* trigger release ([f194de7](https://github.com/graasp/graasp-deploy/commit/f194de7e80f6a267f35cce67a22590e943ea7687))
+
 ## [1.16.0](https://github.com/graasp/graasp-deploy/compare/v1.15.5...v1.16.0) (2023-06-20)
 
 
