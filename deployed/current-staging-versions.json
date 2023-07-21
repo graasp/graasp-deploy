@@ -2,11 +2,11 @@
   "include": [
     {
       "repository": "graasp/graasp",
-      "tag": "v1.2.0"
+      "tag": "v1.2.2"
     },
     {
       "repository": "graasp/graasp-auth",
-      "tag": "v1.0.0-rc.1"
+      "tag": "v1.1.0"
     },
     {
       "repository": "graasp/graasp-admin",
@@ -30,7 +30,7 @@
     },
     {
       "repository": "graasp/graasp-app-text-input",
-      "tag": "v1.0.0-rc.1"
+      "tag": "v1.0.1"
     },
     {
       "repository": "graasp/graasp-app-code-capsule",
@@ -46,7 +46,7 @@
     },
     {
       "repository": "graasp/graasp-library",
-      "tag": "v0.7.3"
+      "tag": "v0.8.2"
     },
     {
       "repository": "graasp/graasp-app-sketchfab",
@@ -62,7 +62,7 @@
     },
     {
       "repository": "graasp/graasp-player",
-      "tag": "v1.0.1"
+      "tag": "v1.0.2"
     },
     {
       "repository": "graasp/graasp-analytics",
@@ -87,6 +87,10 @@
     {
       "repository": "graasp/graasp-app-greenhouse-effect",
       "tag": "v0.2.0"
+    },
+    {
+      "repository": "graasp/graasp-app-starter-ts-vite",
+      "tag": "v1.0.0"
     }
   ]
 }
