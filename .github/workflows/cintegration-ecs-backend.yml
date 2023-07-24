@@ -23,6 +23,10 @@ on:
       h5p-file-storage-type:
         required: true
         type: string
+      log-level:
+        required: false
+        type: string
+        default: error
       node-env:
         required: true
         type: string
@@ -310,6 +314,7 @@ jobs:
             H5P_PATH_PREFIX=${{ secrets.h5p-path-prefix }}
             H5P_FILE_STORAGE_TYPE=${{ inputs.h5p-file-storage-type }}
             HOSTNAME=${{ secrets.hostname }}
+            LOG_LEVEL=${{ inputs.log-level }}
             IMAGE_CLASSIFIER_API=${{ secrets.image-classifier-api }}
             JWT_SECRET=${{ secrets.jwt-secret }}
             MAILER_CONFIG_FROM_EMAIL=${{ secrets.mailer-config-from-email }}
