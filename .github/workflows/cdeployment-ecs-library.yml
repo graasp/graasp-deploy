@@ -60,6 +60,8 @@ on:
         required: false
       next-public-domain:
         required: false
+      next-public-show-notifications:
+        required: false
       port:
         required: true
 
@@ -146,6 +148,7 @@ jobs:
             NEXT_PUBLIC_SENTRY_DSN=${{ secrets.next-public-sentry-dsn }}
             NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ secrets.next-public-ga-measurement-id }}
             NEXT_PUBLIC_DOMAIN=${{ secrets.next-public-domain }}
+            NEXT_PUBLIC_SHOW_NOTIFICATIONS=${{ secrets.next-public-show-notifications }}
             NEXT_PUBLIC_APP_NAME=${{ env.APP_NAME }}
             NEXT_PUBLIC_APP_VERSION=${{ env.APP_VERSION }}
             PORT=${{ secrets.port }}
