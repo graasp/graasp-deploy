@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.18.0](https://github.com/graasp/graasp-deploy/compare/v1.17.0...v1.18.0) (2023-07-26)
+
+
+### Features
+
+* add log level in backend deployment workflows ([#209](https://github.com/graasp/graasp-deploy/issues/209)) ([b47c8c0](https://github.com/graasp/graasp-deploy/commit/b47c8c0c4da8615f7e9eb276373a34ce242a2373))
+
+
+### Bug Fixes
+
+* add `next-public-show-notifications` in library deploy workflows ([#207](https://github.com/graasp/graasp-deploy/issues/207)) ([cb15bfc](https://github.com/graasp/graasp-deploy/commit/cb15bfc354e1ad4a85bd431614fc72ecde0dd1a7))
+
 ## [1.17.0](https://github.com/graasp/graasp-deploy/compare/v1.16.0...v1.17.0) (2023-07-04)
 
 
