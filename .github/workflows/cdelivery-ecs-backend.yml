@@ -30,7 +30,7 @@ on:
       log-level:
         required: false
         type: string
-        default: error
+        default: info
       node-env:
         required: true
         type: string
