@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.19.0](https://github.com/graasp/graasp-deploy/compare/v1.18.0...v1.19.0) (2023-08-03)
+
+
+### Features
+
+* replace EMAIL_LINKS_HOST by PUBLIC_URL and pluralize DB_READ_REPLICA_HOSTS ([#212](https://github.com/graasp/graasp-deploy/issues/212)) ([d6dd9dc](https://github.com/graasp/graasp-deploy/commit/d6dd9dc470a4c5dda88e24b42b1f187c68e89e7c))
+
 ## [1.18.0](https://github.com/graasp/graasp-deploy/compare/v1.17.0...v1.18.0) (2023-07-26)
 
 
