@@ -4,9 +4,9 @@ name: Deploy stack to prod
 
 # Controls when the action will run.
 on:
-  # Allow the workflow to be automatically triggered every Thursday at 9 a.m.
+  # Allow the workflow to be automatically triggered every Monday at 9 a.m.
   schedule:
-    - cron: '0 9 * * 4'
+    - cron: '0 9 * * 1'
   # Allow the workflow to be manually triggered
   workflow_dispatch:
     # Inputs the workflow accepts.
