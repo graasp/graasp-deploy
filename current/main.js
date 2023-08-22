@@ -39,7 +39,7 @@ function populateTable(data) {
     const repoCell = document.createElement("td");
     const elem = document.createElement("a");
     elem.className = "text-decoration-none";
-    elem.href = `https://github.com/graasp/${repoData.repo}/`;
+    elem.href = `https://github.com/${repoData.repo}/`;
 
     elem.innerHTML = `${repoData.repo} ${
       repoData.staging !== repoData.latest
