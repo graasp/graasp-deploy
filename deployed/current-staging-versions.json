@@ -2,11 +2,11 @@
   "include": [
     {
       "repository": "graasp/graasp",
-      "tag": "v1.4.0"
+      "tag": "v1.5.0"
     },
     {
       "repository": "graasp/graasp-auth",
-      "tag": "v1.2.0"
+      "tag": "v1.2.1"
     },
     {
       "repository": "graasp/graasp-admin",
@@ -14,23 +14,23 @@
     },
     {
       "repository": "graasp/graasp-app-file-drop",
-      "tag": "v1.0.0-rc.1"
-    },
-    {
-      "repository": "graasp/graasp-app-radiating-charge",
-      "tag": "v0.2.0"
-    },
-    {
-      "repository": "graasp/graasp-app-sticky-notes",
       "tag": "v1.0.0"
     },
     {
+      "repository": "graasp/graasp-app-radiating-charge",
+      "tag": "v0.2.1"
+    },
+    {
+      "repository": "graasp/graasp-app-sticky-notes",
+      "tag": "v1.1.0"
+    },
+    {
       "repository": "graasp/graasp-app-task-management",
-      "tag": "v1.0.0-rc.1"
+      "tag": "v1.0.0"
     },
     {
       "repository": "graasp/graasp-app-text-input",
-      "tag": "v1.0.1"
+      "tag": "v1.0.2"
     },
     {
       "repository": "graasp/graasp-app-code-capsule",
@@ -38,7 +38,7 @@
     },
     {
       "repository": "graasp/graasp-app-calculator",
-      "tag": "v0.1.5"
+      "tag": "v1.0.0"
     },
     {
       "repository": "graasp/graasp-app-survey",
@@ -46,19 +46,19 @@
     },
     {
       "repository": "graasp/graasp-library",
-      "tag": "v0.10.0"
+      "tag": "v0.10.1"
     },
     {
       "repository": "graasp/graasp-app-sketchfab",
-      "tag": "v1.0.0"
+      "tag": "v1.0.1"
     },
     {
       "repository": "graasp/graasp-builder",
-      "tag": "v1.7.0"
+      "tag": "v1.8.0"
     },
     {
       "repository": "graasp/graasp-app-quiz",
-      "tag": "v1.0.0-rc.1"
+      "tag": "v1.0.1"
     },
     {
       "repository": "graasp/graasp-player",
@@ -70,7 +70,7 @@
     },
     {
       "repository": "graasp/graasp-app-text-analysis",
-      "tag": "v1.0.0"
+      "tag": "v1.0.1"
     },
     {
       "repository": "graasp/graasp-app-excalidraw",
@@ -78,7 +78,7 @@
     },
     {
       "repository": "graasp/graasp-app-thermal-radiation",
-      "tag": "v0.2.0"
+      "tag": "v0.3.0"
     },
     {
       "repository": "graasp/graasp-app-radiation-absorption",
@@ -86,7 +86,7 @@
     },
     {
       "repository": "graasp/graasp-app-greenhouse-effect",
-      "tag": "v0.3.0"
+      "tag": "v0.4.1"
     },
     {
       "repository": "graasp/graasp-app-starter-ts-vite",
