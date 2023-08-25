@@ -70,7 +70,7 @@ jobs:
     # Configure AWS credential and region environment variables for use in next steps
     - name: Configure AWS Credentials
       id: configure-aws
-      uses: aws-actions/configure-aws-credentials@v2
+      uses: aws-actions/configure-aws-credentials@v3
       with:
         aws-access-key-id: ${{ secrets.aws-access-key-id }}
         aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
