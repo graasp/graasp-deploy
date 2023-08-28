@@ -2,7 +2,7 @@
   "include": [
     {
       "repository": "graasp/graasp",
-      "tag": "v1.5.0"
+      "tag": "v1.6.0"
     },
     {
       "repository": "graasp/graasp-auth",
@@ -54,11 +54,11 @@
     },
     {
       "repository": "graasp/graasp-builder",
-      "tag": "v1.8.0"
+      "tag": "v1.8.1"
     },
     {
       "repository": "graasp/graasp-app-quiz",
-      "tag": "v1.0.1"
+      "tag": "v1.0.2"
     },
     {
       "repository": "graasp/graasp-player",
@@ -66,7 +66,7 @@
     },
     {
       "repository": "graasp/graasp-analytics",
-      "tag": "v1.2.1"
+      "tag": "v1.3.0"
     },
     {
       "repository": "graasp/graasp-app-text-analysis",
