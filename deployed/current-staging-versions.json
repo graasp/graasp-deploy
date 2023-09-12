@@ -91,6 +91,10 @@
     {
       "repository": "graasp/graasp-app-starter-ts-vite",
       "tag": "v1.0.0"
+    },
+    {
+      "repository": "graasp/graasp-app-collaborative-ideation",
+      "tag": "v1.0.0"
     }
   ]
 }
