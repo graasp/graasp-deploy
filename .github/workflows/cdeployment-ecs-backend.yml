@@ -312,9 +312,9 @@ jobs:
             SUBSCRIPTIONS_PLUGIN=${{ secrets.subscriptions-plugin }}
             TOKEN_BASED_AUTH=${{ inputs.token-based-auth }}
             WEBSOCKETS_PLUGIN=${{ inputs.websockets-plugin }}
-            MEILISEARCH_URL=${{ secrets.MEILISEARCH_URL }}
-            MEILISEARCH_MASTER_KEY=${{ secrets.MEILISEARCH_MASTER_KEY }}
-            MEILISEARCH_REBUILD_SECRET=${{ secrets.MEILISEARCH_REBUILD_SECRET }}
+            MEILISEARCH_URL=${{ secrets.meilisearch-url }}
+            MEILISEARCH_MASTER_KEY=${{ secrets.meilisearch-master-key }}
+            MEILISEARCH_REBUILD_SECRET=${{ secrets.meilisearch-rebuild-secret }}
 
       # Insert a second container image URI into previously created Amazon ECS task definition JSON file.
       - name: Modify Amazon ECS task definition with second container
