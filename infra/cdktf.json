@@ -1,0 +1,21 @@
+{
+  "language": "typescript",
+  "app": "npx ts-node main.ts",
+  "projectId": "15499684-89d3-4e0a-85e2-d88e6e5df077",
+  "sendCrashReports": "false",
+  "terraformModules": [
+    {
+      "name": "vpc",
+      "source": "terraform-aws-modules/vpc/aws",
+      "version": "~> 5.0"
+    },
+    {
+      "name": "rds",
+      "source": "terraform-aws-modules/rds/aws",
+      "version": "~> 6.0"
+    }
+  ],
+  "context": {
+
+  }
+}
