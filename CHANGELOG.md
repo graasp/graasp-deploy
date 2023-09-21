@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.0](https://github.com/graasp/graasp-deploy/compare/v1.19.0...v1.20.0) (2023-09-21)
+
+
+### Features
+
+* add meilisearch env vars ([#219](https://github.com/graasp/graasp-deploy/issues/219)) ([b545c60](https://github.com/graasp/graasp-deploy/commit/b545c6067c736f143093ba4d46595d1edf24ea52))
+
 ## [1.19.0](https://github.com/graasp/graasp-deploy/compare/v1.18.0...v1.19.0) (2023-08-03)
 
 
