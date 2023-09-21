@@ -1,4 +1,4 @@
-name: Reusable workflow that runs Continuous Delivery pipeline for ECS
+name: Reusable workflow that deploys to development ECS
 
 # Control when the action will run
 on:
@@ -13,12 +13,8 @@ on:
       app-version:
         required: true
         type: string
-      # ecs-task-definition: path to task definition json template.
+      # ecs-task-definition: path to task definition json template
       ecs-task-definition:
-        required: true
-        type: string
-      # tag: specify tag version to deploy
-      tag:
         required: true
         type: string
     # Define secrets which can be passed from the caller workflow
@@ -36,7 +32,7 @@ on:
         required: true
       ecr-repository:
         required: true
-      #container name that will be included in the cluster
+      # container name that will be included in the cluster
       container-name-library:
         required: true
       # Environment variables
@@ -58,6 +54,8 @@ on:
         required: true
       next-public-sentry-dsn:
         required: false
+      next-public-sentry-env:
+        required: false
       next-public-domain:
         required: false
       next-public-show-notifications:
@@ -67,38 +65,46 @@ on:
 
 # Set environment variables that are available to the steps of all jobs in the workflow
 env:
-  APP_NAME: ${{ inputs.app-name }}
-  APP_VERSION: ${{ inputs.app-version }}
-  ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
-  CONTAINER_NAME: ${{ secrets.container-name-library }}
   ECR_REPOSITORY: ${{ secrets.ecr-repository }}
   # Allows to increase Node's max heap size
   NODE_OPTIONS: '--max_old_space_size=8192'
 
-# This workflow is made up of two jobs that run sequentially, called: build-deploy and test
+# This workflow is made up of three jobs that run sequentially, called test, build and deploy
 jobs:
-  # Build image, push to ECR and deploy to staging environment
-  build-deploy:
-    name: Build-push-deploy
+  test:
+    name: Test
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    # Define job output that is available to all downstream jobs that depend on this job
-    outputs:
-      tag: ${{ steps.tag-number.outputs.tag }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
       uses: actions/checkout@v3
-      with:
-        ref: ${{ inputs.tag }}
+
+    # This step runs a single command to execute unitary testing
+    - name: Test job
+      run: |
+        echo "This is the test job"
+
+  # Build image and push to ECR
+  build:
+    needs: test
+    name: Build
+    runs-on: ubuntu-latest
+    # Define job output that is available to all downstream jobs that depend on this job
+    outputs:
+      tag: ${{ steps.tag-number.outputs.tag }}
+
+    steps:
+    # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
+    - name: Check out code
+      uses: actions/checkout@v3
 
     # Set output variable tag with the current checked out ref
     - name: Set Tag Number
       id: tag-number
-      run: echo "tag=${{ inputs.tag }}" >> $GITHUB_OUTPUT
-
+      run: echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
 
     # Configure AWS credential and region environment variables for use in next steps
     - name: Configure AWS Credentials
@@ -124,14 +130,38 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
+  # Deploy to dev environment
+  deploy:
+    needs: build
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    # Configure AWS credential and region environment variables for use in next steps
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v3
+      with:
+        aws-access-key-id: ${{ secrets.aws-access-key-id }}
+        aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
+        aws-region: ${{ secrets.aws-region }}
+
+    # Log in the local Docker client
+    - name: Login to Amazon ECR
+      id: login-ecr-deploy
+      uses: aws-actions/amazon-ecr-login@v1
+
     # Insert a container image URI into template Amazon ECS task definition JSON file, creating a new task definition file.
-    - name: Fill in the new image ID in the Amazon ECS task definition
+    - name: Fill Amazon ECS task definition
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       # Set environment variables required to create the task definition file. These are only available to this step
       env:
-        ECR_REGISTRY: ${{ steps.login-ecr-build.outputs.registry }}
-        IMAGE_TAG: ${{ steps.tag-number.outputs.tag }}
+        ECR_REGISTRY: ${{ steps.login-ecr-deploy.outputs.registry }}
+        IMAGE_TAG: ${{ needs.build.outputs.tag }}
       with:
           task-definition: ${{ inputs.ecs-task-definition }}
           container-name: ${{ secrets.container-name-library }}
@@ -146,12 +176,13 @@ jobs:
             NEXT_PUBLIC_GRAASP_PERFORM_HOST=${{ secrets.next-public-graasp-perform-host }}
             NEXT_PUBLIC_GRAASPER_ID=${{ secrets.next-public-graasper-id }}
             NEXT_PUBLIC_PUBLISHED_TAG_ID=${{ secrets.next-public-published-tag-id }}
-            NEXT_PUBLIC_SENTRY_DSN=${{ secrets.next-public-sentry-dsn }}
             NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ secrets.next-public-ga-measurement-id }}
+            NEXT_PUBLIC_SENTRY_DSN=${{ secrets.next-public-sentry-dsn }}
+            NEXT_PUBLIC_SENTRY_ENV=${{ secrets.next-public-sentry-env }}
             NEXT_PUBLIC_DOMAIN=${{ secrets.next-public-domain }}
             NEXT_PUBLIC_SHOW_NOTIFICATIONS=${{ secrets.next-public-show-notifications }}
-            NEXT_PUBLIC_APP_NAME=${{ env.APP_NAME }}
-            NEXT_PUBLIC_APP_VERSION=${{ env.APP_VERSION }}
+            NEXT_PUBLIC_APP_NAME=${{ inputs.app-name }}
+            NEXT_PUBLIC_APP_VERSION=${{ inputs.app-version }}
             PORT=${{ secrets.port }}
 
     # Use latest revision of the task-definition to deploy the application to ECS
@@ -162,20 +193,3 @@ jobs:
           service: ${{ secrets.ecs-service }}
           cluster: ${{ secrets.ecs-cluster }}
           wait-for-service-stability: true
-
-  test:
-    name: Test
-    needs: build-deploy
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-    steps:
-    # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
-    - name: Check out code
-      uses: actions/checkout@v3
-      with:
-        ref: ${{ inputs.tag }}
-
-    # This step runs a single command to execute integration testing
-    - name: Test
-      run: |
-        echo "This is the integration test step"

@@ -1,4 +1,4 @@
-name: Reusable workflow that runs Continuous Deployment pipeline for ECS
+name: Reusable workflow that deploys to production ECS
 
 # Control when the action will run
 on:
@@ -58,6 +58,8 @@ on:
         required: true
       next-public-sentry-dsn:
         required: false
+      next-public-sentry-env:
+        required: false
       next-public-domain:
         required: false
       next-public-show-notifications:
@@ -67,10 +69,6 @@ on:
 
 # Set environment variables that are available to the steps of all jobs in the workflow
 env:
-  APP_NAME: ${{ inputs.app-name }}
-  APP_VERSION: ${{ inputs.app-version }}
-  ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
-  CONTAINER_NAME: ${{ secrets.container-name-library }}
   ECR_REPOSITORY: ${{ secrets.ecr-repository }}
   # Allows to increase Node's max heap size
   NODE_OPTIONS: '--max_old_space_size=8192'
@@ -146,6 +144,7 @@ jobs:
             NEXT_PUBLIC_GRAASPER_ID=${{ secrets.next-public-graasper-id }}
             NEXT_PUBLIC_PUBLISHED_TAG_ID=${{ secrets.next-public-published-tag-id }}
             NEXT_PUBLIC_SENTRY_DSN=${{ secrets.next-public-sentry-dsn }}
+            NEXT_PUBLIC_SENTRY_ENV=${{ secrets.next-public-sentry-env }}
             NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ secrets.next-public-ga-measurement-id }}
             NEXT_PUBLIC_DOMAIN=${{ secrets.next-public-domain }}
             NEXT_PUBLIC_SHOW_NOTIFICATIONS=${{ secrets.next-public-show-notifications }}
