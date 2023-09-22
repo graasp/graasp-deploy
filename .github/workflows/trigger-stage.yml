@@ -37,7 +37,7 @@ jobs:
 
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     # Set the appropriate job output based on the stack that is being deployed: custom or latest.
     - name: Get latest staging versions file
@@ -131,7 +131,7 @@ jobs:
       LATEST_FILE_NAME_STAGING: ${{ needs.generate-matrix.outputs.latest }}
     steps:
     - name: Check out code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         # checkout the latest commits of main -> this is where we will commit to
         ref: main
@@ -170,7 +170,7 @@ jobs:
       LATEST_FILE_NAME_STAGING: ${{ needs.generate-matrix.outputs.latest }}
     steps:
     - name: Check out code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         ref: ${{ needs.update-deployed-stack.outputs.commit-hash }}
 
