@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.1](https://github.com/graasp/graasp-deploy/compare/v1.20.0...v1.20.1) (2023-09-22)
+
+
+### Bug Fixes
+
+* rename and adapt ecs workflows ([#222](https://github.com/graasp/graasp-deploy/issues/222)) ([e14df7d](https://github.com/graasp/graasp-deploy/commit/e14df7d6d73268b209e9c141e79aab735bc7d2cd))
+
 ## [1.20.0](https://github.com/graasp/graasp-deploy/compare/v1.19.0...v1.20.0) (2023-09-21)
 
 
