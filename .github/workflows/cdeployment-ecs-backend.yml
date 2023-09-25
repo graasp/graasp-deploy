@@ -21,6 +21,10 @@ on:
       h5p-file-storage-type:
         required: true
         type: string
+      job-scheduling:
+        default: true
+        required: false
+        type: string
       log-level:
         default: info
         required: false
@@ -187,7 +191,7 @@ env:
   ECR_REPOSITORY: ${{ secrets.ecr-repository }}
   ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
   # Allows to increase Node's max heap size
-  NODE_OPTIONS: "--max_old_space_size=8192"
+  NODE_OPTIONS: '--max_old_space_size=8192'
 
 # This workflow is made up of one job called: build-deploy
 jobs:
@@ -282,6 +286,7 @@ jobs:
             H5P_PATH_PREFIX=${{ secrets.h5p-path-prefix }}
             HOSTNAME=${{ secrets.hostname }}
             IMAGE_CLASSIFIER_API=${{ secrets.image-classifier-api }}
+            JOB_SCHEDULING=${{ inputs.job-scheduling }}
             JWT_SECRET=${{ secrets.jwt-secret }}
             LOG_LEVEL=${{ inputs.log-level }}
             MAILER_CONFIG_FROM_EMAIL=${{ secrets.mailer-config-from-email }}
