@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.0](https://github.com/graasp/graasp-deploy/compare/v1.20.1...v1.21.0) (2023-09-25)
+
+
+### Features
+
+* add job scheduling input for core ([#225](https://github.com/graasp/graasp-deploy/issues/225)) ([0ac3b86](https://github.com/graasp/graasp-deploy/commit/0ac3b8690209c2ae0bea3f9245cb770f8465a5d0))
+
 ## [1.20.1](https://github.com/graasp/graasp-deploy/compare/v1.20.0...v1.20.1) (2023-09-22)
 
 
