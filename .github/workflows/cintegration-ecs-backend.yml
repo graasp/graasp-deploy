@@ -239,7 +239,7 @@ jobs:
       # Log in the local Docker client
       - name: Login to Amazon ECR
         id: login-ecr-build
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
 
       # Build and tag the docker image
       - name: Build, tag and push image to AWS ECR
@@ -274,7 +274,7 @@ jobs:
       # Log in the local Docker client
       - name: Login to Amazon ECR
         id: login-ecr-deploy
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
 
       # Insert a container image URI into template Amazon ECS task definition JSON file, creating a new task definition file.
       - name: Fill in the new image ID in the Amazon ECS task definition
