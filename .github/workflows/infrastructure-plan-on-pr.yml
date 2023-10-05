@@ -46,3 +46,7 @@ jobs:
           stackName: graasp-dev
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           workingDirectory: ./infra
+        env:
+          TF_VAR_MEILISEARCH_MASTER_KEY: ${{ secrets.TF_MEILISEARCH_MASTER_KEY }}
+          TF_VAR_GRAASP_DB_PASSWORD: ${{ secrets.TF_GRAASP_DB_PASSWORD }}
+          TF_VAR_ETHERPAD_DB_PASSWORD: ${{ secrets.TF_ETHERPAD_DB_PASSWORD }}
