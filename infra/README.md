@@ -84,6 +84,8 @@ Some example of the possible improvements:
 * Use more strong types: a lot of resources can currently take arbitrary strings for configuration. See `AllowedRegion` for an example of improving a configuration type.
 * Terraform do not manage the deployments, it makes the infrastructure available for the CI/CD to act. Make the CI/CD more generic (instead of one workflow per env), then create a pipeline to deploy a generic dev environment (infra followed by deploy), to have ephemereal dev environments.
 * Separating "static" resources in different stacks. For example, by putting ECR repo in a different stack for each env, we could destroy everything else, while keeping image history.
+* Instead of using long-lived AWS credentials, use Github OIDC integration (see https://github.com/aws-actions/configure-aws-credentials#oidc). This allow workflows to assume a specific AWS role for just the duration of the workflow.
+    * This would also allow a workflow to only assume a role for its own env, preventing someone to rewrite the workflow to run on another env. See https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services
 
 # Troubleshoot
 

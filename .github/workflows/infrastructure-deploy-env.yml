@@ -1,0 +1,85 @@
+name: "Apply infrastructure on env"
+
+on: workflow_dispatch
+inputs:
+  environment:
+    description: 'Target environment'
+    type: environment
+    required: true
+
+jobs:
+  plan:
+    name: "Terraform Plan (${{ inputs.environment }})"
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./infra
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Generate module and provider bindings
+        run: npx cdktf get
+
+      - name: Configure AWS Credentials
+        id: configure-aws
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.TF_AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.TF_SECRET_AWS_ACCESS_KEY }}
+          aws-region: eu-central-2 # not really important because it is reconfigured by Terraform
+
+      - name: plan
+        run: npx cdktf plan graasp-${{ inputs.environment }}
+        env:
+          TERRAFORM_CLOUD_TOKEN: ${{ secrets.TF_API_TOKEN }}
+        env:
+          TF_VAR_MEILISEARCH_MASTER_KEY: ${{ secrets.TF_MEILISEARCH_MASTER_KEY }}
+          TF_VAR_GRAASP_DB_PASSWORD: ${{ secrets.TF_GRAASP_DB_PASSWORD }}
+          TF_VAR_ETHERPAD_DB_PASSWORD: ${{ secrets.TF_ETHERPAD_DB_PASSWORD }}
+
+  deploy:
+    name: "Deploy infra (${{ inputs.environment }})"
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./infra
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Generate module and provider bindings
+        run: npx cdktf get
+
+      - name: Configure AWS Credentials
+        id: configure-aws
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.TF_AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.TF_SECRET_AWS_ACCESS_KEY }}
+          aws-region: eu-central-2 # not really important because it is reconfigured by Terraform
+
+      - name: plan
+        run: npx cdktf deploy --auto-approve 'graasp-${{ inputs.environment }}'
+        env:
+          TERRAFORM_CLOUD_TOKEN: ${{ secrets.TF_API_TOKEN }}
+        env:
+          TF_VAR_MEILISEARCH_MASTER_KEY: ${{ secrets.TF_MEILISEARCH_MASTER_KEY }}
+          TF_VAR_GRAASP_DB_PASSWORD: ${{ secrets.TF_GRAASP_DB_PASSWORD }}
+          TF_VAR_ETHERPAD_DB_PASSWORD: ${{ secrets.TF_ETHERPAD_DB_PASSWORD }}
