@@ -25,7 +25,7 @@ jobs:
         run: yarn install
 
       - name: Generate module and provider bindings
-        run: npx cdktf-cli get
+        run: npx cdktf get
 
       - name: Configure AWS Credentials
         id: configure-aws
@@ -33,6 +33,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.TF_AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.TF_SECRET_AWS_ACCESS_KEY }}
+          aws-region: eu-central-2 # not really important because it is reconfigured by Terraform
 
       - name: Run Terraform CDK
         uses: hashicorp/terraform-cdk-action@v0.1
