@@ -45,3 +45,4 @@ jobs:
           updateComment: false # make a new comment
           stackName: graasp-dev
           githubToken: ${{ secrets.GITHUB_TOKEN }}
+          workingDirectory: ./infra
