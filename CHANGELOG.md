@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.1](https://github.com/graasp/graasp-deploy/compare/v1.21.0...v1.21.1) (2023-10-25)
+
+
+### Bug Fixes
+
+* **publish-npm:** update node to 18 ([#231](https://github.com/graasp/graasp-deploy/issues/231)) ([a9da241](https://github.com/graasp/graasp-deploy/commit/a9da24151263318a4e4ea6db9add7612dd041e23))
+
 ## [1.21.0](https://github.com/graasp/graasp-deploy/compare/v1.20.1...v1.21.0) (2023-09-25)
 
 
