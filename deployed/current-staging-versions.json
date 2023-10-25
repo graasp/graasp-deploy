@@ -2,7 +2,7 @@
   "include": [
     {
       "repository": "graasp/graasp",
-      "tag": "v1.9.1"
+      "tag": "v1.9.2"
     },
     {
       "repository": "graasp/graasp-auth",
@@ -54,7 +54,7 @@
     },
     {
       "repository": "graasp/graasp-builder",
-      "tag": "v1.10.0"
+      "tag": "v1.11.0"
     },
     {
       "repository": "graasp/graasp-app-quiz",
