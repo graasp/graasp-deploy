@@ -2,7 +2,7 @@
   "include": [
     {
       "repository": "graasp/graasp",
-      "tag": "v1.9.2"
+      "tag": "v1.9.3"
     },
     {
       "repository": "graasp/graasp-auth",
@@ -46,7 +46,7 @@
     },
     {
       "repository": "graasp/graasp-library",
-      "tag": "v0.12.0"
+      "tag": "v0.13.0"
     },
     {
       "repository": "graasp/graasp-app-sketchfab",
