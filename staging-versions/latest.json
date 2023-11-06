@@ -2,7 +2,7 @@
   "include": [
     {
       "repository": "graasp/graasp",
-      "tag": "v1.9.2"
+      "tag": "hotfix-allow-public-ws"
     },
     {
       "repository": "graasp/graasp-auth",
