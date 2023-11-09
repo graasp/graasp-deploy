@@ -2,7 +2,7 @@
   "include": [
     {
       "repository": "graasp/graasp",
-      "tag": "hotfix-allow-public-ws"
+      "tag": "v1.9.4"
     },
     {
       "repository": "graasp/graasp-auth",
@@ -30,7 +30,7 @@
     },
     {
       "repository": "graasp/graasp-app-text-input",
-      "tag": "v1.0.2"
+      "tag": "v2.0.0"
     },
     {
       "repository": "graasp/graasp-app-code-capsule",
