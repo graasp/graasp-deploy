@@ -1,4 +1,4 @@
-name: Reusable workflow that runs Continuous Integration pipeline for ECS deployments
+name: Reusable workflow that runs Continuous Delivery pipeline for ECS
 
 # Control when the action will run
 on:
@@ -22,7 +22,7 @@ on:
         required: true
         type: string
       job-scheduling:
-        default: false
+        default: true
         required: false
         type: string
       log-level:
@@ -35,13 +35,13 @@ on:
       node-env-iframely:
         required: true
         type: string
-      roarr-log:
-        required: true
-        type: string
       s3-file-item-plugin:
         required: true
         type: string
       subscriptions-plugin:
+        required: true
+        type: string
+      tag: # specify tag version to deploy
         required: true
         type: string
       token-based-auth:
@@ -50,16 +50,37 @@ on:
       websockets-plugin:
         required: true
         type: string
+      analyzer-client-host:
+        required: true
+        type: string
+      account-client-host:
+        required: true
+        type: string
+      auth-client-host:
+        required: true
+        type: string
+      builder-client-host:
+        required: true
+        type: string
+      library-client-host:
+        required: true
+        type: string
+      player-client-host:
+        required: true
+        type: string
+      aws-region:
+        required: true
+        type: string
+      cookie-domain:
+        required: true
+        type: string
 
     # Define secrets which can be passed from the caller workflow
     secrets:
-      analyzer-client-host:
-        required: true
+      # Environment variables
       apps-jwt-secret:
         required: true
       apps-publisher-id:
-        required: true
-      auth-client-host:
         required: true
       auth-token-expiration-in-minutes:
         required: true
@@ -72,10 +93,6 @@ on:
         required: true
       aws-secret-access-key:
         required: true
-      builder-client-host:
-        required: true
-      client-host:
-        required: true
       container-image-classifier:
         required: true
       container-image-iframely:
@@ -85,8 +102,6 @@ on:
       container-name-graasp:
         required: true
       container-name-iframely:
-        required: true
-      cookie-domain:
         required: true
       cors-origin-regex:
         required: true
@@ -109,8 +124,6 @@ on:
       embedded-link-item-iframely-href-origin:
         required: true
       etherpad-api-key:
-        required: true
-      explorer-client-host:
         required: true
       file-storage-root-path:
         required: true
@@ -137,8 +150,6 @@ on:
       mailer-config-smtp-host:
         required: true
       mailer-config-username:
-        required: true
-      player-client-host:
         required: true
       port:
         required: true
@@ -188,44 +199,30 @@ env:
   ECS_TASK_DEFINITION: ${{ inputs.ecs-task-definition }}
   NODE_OPTIONS: '--max_old_space_size=8192' # Allows to increase Node's max heap size
 
-# This workflow is made up of three jobs that run sequentially, called test, build and deploy
+# This workflow is made up of two jobs that run sequentially, called: build-deploy and test
 jobs:
-  test:
-    name: Test
+  # Build image, push to ECR and deploy to staging environment
+  build-deploy:
+    name: Build-push-deploy
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    environment: development
+    # Define job output that is available to all downstream jobs that depend on this job
+    outputs:
+      tag: ${{ steps.tag-number.outputs.tag }}
+    environment: staging
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
       - name: Check out code
         uses: actions/checkout@v4
-
-      # This step runs a single command to execute unitary testing
-      - name: Test job
-        run: |
-          echo "This is the test job"
-
-  # Build image and push to ECR
-  build:
-    needs: test
-    name: Build
-    runs-on: ubuntu-latest
-    # Define job output that is available to all downstream jobs that depend on this job
-    outputs:
-      tag: ${{ steps.tag-number.outputs.tag }}
-    environment: development
-
-    steps:
-      # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
-      - name: Check out code
-        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
 
       # Set output variable tag with the current checked out ref
       - name: Set Tag Number
         id: tag-number
-        run: echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
+        run: echo "tag=${{ inputs.tag }}" >> $GITHUB_OUTPUT
 
       # Configure AWS credential and region environment variables for use in next steps
       - name: Configure AWS Credentials
@@ -251,52 +248,27 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f docker/Dockerfile .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-  # Deploy to dev environment
-  deploy:
-    needs: build
-    name: Deploy
-    runs-on: ubuntu-latest
-    environment: development
-
-    steps:
-      # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      # Configure AWS credential and region environment variables for use in next steps
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.aws-access-key-id }}
-          aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
-          aws-region: ${{ secrets.aws-region }}
-
-      # Log in the local Docker client
-      - name: Login to Amazon ECR
-        id: login-ecr-deploy
-        uses: aws-actions/amazon-ecr-login@v2
-
       # Insert a container image URI into template Amazon ECS task definition JSON file, creating a new task definition file.
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def-1
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         # Set environment variables required to create the task definition file. These are only available to this step
         env:
-          ECR_REGISTRY: ${{ steps.login-ecr-deploy.outputs.registry }}
-          IMAGE_TAG: ${{ needs.build.outputs.tag }}
+          ECR_REGISTRY: ${{ steps.login-ecr-build.outputs.registry }}
+          IMAGE_TAG: ${{ steps.tag-number.outputs.tag }}
         with:
           task-definition: ${{ inputs.ecs-task-definition }}
           container-name: ${{ secrets.container-name-graasp }}
           image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
           environment-variables: |
-            ANALYZER_CLIENT_HOST=${{ secrets.analyzer-client-host }}
+            ANALYTICS_CLIENT_HOST=${{ inputs.analytics-client-host }}
+            ACCOUNT_CLIENT_HOST=${{ inputs.account-client-host }}
             APPS_JWT_SECRET=${{ secrets.apps-jwt-secret }}
             APPS_PUBLISHER_ID=${{ secrets.apps-publisher-id }}
-            AUTH_CLIENT_HOST=${{ secrets.auth-client-host }}
+            AUTH_CLIENT_HOST=${{ inputs.auth-client-host }}
             AUTH_TOKEN_EXPIRATION_IN_MINUTES=${{ secrets.auth-token-expiration-in-minutes }}
             AUTH_TOKEN_JWT_SECRET=${{ secrets.auth-token-jwt-secret }}
-            BUILDER_CLIENT_HOST=${{ secrets.builder-client-host }}
-            CLIENT_HOST=${{ secrets.client-host }}
+            BUILDER_CLIENT_HOST=${{ inputs.builder-client-host }}
             COOKIE_DOMAIN=${{ secrets.cookie-domain }}
             CORS_ORIGIN_REGEX=${{ secrets.cors-origin-regex }}
             DATABASE_LOGS=${{ inputs.database-logs }}
@@ -305,12 +277,12 @@ jobs:
             DB_PASSWORD=${{ secrets.db-password }}
             DB_READ_REPLICA_HOSTS=${{ secrets.db-read-replica-hosts }}
             DB_USERNAME=${{ secrets.db-username }}
-            DEPLOY_ENV=development
+            DEPLOY_ENV=staging
             EMBEDDED_LINK_ITEM_IFRAMELY_HREF_ORIGIN=${{ secrets.embedded-link-item-iframely-href-origin }}
             ETHERPAD_API_KEY=${{ secrets.etherpad-api-key }}
             ETHERPAD_COOKIE_DOMAIN=${{ inputs.etherpad-cookie-domain }}
             ETHERPAD_URL=${{ inputs.etherpad-url }}
-            EXPLORER_CLIENT_HOST=${{ secrets.explorer-client-host }}
+            LIBRARY_CLIENT_HOST=${{ inputs.library-client-host }}
             FILE_STORAGE_ROOT_PATH=${{ secrets.file-storage-root-path }}
             H5P_CONTENT_ACCESS_KEY_ID=${{ secrets.h5p-content-access-key-id }}
             H5P_CONTENT_BUCKET=${{ secrets.h5p-content-bucket-name }}
@@ -328,7 +300,7 @@ jobs:
             MAILER_CONFIG_SMTP_HOST=${{ secrets.mailer-config-smtp-host }}
             MAILER_CONFIG_USERNAME=${{ secrets.mailer-config-username }}
             NODE_ENV=${{ inputs.node-env }}
-            PLAYER_CLIENT_HOST=${{ secrets.player-client-host }}
+            PLAYER_CLIENT_HOST=${{ inputs.player-client-host }}
             PORT=${{ secrets.port }}
             PUBLIC_URL=${{ secrets.public-url }}
             RECAPTCHA_SECRET_ACCESS_KEY=${{ secrets.recaptcha-secret-access-key }}
@@ -338,7 +310,6 @@ jobs:
             REDIS_USERNAME=${{ secrets.redis-username }}
             REFRESH_TOKEN_EXPIRATION_IN_MINUTES=${{ secrets.refresh-token-expiration-in-minutes }}
             REFRESH_TOKEN_JWT_SECRET=${{ secrets.refresh-token-jwt-secret }}
-            ROARR_LOG=${{ inputs.roarr-log }}
             S3_FILE_ITEM_ACCESS_KEY_ID=${{ secrets.s3-file-item-access-key-id }}
             S3_FILE_ITEM_BUCKET=${{ secrets.s3-file-item-bucket }}
             S3_FILE_ITEM_PLUGIN=${{ inputs.s3-file-item-plugin }}
@@ -355,8 +326,8 @@ jobs:
             MEILISEARCH_MASTER_KEY=${{ secrets.meilisearch-master-key }}
             MEILISEARCH_REBUILD_SECRET=${{ secrets.meilisearch-rebuild-secret }}
 
-      # Modify Amazon ECS task definition with second container
-      - name: Modify Amazon ECS task definition
+      # Insert a second container image URI into previously created Amazon ECS task definition JSON file.
+      - name: Modify Amazon ECS task definition with second container
         id: task-def-2
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
@@ -366,8 +337,8 @@ jobs:
           environment-variables: |
             NODE_ENV=${{ inputs.node-env-iframely }}
 
-      # Modify Amazon ECS task definition with third container
-      - name: Modify Amazon ECS task definition
+      # Insert a third container image URI into previously created Amazon ECS task definition JSON file.
+      - name: Modify Amazon ECS task definition with third container
         id: task-def-3
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
@@ -383,3 +354,21 @@ jobs:
           service: ${{ secrets.ecs-service }}
           cluster: ${{ secrets.ecs-cluster }}
           wait-for-service-stability: true
+
+  test:
+    name: Test
+    needs: build-deploy
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+
+      # This step runs a single command to execute integation testing
+      - name: Test
+        run: |
+          echo "This is the integration test step"
