@@ -139,8 +139,7 @@ jobs:
             NEXT_PUBLIC_GRAASP_ANALYTICS_HOST=${{ secrets.next-public-graasp-analytics-host }}
             NEXT_PUBLIC_GRAASP_AUTH_HOST=${{ secrets.next-public-graasp-auth-host }}
             NEXT_PUBLIC_GRAASP_BUILDER_HOST=${{ secrets.next-public-graasp-builder-host }}
-            NEXT_PUBLIC_GRAASP_ACCOUNT_HOST=${{ secrets.next-public-graasp-account-host }}
-            NEXT_PUBLIC_API_HOST=${{ secrets.next-public-api-host }}
+            NEXT_PUBLIC_GRAASP_ACCOUNT_HOST=${{ vars.next-public-graasp-account-host }}
             NEXT_PUBLIC_GRAASP_PERFORM_HOST=${{ secrets.next-public-graasp-perform-host }}
             NEXT_PUBLIC_GRAASPER_ID=${{ secrets.next-public-graasper-id }}
             NEXT_PUBLIC_PUBLISHED_TAG_ID=${{ secrets.next-public-published-tag-id }}
