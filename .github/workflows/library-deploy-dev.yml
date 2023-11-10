@@ -13,6 +13,9 @@ on:
       app-version:
         required: true
         type: string
+      next-public-graasp-account-host:
+        required: true
+        type: string
       # ecs-task-definition: path to task definition json template
       ecs-task-definition:
         required: true
