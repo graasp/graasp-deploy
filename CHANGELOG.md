@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.22.1](https://github.com/graasp/graasp-deploy/compare/v1.22.0...v1.22.1) (2023-11-10)
+
+
+### Bug Fixes
+
+* use inputs instead of vars for library workflows ([#235](https://github.com/graasp/graasp-deploy/issues/235)) ([fd4fdfa](https://github.com/graasp/graasp-deploy/commit/fd4fdfaea0dc4a72f35ecbaddc7bca8160eae202))
+
 ## [1.22.0](https://github.com/graasp/graasp-deploy/compare/v1.21.1...v1.22.0) (2023-11-10)
 
 
