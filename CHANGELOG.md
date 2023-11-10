@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.22.0](https://github.com/graasp/graasp-deploy/compare/v1.21.1...v1.22.0) (2023-11-10)
+
+
+### Features
+
+* add graasp account to library workflows ([#234](https://github.com/graasp/graasp-deploy/issues/234)) ([e7d9b72](https://github.com/graasp/graasp-deploy/commit/e7d9b7205712e450d2eab906f6fcb6f1e91c7b79))
+
+
+### Bug Fixes
+
+* add account host for library in inputs ([31df313](https://github.com/graasp/graasp-deploy/commit/31df3131f2add0d548699a96bc7eda62a3cb3b30))
+* remove backend from stack ([2bb4026](https://github.com/graasp/graasp-deploy/commit/2bb4026fd940b4ee210ca55e1816692cf943847c))
+
 ## [1.21.1](https://github.com/graasp/graasp-deploy/compare/v1.21.0...v1.21.1) (2023-10-25)
 
 
