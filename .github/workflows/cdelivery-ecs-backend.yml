@@ -184,6 +184,10 @@ on:
         required: true
       meilisearch-rebuild-secret:
         required: true
+      openai-api-key:
+        required: true
+      openai-org-id:
+        required: false
 
 # Set environment variables that are available to the steps of all jobs in the workflow
 env:
@@ -319,6 +323,8 @@ jobs:
             MEILISEARCH_URL=${{ secrets.meilisearch-url }}
             MEILISEARCH_MASTER_KEY=${{ secrets.meilisearch-master-key }}
             MEILISEARCH_REBUILD_SECRET=${{ secrets.meilisearch-rebuild-secret }}
+            OPENAI_API_KEY=${{ secrets.openai-api-key }}
+            OPENAI_ORG_ID=${{ secrets.openai-org-id }}
 
       # Insert a second container image URI into previously created Amazon ECS task definition JSON file.
       - name: Modify Amazon ECS task definition with second container
