@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.22.2](https://github.com/graasp/graasp-deploy/compare/v1.22.1...v1.22.2) (2023-11-13)
+
+
+### Bug Fixes
+
+* add env variables ([#239](https://github.com/graasp/graasp-deploy/issues/239)) ([14658b6](https://github.com/graasp/graasp-deploy/commit/14658b6e7e98a088fbb686e096d57cacfbcb3587))
+
 ## [1.22.1](https://github.com/graasp/graasp-deploy/compare/v1.22.0...v1.22.1) (2023-11-10)
 
 
