@@ -9,10 +9,6 @@
       "tag": "v2.0.1"
     },
     {
-      "repository": "graasp/graasp-admin",
-      "tag": ""
-    },
-    {
       "repository": "graasp/graasp-app-file-drop",
       "tag": "v1.0.0"
     },
@@ -100,5 +96,7 @@
       "repository": "graasp/graasp-account",
       "tag": "v2.0.1"
     }
-  ]
+  ],
+  "test": "1234",
+  "hello": "12"
 }
