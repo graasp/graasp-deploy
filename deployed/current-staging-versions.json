@@ -6,7 +6,7 @@
     },
     {
       "repository": "graasp/graasp-auth",
-      "tag": "v2.0.0"
+      "tag": "v2.0.1"
     },
     {
       "repository": "graasp/graasp-admin",
@@ -46,7 +46,7 @@
     },
     {
       "repository": "graasp/graasp-library",
-      "tag": "v1.0.0"
+      "tag": "v1.1.0"
     },
     {
       "repository": "graasp/graasp-app-sketchfab",
@@ -54,7 +54,7 @@
     },
     {
       "repository": "graasp/graasp-builder",
-      "tag": "v2.0.1"
+      "tag": "v2.1.0"
     },
     {
       "repository": "graasp/graasp-app-quiz",
@@ -62,11 +62,11 @@
     },
     {
       "repository": "graasp/graasp-player",
-      "tag": "v2.0.1"
+      "tag": "v2.1.0"
     },
     {
       "repository": "graasp/graasp-analytics",
-      "tag": "v2.0.1"
+      "tag": "v2.0.2"
     },
     {
       "repository": "graasp/graasp-app-text-analysis",
@@ -98,7 +98,7 @@
     },
     {
       "repository": "graasp/graasp-account",
-      "tag": "v2.0.0"
+      "tag": "v2.0.1"
     }
   ]
 }
