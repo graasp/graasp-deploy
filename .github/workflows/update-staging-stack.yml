@@ -15,6 +15,8 @@ jobs:
     name: Create staging-versions.json file
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    # ensure only one instance of the workflow runs at a time
+    concurrency: update-staging-stack
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
@@ -22,14 +24,6 @@ jobs:
       uses: actions/checkout@v4
       with:
         ref: "main"
-
-    # Get the latest modified file in the staging-versions working directory.
-    - name: Get latest versions file
-      id: latest-file
-      run: |
-        cd ./staging-versions
-        LATEST_FILE_NAME=$(ls -Ar | head -n 1)
-        echo "latest=${LATEST_FILE_NAME}" >> $GITHUB_OUTPUT
 
     # Create new staging-versions.json file. Use jq to write to stdout and pipe the output to a newly created file.
     # If the file already contains the repository, update the tag value
@@ -41,15 +35,10 @@ jobs:
         REPOSITORY: ${{ github.event.client_payload.repository }}
         # TAG: tag pushed by the repository.
         TAG: ${{ github.event.client_payload.tag }}
-        # LATEST_FILE_NAME: latest staging-versions.json file created. It will be used as template.
-        LATEST_FILE_NAME: ${{ steps.latest-file.outputs.latest }}
       run: |
-        FILE_NAME=$(echo "`date +"%Y%m%d%H%M"`"-staging-versions.json)
-        echo "FILE_NAME=$FILE_NAME" >> $GITHUB_ENV
         jq --arg tag "$TAG" --arg repository "$REPOSITORY" \
         'if ((.include[] | select(.repository == $repository)) // null) != null then (.include[] | select(.repository == $repository) | .tag) |= $tag else .include += [{"repository": $repository, "tag": $tag}] end' \
-        ./staging-versions/$LATEST_FILE_NAME > ./staging-versions/$FILE_NAME
-        cat ./staging-versions/$FILE_NAME > ./staging-versions/latest.json
+        ./staging-versions/latest.json > ./staging-versions/latest.json
 
     # Detect changed files during a Workflow run and commit and push them back to the GitHub repository
     - name: Commit step
@@ -57,14 +46,13 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
          # Commit message for the created commit.
-        commit_message: 'chore: updated staging stack ${{ env.FILE_NAME }}'
+        commit_message: 'chore: updated staging stack'
 
     - name: Summary step
       env:
         # REPOSITORY: repository that will update current version.
         REPOSITORY: ${{ github.event.client_payload.repository }}
-
       run: |
-        LATEST_FILE_LINK="https://github.com/${{ github.repository }}/blob/main/staging-versions/${{ env.FILE_NAME }}"
+        LATEST_FILE_LINK="https://github.com/${{ github.repository }}/blob/main/staging-versions/latest.json"
         echo "### :postbox: Updated $REPOSITORY to ${{ github.event.client_payload.tag }}" >> $GITHUB_STEP_SUMMARY
         echo "[Go to generated staging version file]($LATEST_FILE_LINK)" >> $GITHUB_STEP_SUMMARY
