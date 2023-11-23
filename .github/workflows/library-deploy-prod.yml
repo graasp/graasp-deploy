@@ -120,8 +120,23 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr-build.outputs.registry }}
           IMAGE_TAG: ${{ steps.tag-number.outputs.tag }}
+          NEXT_PUBLIC_API_HOST: ${{ secrets.next-public-api-host }}
+          NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: ${{ secrets.next-public-google-analytics-id }}
+          NEXT_PUBLIC_GRAASP_ANALYTICS_HOST: ${{ secrets.next-public-graasp-analytics-host }}
+          NEXT_PUBLIC_GRAASP_AUTH_HOST: ${{ secrets.next-public-graasp-auth-host }}
+          NEXT_PUBLIC_GRAASP_ACCOUNT_HOST: ${{ inputs.next-public-graasp-account-host }}
+          NEXT_PUBLIC_GRAASP_BUILDER_HOST: ${{ secrets.next-public-graasp-builder-host }}
+          NEXT_PUBLIC_GRAASP_PERFORM_HOST: ${{ secrets.next-public-graasp-perform-host }}
+          NEXT_PUBLIC_GRAASPER_ID: ${{ secrets.next-public-graasper-id }}
+          NEXT_PUBLIC_GA_MEASUREMENT_ID: ${{ secrets.next-public-ga-measurement-id }}
+          NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.next-public-sentry-dsn }}
+          NEXT_PUBLIC_SENTRY_ENV: ${{ secrets.next-public-sentry-env }}
+          NEXT_PUBLIC_DOMAIN: ${{ secrets.next-public-domain }}
+          NEXT_PUBLIC_SHOW_NOTIFICATIONS: ${{ secrets.next-public-show-notifications }}
+          NEXT_PUBLIC_APP_NAME: ${{ inputs.app-name }}
+          NEXT_PUBLIC_APP_VERSION: ${{ inputs.app-version }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build --build-arg NEXT_PUBLIC_API_HOST=$NEXT_PUBLIC_API_HOST NEXT_PUBLIC_GOOGLE_ANALYTICS_ID=$NEXT_PUBLIC_GOOGLE_ANALYTICS_ID NEXT_PUBLIC_GRAASP_ANALYTICS_HOST=$NEXT_PUBLIC_GRAASP_ANALYTICS_HOST NEXT_PUBLIC_GRAASP_AUTH_HOST=$NEXT_PUBLIC_GRAASP_AUTH_HOST NEXT_PUBLIC_GRAASP_ACCOUNT_HOST=$NEXT_PUBLIC_GRAASP_ACCOUNT_HOST NEXT_PUBLIC_GRAASP_BUILDER_HOST=$NEXT_PUBLIC_GRAASP_BUILDER_HOST NEXT_PUBLIC_GRAASP_PERFORM_HOST=$NEXT_PUBLIC_GRAASP_PERFORM_HOST NEXT_PUBLIC_GRAASPER_ID=$NEXT_PUBLIC_GRAASPER_ID NEXT_PUBLIC_GA_MEASUREMENT_ID=$NEXT_PUBLIC_GA_MEASUREMENT_ID NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN NEXT_PUBLIC_SENTRY_ENV=$NEXT_PUBLIC_SENTRY_ENV NEXT_PUBLIC_DOMAIN=$NEXT_PUBLIC_DOMAIN NEXT_PUBLIC_SHOW_NOTIFICATIONS=$NEXT_PUBLIC_SHOW_NOTIFICATIONS NEXT_PUBLIC_APP_NAME=$NEXT_PUBLIC_APP_NAME NEXT_PUBLIC_APP_VERSION=$NEXT_PUBLIC_APP_VERSION -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       # Insert a container image URI into template Amazon ECS task definition JSON file, creating a new task definition file.

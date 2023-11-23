@@ -53,8 +53,6 @@ on:
         required: true
       next-public-graasper-id:
         required: true
-      next-public-published-tag-id:
-        required: true
       next-public-sentry-dsn:
         required: false
       next-public-sentry-env:
