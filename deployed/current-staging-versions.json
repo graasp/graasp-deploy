@@ -2,15 +2,11 @@
   "include": [
     {
       "repository": "graasp/graasp",
-      "tag": "v1.9.5"
+      "tag": "v1.10.1"
     },
     {
       "repository": "graasp/graasp-auth",
       "tag": "v2.0.1"
-    },
-    {
-      "repository": "graasp/graasp-admin",
-      "tag": ""
     },
     {
       "repository": "graasp/graasp-app-file-drop",
@@ -46,7 +42,7 @@
     },
     {
       "repository": "graasp/graasp-library",
-      "tag": "v1.1.0"
+      "tag": "v1.1.1"
     },
     {
       "repository": "graasp/graasp-app-sketchfab",
@@ -74,7 +70,7 @@
     },
     {
       "repository": "graasp/graasp-app-excalidraw",
-      "tag": "v3.0.0"
+      "tag": "v3.0.1"
     },
     {
       "repository": "graasp/graasp-app-thermal-radiation",
@@ -98,7 +94,9 @@
     },
     {
       "repository": "graasp/graasp-account",
-      "tag": "v2.0.1"
+      "tag": "v2.0.2"
     }
-  ]
+  ],
+  "test": "1234",
+  "hello": "12"
 }
