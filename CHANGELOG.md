@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.22.3](https://github.com/graasp/graasp-deploy/compare/v1.22.2...v1.22.3) (2023-12-04)
+
+
+### Bug Fixes
+
+* check for string value in condition ([d9efd3f](https://github.com/graasp/graasp-deploy/commit/d9efd3fa5f8330086205967f7c82d1b1d12b9ea5))
+
 ## [1.22.2](https://github.com/graasp/graasp-deploy/compare/v1.22.1...v1.22.2) (2023-11-13)
 
 
