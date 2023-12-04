@@ -16,7 +16,7 @@ runs:
     # tag all pr and issues that have the `un-released` label as `tag-name`, e.g. `v2.4.3`
     - name: Auto Tag
       id: auto-tag
-      if: ${{ inputs.releases_created }}
+      if: ${{ inputs.releases_created == 'true' }}
       run: |
         # force creation of the label associated to the current release
         gh label create ${{ env.TAG_NAME }} -f --color 0E8A16 --repo ${{ env.REPO }};
