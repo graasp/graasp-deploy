@@ -96,7 +96,5 @@
       "repository": "graasp/graasp-account",
       "tag": "v2.0.2"
     }
-  ],
-  "test": "1234",
-  "hello": "12"
+  ]
 }
