@@ -50,7 +50,7 @@
     },
     {
       "repository": "graasp/graasp-builder",
-      "tag": ""
+      "tag": "v2.2.0"
     },
     {
       "repository": "graasp/graasp-app-quiz",
@@ -58,7 +58,7 @@
     },
     {
       "repository": "graasp/graasp-player",
-      "tag": ""
+      "tag": "v2.2.0"
     },
     {
       "repository": "graasp/graasp-analytics",
@@ -96,7 +96,5 @@
       "repository": "graasp/graasp-account",
       "tag": "v2.0.2"
     }
-  ],
-  "test": "1234",
-  "hello": "12"
+  ]
 }
