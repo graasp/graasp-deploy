@@ -95,6 +95,10 @@
     {
       "repository": "graasp/graasp-account",
       "tag": "v2.0.2"
+    },
+    {
+      "repository": "graasp/graasp-unity-space-rocket",
+      "tag": "v1.0.0"
     }
   ]
 }
