@@ -1,102 +1,26 @@
 {
-  "include": [
-    {
-      "repository": "graasp/graasp",
-      "tag": "v1.10.1"
-    },
-    {
-      "repository": "graasp/graasp-auth",
-      "tag": "v2.0.1"
-    },
-    {
-      "repository": "graasp/graasp-app-file-drop",
-      "tag": "v1.0.0"
-    },
-    {
-      "repository": "graasp/graasp-app-radiating-charge",
-      "tag": "v0.3.0"
-    },
-    {
-      "repository": "graasp/graasp-app-sticky-notes",
-      "tag": "v1.1.0"
-    },
-    {
-      "repository": "graasp/graasp-app-task-management",
-      "tag": "v1.0.0"
-    },
-    {
-      "repository": "graasp/graasp-app-text-input",
-      "tag": "v2.0.2"
-    },
-    {
-      "repository": "graasp/graasp-app-code-capsule",
-      "tag": "v2.0.2"
-    },
-    {
-      "repository": "graasp/graasp-app-calculator",
-      "tag": "v1.0.0"
-    },
-    {
-      "repository": "graasp/graasp-app-survey",
-      "tag": "v0.1.1"
-    },
-    {
-      "repository": "graasp/graasp-library",
-      "tag": "v1.1.1"
-    },
-    {
-      "repository": "graasp/graasp-app-sketchfab",
-      "tag": "v1.0.1"
-    },
-    {
-      "repository": "graasp/graasp-builder",
-      "tag": "v2.1.0"
-    },
-    {
-      "repository": "graasp/graasp-app-quiz",
-      "tag": "v1.1.0"
-    },
-    {
-      "repository": "graasp/graasp-player",
-      "tag": "v2.1.0"
-    },
-    {
-      "repository": "graasp/graasp-analytics",
-      "tag": "v2.0.2"
-    },
-    {
-      "repository": "graasp/graasp-app-text-analysis",
-      "tag": "v1.0.1"
-    },
-    {
-      "repository": "graasp/graasp-app-excalidraw",
-      "tag": "v3.0.1"
-    },
-    {
-      "repository": "graasp/graasp-app-thermal-radiation",
-      "tag": "v0.3.0"
-    },
-    {
-      "repository": "graasp/graasp-app-radiation-absorption",
-      "tag": "v0.3.0"
-    },
-    {
-      "repository": "graasp/graasp-app-greenhouse-effect",
-      "tag": "v0.6.0"
-    },
-    {
-      "repository": "graasp/graasp-app-starter-ts-vite",
-      "tag": "v1.0.0"
-    },
-    {
-      "repository": "graasp/graasp-app-collaborative-ideation",
-      "tag": "v1.2.0"
-    },
-    {
-      "repository": "graasp/graasp-account",
-      "tag": "v2.0.2"
-    }
-  ],
-  "test": "1234",
-  "hello": "12"
+  "graasp/graasp": "v1.10.1",
+  "graasp/graasp-auth": "v2.0.1",
+  "graasp/graasp-app-file-drop": "v1.0.0",
+  "graasp/graasp-app-radiating-charge": "v0.3.0",
+  "graasp/graasp-app-sticky-notes": "v1.1.0",
+  "graasp/graasp-app-task-management": "v1.0.0",
+  "graasp/graasp-app-text-input": "v2.0.2",
+  "graasp/graasp-app-code-capsule": "v2.0.2",
+  "graasp/graasp-app-calculator": "v1.0.0",
+  "graasp/graasp-app-survey": "v0.1.1",
+  "graasp/graasp-library": "v1.1.1",
+  "graasp/graasp-app-sketchfab": "v1.0.1",
+  "graasp/graasp-builder": "v2.1.0",
+  "graasp/graasp-app-quiz": "v1.1.0",
+  "graasp/graasp-player": "v2.1.0",
+  "graasp/graasp-analytics": "v2.0.2",
+  "graasp/graasp-app-text-analysis": "v1.0.1",
+  "graasp/graasp-app-excalidraw": "v3.0.1",
+  "graasp/graasp-app-thermal-radiation": "v0.3.0",
+  "graasp/graasp-app-radiation-absorption": "v0.3.0",
+  "graasp/graasp-app-greenhouse-effect": "v0.6.0",
+  "graasp/graasp-app-starter-ts-vite": "v1.0.0",
+  "graasp/graasp-app-collaborative-ideation": "v1.2.0",
+  "graasp/graasp-account": "v2.0.2"
 }

@@ -1,0 +1,177 @@
+# This workflow takes the latest.json file inside the candidate-versions folder
+# and triggers a deployment to the staging environment in affected repositories
+name: Deploy staging
+
+# Controls when the action will run.
+on:
+  # Allow the workflow to be automatically triggered every Thursday at 9 a.m.
+  schedule:
+    - cron: '0 9 * * 4'
+  # Allow the workflow to be manually triggered
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      stack:
+        # Description to be shown in the UI instead of 'stack'
+        description: '(Optional) Specify a stack. Format: YYYYMMddhhmm-staging.json'
+        # Default value if no value is explicitly provided
+        default: ''
+        # Input does not have to be provided for the workflow to run
+        required: false
+
+env:
+  STACK: ${{ inputs.stack || 'latest.json' }}
+
+jobs:
+  generate-matrix:
+    name: Generate matrix
+    runs-on: ubuntu-latest
+    concurrency: trigger-staging-deployment
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      latest: ${{ steps.latest-staging-file.outputs.latest }}
+
+    steps:
+    - name: Echo Stack
+      run: echo ${{ env.STACK }}
+
+    # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    # Install the python version needed
+    - name: Setup python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.10
+
+    # Run compare.py to get the difference between the newer and the already deployed versions
+    - name: Compare stacks
+      run: |
+        python scripts/compare.py candidate-versions/${{ env.STACK }} deployed/current-staging-versions.json
+
+    # Load latest json from a file
+    - name: Generate matrix
+      id: set-matrix
+      run: |
+        STACK_LENGTH=$(jq 'length' < diff.json)
+        if [[ "$STACK_LENGTH" -gt 0 ]]; then
+          LATEST_FILE=$(cat diff.json)
+          echo "matrix=$LATEST_FILE" >> $GITHUB_OUTPUT
+          echo '### New versions detected! :bookmark:' >> $GITHUB_STEP_SUMMARY
+          cat output.txt >> $GITHUB_STEP_SUMMARY
+        else
+          echo '### No new versions detected! :hankey:' >> $GITHUB_STEP_SUMMARY
+          exit 1
+        fi
+
+  dispatch:
+    name: Trigger repository deployments for the staging environment
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    # The environment that the job will reference
+    environment: staging
+    strategy:
+      # Uses fromJson to parse the output and set a matrix variable.
+      matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
+    steps:
+    - name: Set json output
+      id: set-json
+      env:
+        TAG: ${{matrix.tag}}
+      run: |
+        JSON=$(jq -c --null-input --arg tag "$TAG" '{"tag": $tag}')
+        echo "json=$JSON" >> $GITHUB_OUTPUT
+
+    - name: Repository Dispatch
+      uses: peter-evans/repository-dispatch@v2
+      with:
+        # this token has to be a PAT because we dispatch to another repo
+        # https://github.com/peter-evans/repository-dispatch
+        # this token expires every now and then, so it has to be renew
+        token: ${{ secrets.REPO_ACCESS_TOKEN }}
+        repository: ${{ matrix.repository }}
+        event-type: staging-deployment
+        client-payload: ${{steps.set-json.outputs.json}}
+
+    - name: Generate step summary markdown
+      env:
+        BADGE: 'https://badgen.net/badge/icon/See%20workflow/blue?icon=github&label'
+      run: |
+        echo '[![See workflow](${{env.BADGE}})](https://github.com/${{matrix.repository}}/actions/)' >> $GITHUB_STEP_SUMMARY
+
+  update-deployed-stack:
+    name: Update deployed staging stack
+    needs: [generate-matrix, dispatch]
+    runs-on: ubuntu-latest
+    environment: staging
+    outputs:
+      commit-hash: ${{ steps.commit.outputs.commit_hash }}
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v4
+      with:
+        # checkout the latest commits of main -> this is where we will commit to
+        ref: main
+
+    - name: Update current-staging-versions file
+      id: update-current-staging-versions-file
+      run: |
+        cd ./candidate-versions
+        cp ${{ env.STACK }} ../deployed/current-staging-versions.json
+
+    - name: Commit step
+      id: commit
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: 'chore(deploy): deploy new stack to staging environment'
+
+    - name: Set commit hash output
+      run: |
+        echo "commit-hash=${{ steps.commit.outputs.commit_hash }}" >> $GITHUB_OUTPUT
+        echo '### New stack deployed! :rocket:' >> $GITHUB_STEP_SUMMARY
+
+  test:
+    name: Test
+    needs: [dispatch, update-deployed-stack]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'Test job'
+
+  promote:
+    name: Promote stack to release ready
+    needs: [generate-matrix, dispatch, update-deployed-stack, test]
+    runs-on: ubuntu-latest
+    environment: staging
+    env:
+      LATEST_FILE_NAME_STAGING: ${{ needs.generate-matrix.outputs.latest }}
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ needs.update-deployed-stack.outputs.commit-hash }}
+
+    - name: Update latest staging stack and archive a timestamped versions
+      run: |
+        RELEASE_FILE_NAME=$(echo "`date +"%Y%m%d%H%M"`"-staging.json)
+        LATEST_FILE_NAME_STAGING=./deployed/current-staging-versions.json
+        cp $LATEST_FILE_NAME_STAGING ./in-staging/$RELEASE_FILE_NAME
+        cp $LATEST_FILE_NAME_STAGING ./in-staging/latest.json
+
+    # would it be possible to simply checkout main instead of the commit-hash
+    - name: Keep changes in detached HEAD step
+      run: |
+        git branch tmp
+        git fetch
+        git checkout main
+        git merge tmp
+
+    - name: Commit step
+      id: commit
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: 'chore: promote new stack for production'
+
+    - name: Generate job summary markdown
+      run: |
+        echo '### New stack promoted! :boom:' >> $GITHUB_STEP_SUMMARY

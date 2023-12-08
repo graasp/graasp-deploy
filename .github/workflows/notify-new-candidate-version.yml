@@ -1,0 +1,45 @@
+name: Notify new candidate version
+
+# Controls when the action will run
+on:
+  # Triggers the workflow on repository_dispatch events but only for the update-staging-version event
+  repository_dispatch:
+    types: [update-staging-version] # todo: should be changed to "notify-new-candidate"
+
+jobs:
+  # Update the candidate-versions/latest.json file with updated tag
+  notify:
+    name: Update candidate version
+    runs-on: ubuntu-latest
+    # ensure only one instance of the workflow runs at a time
+    concurrency: notify-new-candidate
+    env:
+      # REPO: repository that will update current version.
+      REPO: ${{ github.event.client_payload.repository }}
+      # TAG: tag pushed by the repository.
+      TAG: ${{ github.event.client_payload.tag }}
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v4
+      with:
+        ref: main
+
+    # Update the candidate-versions/latest.json file. Use jq to write to stdout and pipe output to a temporary file.
+    - name: Update candidate file
+      run: |
+        jq --arg repo "$REPO" --arg tag "$TAG" '.[$repo] = $tag' < candidate-versions/latest.json > ./candidate-versions/latest.tmp
+        mv ./candidate-versions/latest.tmp ./candidate-versions/latest.json
+
+    # Detect changed files during a Workflow run and commit and push them back to the GitHub repository
+    - name: Commit updated file
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+         # Commit message for the created commit.
+        commit_message: 'chore: update $REPO candidate to $TAG'
+
+    - name: Summary
+      run: |
+        LATEST_FILE_LINK="https://github.com/${{ github.repository }}/blob/main/candidate-versions/latest.json"
+        echo "### :postbox: Updated $REPO to ${{ github.event.client_payload.tag }}" >> $GITHUB_STEP_SUMMARY
+        echo "[Go to latest candidate version file]($LATEST_FILE_LINK)" >> $GITHUB_STEP_SUMMARY
