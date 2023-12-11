@@ -13,14 +13,14 @@ on:
     inputs:
       stack:
         # Description to be shown in the UI instead of 'stack'
-        description: '(Optional) Specify a stack. Format: YYYYMMddhhmm-staging.json'
+        description: '(Optional) Specify a stack stored in the staging-stacks folder. Format: YYYYMMddhhmm-staging.json'
         # Default value if no value is explicitly provided
         default: ''
         # Input does not have to be provided for the workflow to run
         required: false
 
 env:
-  STACK: ${{ inputs.stack || 'latest.json' }}
+  STACK: ${{ inputs.stack && format('in-staging/{0}', inputs.stack) || 'candidate-versions/latest.json' }}
 
 jobs:
   generate-matrix:
@@ -47,7 +47,7 @@ jobs:
     # Run compare.py to get the difference between the newer and the already deployed versions
     - name: Compare stacks
       run: |
-        python scripts/compare.py candidate-versions/${{ env.STACK }} deployed/current-staging-versions.json
+        python scripts/compare.py ${{ env.STACK }} deployed/current-staging-versions.json
 
     # Load latest json from a file
     - name: Generate matrix
@@ -116,9 +116,7 @@ jobs:
 
     - name: Update current-staging-versions file
       id: update-current-staging-versions-file
-      run: |
-        cd ./candidate-versions
-        cp ${{ env.STACK }} ../deployed/current-staging-versions.json
+      run: cp ${{ env.STACK }} deployed/current-staging-versions.json
 
     - name: Commit step
       id: commit
