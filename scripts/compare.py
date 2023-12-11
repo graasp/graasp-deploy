@@ -45,7 +45,7 @@ removed = {
     if k not in new_file.keys()
 }
 
-output = updated | added
+output = [{"repository": k, "tag": v["new"]} for k, v in (updated | added).items()]
 
 all_changes = updated | added | removed
 out_string = "\n".join(
