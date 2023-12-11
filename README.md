@@ -398,3 +398,9 @@ Therefore, it’s safer to use it like this so if there are changes on the main 
 ## How to solve Bad Credentials error
 
 Every now and then, the given Personal Access Token expires. This token is used to dispatch an event to other repositories (eg. Graasp Deploy instructs Graasp Player to deploy to staging). Someone should [create a new token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) and replace it in the organization's secrets.
+
+## Migrating to the new format (no .include)
+
+```sh
+jq '.include[] | {(.repository): (.tag)}' < stack-file.json | jq -s '. | add'
+```

@@ -1,0 +1,138 @@
+# This workflow takes the latest YYYYMMddhhmm-release-versions.json file inside the release-versions folder
+# and triggers all the cdeployment workflows in the different repositories.
+name: Deploy stack to prod
+
+# Controls when the action will run.
+on:
+  # Allow the workflow to be automatically triggered every Monday at 9 a.m.
+  schedule:
+    - cron: '0 9 * * 1'
+  # Allow the workflow to be manually triggered
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      stack:
+        # Description to be shown in the UI instead of 'stack'
+        description: '(Optional) Specify a stack. Format: YYYYMMddhhmm-production.json'
+        # Default value if no value is explicitly provided
+        default: ''
+        # Input does not have to be provided for the workflow to run
+        required: false
+
+env:
+  STACK: ${{ inputs.stack || 'latest.json' }}
+
+jobs:
+  generate-matrix:
+    name: Generate matrix
+    runs-on: ubuntu-latest
+    concurrency: trigger-production-deployment
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+
+    steps:
+    - name: Echo Stack
+      run: echo ${{ env.STACK }}
+
+    # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    # Install the python version needed
+    - name: Setup python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.10
+
+    # Run compare.py to get the difference between the newer and the already deployed versions
+    - name: Compare stacks
+      run: python scripts/compare.py in-staging/${{ env.STACK }} deployed/current-production-versions.json
+
+    # Load latest json from a file
+    - name: Generate matrix
+      id: set-matrix
+      run: |
+        STACK_LENGTH=$(jq 'length' < diff.json)
+        if [[ "$STACK_LENGTH" -gt 0 ]]; then
+          LATEST_FILE=$(cat diff.json)
+          echo "matrix=$LATEST_FILE" >> $GITHUB_OUTPUT
+          echo '### New versions detected! :bookmark:' >> $GITHUB_STEP_SUMMARY
+          cat output.txt >> $GITHUB_STEP_SUMMARY
+        else
+          echo '### No new versions detected! :hankey:' >> $GITHUB_STEP_SUMMARY
+          exit 1
+        fi
+
+  dispatch:
+    name: Trigger repository deployments for the production environment
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    # The environment that the job will reference
+    environment: production
+    strategy:
+      # Uses fromJson to parse the output and set a matrix variable.
+      matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
+
+    steps:
+    - name: Set json output
+      id: set-json
+      env:
+        TAG: ${{matrix.tag}}
+      run: |
+        JSON=$(jq -c --null-input --arg tag "$TAG" '{"tag": $tag}')
+        echo "json=$JSON" >> $GITHUB_OUTPUT
+
+    - name: Repository Dispatch
+      uses: peter-evans/repository-dispatch@v2
+      with:
+        # this token has to be a PAT because we dispatch to another repo
+        # https://github.com/peter-evans/repository-dispatch
+        # this token expires every now and then, so it has to be renew
+        token: ${{ secrets.REPO_ACCESS_TOKEN }}
+        repository: ${{ matrix.repository }}
+        event-type: production-deployment
+        client-payload: ${{steps.set-json.outputs.json}}
+
+    - name: Generate step summary markdown
+      env:
+        BADGE: 'https://badgen.net/badge/icon/See%20workflow/blue?icon=github&label'
+      run: |
+        echo '[![See workflow](${{env.BADGE}})](https://github.com/${{matrix.repository}}/actions/)' >> $GITHUB_STEP_SUMMARY
+
+  update:
+    name: Update stack to production ready
+    needs: [generate-matrix, dispatch]
+    runs-on: ubuntu-latest
+    # The environment that the job will reference
+    environment: production
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v4
+      with:
+        ref: main
+
+    - name: Update latest production versions file
+      run: |
+        PRODUCTION_FILE_NAME=$(echo "`date +"%Y%m%d%H%M"`"-production.json)
+        LATEST_FILE_NAME_RELEASE=./in-staging/${{ env.STACK }}
+        cp $LATEST_FILE_NAME_RELEASE ../in-production/$PRODUCTION_FILE_NAME
+        cp $LATEST_FILE_NAME_RELEASE ../in-production/latest.json
+        cp $LATEST_FILE_NAME_RELEASE ../deployed/current-production-versions.json
+
+    - name: Keep changes in detached HEAD step
+      run: |
+        git branch tmp
+        git fetch
+        git pull
+        git checkout main
+        git merge tmp
+
+    - name: Commit step
+      id: commit
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: "chore(deploy): deploy new stack to production environment"
+
+    - name: Generate job summary markdown
+      run: |
+        echo '### New stack deployed! :rocket:' >> $GITHUB_STEP_SUMMARY
