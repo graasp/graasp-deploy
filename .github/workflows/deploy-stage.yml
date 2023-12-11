@@ -29,12 +29,10 @@ jobs:
     concurrency: trigger-staging-deployment
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
-      latest: ${{ steps.latest-staging-file.outputs.latest }}
 
     steps:
     - name: Echo Stack
       run: echo 'Deploying from ${{ env.STACK }}' >> $GITHUB_STEP_SUMMARY
-
 
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
