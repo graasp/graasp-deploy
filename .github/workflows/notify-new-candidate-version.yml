@@ -36,7 +36,7 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
          # Commit message for the created commit.
-        commit_message: 'chore: update $REPO candidate to $TAG'
+        commit_message: 'chore: update ${{ env.REPO}} candidate to ${{ env.TAG }}'
 
     - name: Summary
       run: |
