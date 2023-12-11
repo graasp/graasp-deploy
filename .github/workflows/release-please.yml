@@ -1,8 +1,10 @@
+name: release-please
+
 on:
   push:
     branches:
       - main
-name: release-please
+
 jobs:
   release-please:
     runs-on: ubuntu-latest
@@ -11,12 +13,12 @@ jobs:
         id: release
         with:
           release-type: simple
-          package-name: graasp-deploy
-          changelog-types: '[{"type":"feat","section":"Features","hidden":false},{"type":"fix","section":"Bug Fixes","hidden":false},{"type":"docs","section":"Documentation","hidden":false}]'
+
       - uses: actions/checkout@v4
+
       - name: Tag major and minor versions
         uses: jacobsvante/tag-major-minor-action@v0.1
-        if: ${{ steps.release.outputs.release_created }}
+        if: ${{ steps.release.outputs.release_created == 'true' }}
         with:
           major: ${{ steps.release.outputs.major }}
           minor: ${{ steps.release.outputs.minor }}
