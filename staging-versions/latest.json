@@ -6,7 +6,7 @@
     },
     {
       "repository": "graasp/graasp-auth",
-      "tag": ""
+      "tag": "v2.0.2"
     },
     {
       "repository": "graasp/graasp-app-file-drop",
@@ -50,7 +50,7 @@
     },
     {
       "repository": "graasp/graasp-builder",
-      "tag": ""
+      "tag": "v2.3.0"
     },
     {
       "repository": "graasp/graasp-app-quiz",
@@ -83,10 +83,6 @@
     {
       "repository": "graasp/graasp-app-greenhouse-effect",
       "tag": "v0.6.0"
-    },
-    {
-      "repository": "graasp/graasp-app-starter-ts-vite",
-      "tag": ""
     },
     {
       "repository": "graasp/graasp-app-collaborative-ideation",
