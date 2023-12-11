@@ -33,7 +33,8 @@ jobs:
 
     steps:
     - name: Echo Stack
-      run: echo ${{ env.STACK }}
+      run: echo 'Deploying from ${{ env.STACK }}' >> $GITHUB_STEP_SUMMARY
+
 
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
@@ -43,7 +44,7 @@ jobs:
     - name: Setup python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.10
+        python-version: '3.10'
 
     # Run compare.py to get the difference between the newer and the already deployed versions
     - name: Compare stacks
