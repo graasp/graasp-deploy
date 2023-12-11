@@ -64,7 +64,7 @@ jobs:
         fi
 
   dispatch:
-    name: Trigger repository deployments for the production environment
+    name: Trigger production deployment
     needs: generate-matrix
     runs-on: ubuntu-latest
     # The environment that the job will reference
