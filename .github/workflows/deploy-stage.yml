@@ -29,11 +29,10 @@ jobs:
     concurrency: trigger-staging-deployment
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
-      latest: ${{ steps.latest-staging-file.outputs.latest }}
 
     steps:
     - name: Echo Stack
-      run: echo ${{ env.STACK }}
+      run: echo 'Deploying from ${{ env.STACK }}' >> $GITHUB_STEP_SUMMARY
 
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
@@ -41,9 +40,9 @@ jobs:
 
     # Install the python version needed
     - name: Setup python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
-        python-version: 3.10
+        python-version: '3.10'
 
     # Run compare.py to get the difference between the newer and the already deployed versions
     - name: Compare stacks
@@ -73,7 +72,8 @@ jobs:
     environment: staging
     strategy:
       # Uses fromJson to parse the output and set a matrix variable.
-      matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
+      matrix:
+        include: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
     steps:
     - name: Set json output
       id: set-json

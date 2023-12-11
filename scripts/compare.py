@@ -5,29 +5,17 @@ new = sys.argv[1]
 current = sys.argv[2]
 output = {}
 
+
+def format_output(dictionary):
+    return "\n".join(
+        [f"{k} ({v['old']}) -> ({v['new']})" for k, v in dictionary.items()]
+    )
+
+
 with open(new, "r") as f1:
     new_file = json.loads(f1.read())
 with open(current, "r") as f2:
     current_file = json.loads(f2.read())
-
-# for [new_item_key, new_item_version] in new_file.items():
-#     visited = []
-#     for [current_item_key, current_item_version] in current_file.items():
-#         visited.append(current_item_key)
-#         if new_item_key != current_item_key:
-#             continue
-#         else:
-#             if new_item_version != current_item_version:
-#                 print(
-#                     f"{new_item_key} ({current_item_version}) -> ({new_item_version})"
-#                 )
-#                 output[new_item_key] = new_item_version
-#             else:
-#                 break
-
-#     if new_item_key not in visited:
-#         print(f"{new_item_key} (null) -> ({new_item_version})")
-#         output[new_item_key] = new_item_version
 
 updated = {
     k: {"new": new_file[k], "old": current_file[k]}
@@ -45,12 +33,14 @@ removed = {
     if k not in new_file.keys()
 }
 
-output = updated | added
+output = [{"repository": k, "tag": v["new"]} for k, v in (updated | added).items()]
 
 all_changes = updated | added | removed
-out_string = "\n".join(
-    [f"{k} ({v['old']}) -> ({v['new']})" for k, v in all_changes.items()]
-)
+updated_f = f"## :up: Will be updated\n{format_output(updated)}"
+added_f = f"## :sparkles: Will be created\n{format_output(added)}"
+removed_f = f"## :no_entry: Has been discontinued (ignored)\n{format_output(removed)}"
+out_string = "\n\n".join([updated_f, added_f, removed_f])
+
 if len(all_changes.keys()) > 0:
     print(out_string)
     with open("output.txt", "w") as out_log:
