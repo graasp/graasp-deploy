@@ -72,7 +72,8 @@ jobs:
     environment: staging
     strategy:
       # Uses fromJson to parse the output and set a matrix variable.
-      matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
+      matrix:
+        include: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
     steps:
     - name: Set json output
       id: set-json
