@@ -1,11 +1,11 @@
 {
-  "graasp/graasp": "v1.11.0",
+  "graasp/graasp": "v1.11.1",
   "graasp/graasp-auth": "v2.0.2",
   "graasp/graasp-app-file-drop": "v1.0.0",
   "graasp/graasp-app-radiating-charge": "v0.3.0",
   "graasp/graasp-app-sticky-notes": "v1.1.0",
   "graasp/graasp-app-task-management": "v1.0.0",
-  "graasp/graasp-app-text-input": "v2.1.0",
+  "graasp/graasp-app-text-input": "v2.1.1",
   "graasp/graasp-app-code-capsule": "v2.2.1",
   "graasp/graasp-app-calculator": "v1.0.0",
   "graasp/graasp-app-survey": "v0.1.1",
