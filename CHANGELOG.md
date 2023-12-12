@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.22.4](https://github.com/graasp/graasp-deploy/compare/v1.22.3...v1.22.4) (2023-12-12)
+
+
+### Bug Fixes
+
+* deploy ([205d0b6](https://github.com/graasp/graasp-deploy/commit/205d0b65ff9df355640059dc098aa67b9095ec3b))
+* paths in deployement workflow ([7c07f2a](https://github.com/graasp/graasp-deploy/commit/7c07f2ae9030a2329ba805fc75fbcefd7d6a5d22))
+* remove test strings ([2fb8b3b](https://github.com/graasp/graasp-deploy/commit/2fb8b3b9b9e7a248377f0da38d822ac64ad71cc2))
+* update latest ([076c716](https://github.com/graasp/graasp-deploy/commit/076c7163b2c3c40b0c9cbed43eb865adda2cac50))
+* update workflows and folder names ([#246](https://github.com/graasp/graasp-deploy/issues/246)) ([4971076](https://github.com/graasp/graasp-deploy/commit/4971076ec14ef9ed5acfb69faf33a08183afe5ff))
+* versions in staging versions ([b0262d5](https://github.com/graasp/graasp-deploy/commit/b0262d5ab3f25a144fd3638205285b73c6c7177b))
+
 ## [1.22.3](https://github.com/graasp/graasp-deploy/compare/v1.22.2...v1.22.3) (2023-12-04)
 
 
