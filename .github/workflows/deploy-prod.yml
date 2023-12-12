@@ -115,9 +115,9 @@ jobs:
       run: |
         PRODUCTION_FILE_NAME=$(echo "`date +"%Y%m%d%H%M"`"-production.json)
         LATEST_FILE_NAME_RELEASE=./in-staging/${{ env.STACK }}
-        cp $LATEST_FILE_NAME_RELEASE ../in-production/$PRODUCTION_FILE_NAME
-        cp $LATEST_FILE_NAME_RELEASE ../in-production/latest.json
-        cp $LATEST_FILE_NAME_RELEASE ../deployed/current-production-versions.json
+        cp $LATEST_FILE_NAME_RELEASE ./in-production/$PRODUCTION_FILE_NAME
+        cp $LATEST_FILE_NAME_RELEASE ./in-production/latest.json
+        cp $LATEST_FILE_NAME_RELEASE ./deployed/current-production-versions.json
 
     - name: Keep changes in detached HEAD step
       run: |
