@@ -22,9 +22,12 @@
         shown after the repository name. When there is a new version that is not
         yet on production, the line is highlighted with a
         <span style="background-color: #d1e7dd; padding: 2px">green color</span>
-        .
+        and there is a
+        <span class="badge rounded-pill text-bg-warning">On Stage</span> badge
+        next to the repo name.
       </p>
-      <table class="table">
+      <h2>Core Platform</h2>
+      <table class="table" id="core-table">
         <thead>
           <tr>
             <th scope="col">Repo</th>
@@ -33,7 +36,20 @@
             <th scope="col">Prod version</th>
           </tr>
         </thead>
-        <tbody id="table-content"></tbody>
+        <tbody id="core-table-content"></tbody>
+      </table>
+
+      <h2>Apps and Unity simulations</h2>
+      <table class="table" id="app-table">
+        <thead>
+          <tr>
+            <th scope="col">Repo</th>
+            <th scope="col">Latest version</th>
+            <th scope="col">Staging version</th>
+            <th scope="col">Prod version</th>
+          </tr>
+        </thead>
+        <tbody id="app-table-content"></tbody>
       </table>
     </div>
     <script src="main.js"></script>
