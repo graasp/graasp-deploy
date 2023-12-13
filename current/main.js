@@ -4,7 +4,7 @@ const VERSIONS = ["latest", "staging", "production"];
 async function loadData() {
   return Promise.all([
     fetch(
-      "https://raw.githubusercontent.com/graasp/graasp-deploy/main/staging-versions/latest.json"
+      "https://raw.githubusercontent.com/graasp/graasp-deploy/main/candidate-versions/latest.json"
     ).then((res) => res.json()),
     ...DEPLOYED_VERSIONS.map((version) =>
       fetch(
@@ -31,8 +31,8 @@ function createVersionCell(row, key) {
   return node;
 }
 
-function populateTable(data) {
-  var tableElement = document.getElementById("table-content");
+function populateTable(data, id) {
+  var tableElement = document.getElementById(`${id}-table-content`);
   data.forEach((repoData) => {
     var tableRow = document.createElement("tr");
 
@@ -73,13 +73,21 @@ async function main() {
   const dataArr = await loadData();
 
   const repoData = {};
+  const appData = {};
 
   VERSIONS.map((version, i) =>
-    dataArr[i].include.forEach(({ repository, tag }) => {
-      repoData[repository] = {
-        ...repoData[repository],
-        [version]: tag,
-      };
+    Object.entries(dataArr[i]).forEach(([repository, tag]) => {
+      if (repository.includes("-app-") || repository.includes("-unity-")) {
+        appData[repository] = {
+          ...appData[repository],
+          [version]: tag,
+        };
+      } else {
+        repoData[repository] = {
+          ...repoData[repository],
+          [version]: tag,
+        };
+      }
     })
   );
 
@@ -88,8 +96,14 @@ async function main() {
     .sort()
     .map((repo) => ({ repo, ...repoData[repo] }));
 
+  // sort repo names alphabetically
+  const appArr = Object.keys(appData)
+    .sort()
+    .map((repo) => ({ repo, ...appData[repo] }));
+
   // populate table with versions
-  populateTable(repoArr);
+  populateTable(repoArr, "core");
+  populateTable(appArr, "app");
 }
 
 main();
