@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.23.0](https://github.com/graasp/graasp-deploy/compare/v1.22.4...v1.23.0) (2024-01-09)
+
+
+### Features
+
+* Library env build ([#241](https://github.com/graasp/graasp-deploy/issues/241)) ([0bb19fb](https://github.com/graasp/graasp-deploy/commit/0bb19fb39fcbc8a24098ec406715e3e313576a87))
+
+
+### Bug Fixes
+
+* update deployment visualisation files ([adeeaed](https://github.com/graasp/graasp-deploy/commit/adeeaed31bb350abbe778dcf849f0a7f00d5a936))
+
+
+### Reverts
+
+* revert library to 1.2.0 ([6dca2ef](https://github.com/graasp/graasp-deploy/commit/6dca2ef9b5c9c009bf8d4ec3219381309afccc4f))
+
 ## [1.22.4](https://github.com/graasp/graasp-deploy/compare/v1.22.3...v1.22.4) (2023-12-12)
 
 
