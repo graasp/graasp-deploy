@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.1](https://github.com/graasp/graasp-deploy/compare/v1.23.0...v1.23.1) (2024-01-10)
+
+
+### Bug Fixes
+
+* remove published tag id env ([#253](https://github.com/graasp/graasp-deploy/issues/253)) ([9f3dc6f](https://github.com/graasp/graasp-deploy/commit/9f3dc6fb567bbb7e33125321fc329bf1b42958d2))
+
 ## [1.23.0](https://github.com/graasp/graasp-deploy/compare/v1.22.4...v1.23.0) (2024-01-09)
 
 
