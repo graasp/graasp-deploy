@@ -214,7 +214,6 @@ jobs:
             NEXT_PUBLIC_GRAASP_BUILDER_HOST=${{ secrets.next-public-graasp-builder-host }}
             NEXT_PUBLIC_GRAASP_PERFORM_HOST=${{ secrets.next-public-graasp-perform-host }}
             NEXT_PUBLIC_GRAASPER_ID=${{ secrets.next-public-graasper-id }}
-            NEXT_PUBLIC_PUBLISHED_TAG_ID=${{ secrets.next-public-published-tag-id }}
             NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ secrets.next-public-ga-measurement-id }}
             NEXT_PUBLIC_SENTRY_DSN=${{ secrets.next-public-sentry-dsn }}
             NEXT_PUBLIC_SENTRY_ENV=${{ secrets.next-public-sentry-env }}

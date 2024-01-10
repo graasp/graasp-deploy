@@ -57,8 +57,6 @@ on:
         required: true
       next-public-graasper-id:
         required: true
-      next-public-published-tag-id:
-        required: true
       next-public-sentry-dsn:
         required: false
       next-public-sentry-env:
@@ -183,7 +181,6 @@ jobs:
             NEXT_PUBLIC_GRAASP_ACCOUNT_HOST=${{ inputs.next-public-graasp-account-host }}
             NEXT_PUBLIC_GRAASP_PERFORM_HOST=${{ secrets.next-public-graasp-perform-host }}
             NEXT_PUBLIC_GRAASPER_ID=${{ secrets.next-public-graasper-id }}
-            NEXT_PUBLIC_PUBLISHED_TAG_ID=${{ secrets.next-public-published-tag-id }}
             NEXT_PUBLIC_SENTRY_DSN=${{ secrets.next-public-sentry-dsn }}
             NEXT_PUBLIC_SENTRY_ENV=${{ secrets.next-public-sentry-env }}
             NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ secrets.next-public-ga-measurement-id }}
