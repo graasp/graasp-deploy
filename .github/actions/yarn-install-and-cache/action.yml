@@ -17,7 +17,7 @@ runs:
     # we don't use restore-keys because yarn lock might change, which prevent install to resume
     - name: Cache dependencies
       id: cache-node-modules
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: '**/node_modules'
         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
@@ -31,7 +31,7 @@ runs:
     - name: Cache Cypress Binary
       id: cache-cypress-binary
       if: inputs.cypress == 'true'
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: '~/.cache/Cypress'
         key: ${{ runner.os }}-cypress-binary-${{ hashFiles('**/yarn.lock') }}
