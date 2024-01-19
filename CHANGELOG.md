@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.23.2](https://github.com/graasp/graasp-deploy/compare/v1.23.1...v1.23.2) (2024-01-19)
+
+
+### Bug Fixes
+
+* delete unused workflows ([#257](https://github.com/graasp/graasp-deploy/issues/257)) ([5c7c852](https://github.com/graasp/graasp-deploy/commit/5c7c852876cb1bb9ec5dea7033224fbaa8b9c58d))
+
+
+### Reverts
+
+* set library to 1.2.0 ([02864e7](https://github.com/graasp/graasp-deploy/commit/02864e738d6f50ecf19ee14ef406d691823e59ce))
+
 ## [1.23.1](https://github.com/graasp/graasp-deploy/compare/v1.23.0...v1.23.1) (2024-01-10)
 
 
