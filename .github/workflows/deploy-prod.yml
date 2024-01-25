@@ -83,7 +83,7 @@ jobs:
         echo "json=$JSON" >> $GITHUB_OUTPUT
 
     - name: Repository Dispatch
-      uses: peter-evans/repository-dispatch@v2
+      uses: peter-evans/repository-dispatch@v3
       with:
         # this token has to be a PAT because we dispatch to another repo
         # https://github.com/peter-evans/repository-dispatch
