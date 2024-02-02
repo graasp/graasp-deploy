@@ -1,5 +1,5 @@
 {
-  "graasp/graasp": "v1.16.0",
+  "graasp/graasp": "v1.17.0",
   "graasp/graasp-auth": "v2.1.0",
   "graasp/graasp-app-file-drop": "v2.0.0",
   "graasp/graasp-app-radiating-charge": "v0.3.0",
@@ -11,9 +11,9 @@
   "graasp/graasp-app-survey": "v0.1.1",
   "graasp/graasp-library": "v1.4.1",
   "graasp/graasp-app-sketchfab": "v1.1.0",
-  "graasp/graasp-builder": "v2.6.1",
+  "graasp/graasp-builder": "v2.6.3",
   "graasp/graasp-app-quiz": "v1.2.0",
-  "graasp/graasp-player": "v2.4.2",
+  "graasp/graasp-player": "v2.4.3",
   "graasp/graasp-analytics": "v2.2.1",
   "graasp/graasp-app-text-analysis": "v1.1.0",
   "graasp/graasp-app-excalidraw": "v3.0.2",
@@ -21,8 +21,9 @@
   "graasp/graasp-app-radiation-absorption": "v0.3.0",
   "graasp/graasp-app-greenhouse-effect": "v0.6.0",
   "graasp/graasp-app-collaborative-ideation": "v1.2.0",
-  "graasp/graasp-account": "v2.1.1",
+  "graasp/graasp-account": "v2.2.0",
   "graasp/graasp-unity-space-rocket": "v1.1.1",
   "graasp/graasp-app-chatbot": "v1.0.1",
-  "graasp/graasp-app-multiple-choice-question": "v1.0.3"
+  "graasp/graasp-app-multiple-choice-question": "v1.1.1",
+  "graasp/graasp-app-likert-scale": "v1.0.0"
 }
