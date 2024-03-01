@@ -3,14 +3,17 @@ description: Deploys static files to AWS S3
 
 inputs:
   aws-access-key-id:
-    required: true
+    required: false
     description: AWS access key ID
   aws-secret-access-key:
-    required: true
+    required: false
     description: AWS secret access key
   aws-region:
-    required: true
+    required: false
     description: AWS region
+  role-to-assume:
+    required: false
+    description: AWS Role to assume to use OIDC provider (should look something like arn:aws:iam::111122223333:role/GitHubAction-AssumeRoleWithAction)
 
   aws-s3-bucket-name:
     required: true
@@ -40,6 +43,8 @@ runs:
         aws-access-key-id: ${{ inputs.aws-access-key-id }}
         aws-secret-access-key: ${{ inputs.aws-secret-access-key }}
         aws-region: ${{ inputs.aws-region }}
+        role-to-assume: ${{ inputs.role-to-assume }}
+        role-session-name: GitHub_Action_deploy_website
 
     # Recursively copy new and updated files from the source directory to the destination
     - name: Sync files with AWS S3 Bucket
