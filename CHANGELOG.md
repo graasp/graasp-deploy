@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.23.3](https://github.com/graasp/graasp-deploy/compare/v1.23.2...v1.23.3) (2024-03-01)
+
+
+### Bug Fixes
+
+* update deploy-s3 to use oidc ([27e25d2](https://github.com/graasp/graasp-deploy/commit/27e25d239b9cdaab44aae4b84bea1d928f196f2b))
+
+
+### Reverts
+
+* change current staging versions ([4a7f802](https://github.com/graasp/graasp-deploy/commit/4a7f80273e5e39758a8576262f1f686a547e74db))
+* revert part of latest stack ([75e55fd](https://github.com/graasp/graasp-deploy/commit/75e55fd1d86594037ec79d558c329d262991dfed))
+* set back previous versions ([2b5e6e3](https://github.com/graasp/graasp-deploy/commit/2b5e6e3c68456169f8320fbc067e81548d7bb402))
+
 ## [1.23.2](https://github.com/graasp/graasp-deploy/compare/v1.23.1...v1.23.2) (2024-01-19)
 
 
