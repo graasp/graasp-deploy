@@ -11,7 +11,7 @@
   "graasp/graasp-app-survey": "v0.1.1",
   "graasp/graasp-library": "v1.4.3",
   "graasp/graasp-app-sketchfab": "v1.1.0",
-  "graasp/graasp-builder": "v2.9.2",
+  "graasp/graasp-builder": "v2.9.4",
   "graasp/graasp-app-quiz": "v1.3.0",
   "graasp/graasp-player": "v2.5.1",
   "graasp/graasp-analytics": "v2.3.2",
@@ -30,5 +30,5 @@
   "graasp/graasp-map": "v1.1.0",
   "graasp/graasp-app-starter-ts-vite": "v1.1.0",
   "graasp/graasp-unity-friction-box": "v1.0.0",
-  "graasp/graasp-unity-circular-motion": "v1.0.0"
+  "graasp/graasp-unity-circular-motion": "v1.0.1"
 }
