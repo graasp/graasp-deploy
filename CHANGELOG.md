@@ -1,5 +1,39 @@
 # Changelog
 
+## 1.0.0 (2024-05-24)
+
+
+### Features
+
+* Library env build ([#241](https://github.com/graasp/graasp-deploy/issues/241)) ([0bb19fb](https://github.com/graasp/graasp-deploy/commit/0bb19fb39fcbc8a24098ec406715e3e313576a87))
+
+
+### Bug Fixes
+
+* check for string value in condition ([d9efd3f](https://github.com/graasp/graasp-deploy/commit/d9efd3fa5f8330086205967f7c82d1b1d12b9ea5))
+* delete unused workflows ([#257](https://github.com/graasp/graasp-deploy/issues/257)) ([5c7c852](https://github.com/graasp/graasp-deploy/commit/5c7c852876cb1bb9ec5dea7033224fbaa8b9c58d))
+* deploy ([205d0b6](https://github.com/graasp/graasp-deploy/commit/205d0b65ff9df355640059dc098aa67b9095ec3b))
+* paths in deployement workflow ([7c07f2a](https://github.com/graasp/graasp-deploy/commit/7c07f2ae9030a2329ba805fc75fbcefd7d6a5d22))
+* remove graasp-map from deployed stack ([29683ce](https://github.com/graasp/graasp-deploy/commit/29683ceeef95964cae5bee05c2ce720ca94041f1))
+* remove published tag id env ([#253](https://github.com/graasp/graasp-deploy/issues/253)) ([9f3dc6f](https://github.com/graasp/graasp-deploy/commit/9f3dc6fb567bbb7e33125321fc329bf1b42958d2))
+* remove test strings ([2fb8b3b](https://github.com/graasp/graasp-deploy/commit/2fb8b3b9b9e7a248377f0da38d822ac64ad71cc2))
+* update deploy-s3 to use oidc ([27e25d2](https://github.com/graasp/graasp-deploy/commit/27e25d239b9cdaab44aae4b84bea1d928f196f2b))
+* update deployment visualisation files ([adeeaed](https://github.com/graasp/graasp-deploy/commit/adeeaed31bb350abbe778dcf849f0a7f00d5a936))
+* update latest ([076c716](https://github.com/graasp/graasp-deploy/commit/076c7163b2c3c40b0c9cbed43eb865adda2cac50))
+* update workflows and folder names ([#246](https://github.com/graasp/graasp-deploy/issues/246)) ([4971076](https://github.com/graasp/graasp-deploy/commit/4971076ec14ef9ed5acfb69faf33a08183afe5ff))
+* versions in staging versions ([b0262d5](https://github.com/graasp/graasp-deploy/commit/b0262d5ab3f25a144fd3638205285b73c6c7177b))
+
+
+### Reverts
+
+* change current staging versions ([4a7f802](https://github.com/graasp/graasp-deploy/commit/4a7f80273e5e39758a8576262f1f686a547e74db))
+* go back to graasp 1.38.0 ([6b4442f](https://github.com/graasp/graasp-deploy/commit/6b4442f2fded92c2e6e3b234a2fba69cb711e0d1))
+* revert app chatbot to 1.1.0 ([69bd360](https://github.com/graasp/graasp-deploy/commit/69bd360b8dbb83f4563fe6b7f14da33348d04f66))
+* revert library to 1.2.0 ([6dca2ef](https://github.com/graasp/graasp-deploy/commit/6dca2ef9b5c9c009bf8d4ec3219381309afccc4f))
+* revert part of latest stack ([75e55fd](https://github.com/graasp/graasp-deploy/commit/75e55fd1d86594037ec79d558c329d262991dfed))
+* set back previous versions ([2b5e6e3](https://github.com/graasp/graasp-deploy/commit/2b5e6e3c68456169f8320fbc067e81548d7bb402))
+* set library to 1.2.0 ([02864e7](https://github.com/graasp/graasp-deploy/commit/02864e738d6f50ecf19ee14ef406d691823e59ce))
+
 ## [1.23.3](https://github.com/graasp/graasp-deploy/compare/v1.23.2...v1.23.3) (2024-03-01)
 
 
