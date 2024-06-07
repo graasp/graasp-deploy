@@ -1,5 +1,5 @@
 {
-  "graasp/graasp": "v1.40.0",
+  "graasp/graasp": "v1.40.1",
   "graasp/graasp-auth": "v2.5.1",
   "graasp/graasp-app-file-drop": "v3.0.3",
   "graasp/graasp-app-radiating-charge": "v0.3.0",
@@ -14,7 +14,7 @@
   "graasp/graasp-builder": "v2.25.0",
   "graasp/graasp-app-quiz": "v1.6.0",
   "graasp/graasp-player": "v2.15.2",
-  "graasp/graasp-analytics": "v2.9.0",
+  "graasp/graasp-analytics": "v2.10.0",
   "graasp/graasp-app-text-analysis": "v1.4.1",
   "graasp/graasp-app-excalidraw": "v3.0.2",
   "graasp/graasp-app-thermal-radiation": "v0.3.0",
