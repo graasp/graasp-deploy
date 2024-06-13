@@ -1,5 +1,5 @@
 {
-  "graasp/graasp": "v1.40.1",
+  "graasp/graasp": "v1.41.0",
   "graasp/graasp-auth": "v2.5.1",
   "graasp/graasp-app-file-drop": "v3.0.3",
   "graasp/graasp-app-radiating-charge": "v0.3.0",
@@ -11,11 +11,11 @@
   "graasp/graasp-app-survey": "v0.1.1",
   "graasp/graasp-library": "v1.7.1",
   "graasp/graasp-app-sketchfab": "v1.3.0",
-  "graasp/graasp-builder": "v2.26.0",
+  "graasp/graasp-builder": "v2.27.0",
   "graasp/graasp-app-quiz": "v1.6.0",
-  "graasp/graasp-player": "v2.15.2",
+  "graasp/graasp-player": "v2.15.3",
   "graasp/graasp-analytics": "v2.10.0",
-  "graasp/graasp-app-text-analysis": "v1.4.1",
+  "graasp/graasp-app-text-analysis": "v1.4.2",
   "graasp/graasp-app-excalidraw": "v3.0.2",
   "graasp/graasp-app-thermal-radiation": "v0.3.0",
   "graasp/graasp-app-radiation-absorption": "v0.4.1",
@@ -30,6 +30,6 @@
   "graasp/graasp-app-starter-ts-vite": "v1.2.5",
   "graasp/graasp-unity-friction-box": "v1.0.2",
   "graasp/graasp-unity-circular-motion": "v1.0.1",
-  "graasp/graasp-app-long-answer": "v1.0.0",
+  "graasp/graasp-app-long-answer": "v1.1.0",
   "graasp/graasp-app-botticelli": "v1.0.0"
 }
