@@ -192,7 +192,7 @@ jobs:
 
       # Use latest revision of the task-definition to deploy the application to ECS
       - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: ${{ secrets.ecs-service }}
