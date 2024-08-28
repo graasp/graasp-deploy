@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.24.0 (2024-08-28)
+
+
+### Bug Fixes
+
+* add pnpm install and cache action ([#265](https://github.com/graasp/graasp-deploy/issues/265)) ([de5f95a](https://github.com/graasp/graasp-deploy/commit/de5f95a43daf4e79779775bc8f77949220f240fe))
+* release please workflow ([c402864](https://github.com/graasp/graasp-deploy/commit/c40286436cac29e64947cc3c59dd6dd083c54efd))
+* remove graasp-map from deployed stack ([29683ce](https://github.com/graasp/graasp-deploy/commit/29683ceeef95964cae5bee05c2ce720ca94041f1))
+* update deploy-s3 to use oidc ([27e25d2](https://github.com/graasp/graasp-deploy/commit/27e25d239b9cdaab44aae4b84bea1d928f196f2b))
+
+
+### Reverts
+
+* change current staging versions ([4a7f802](https://github.com/graasp/graasp-deploy/commit/4a7f80273e5e39758a8576262f1f686a547e74db))
+* go back to graasp 1.38.0 ([6b4442f](https://github.com/graasp/graasp-deploy/commit/6b4442f2fded92c2e6e3b234a2fba69cb711e0d1))
+* revert app chatbot to 1.1.0 ([69bd360](https://github.com/graasp/graasp-deploy/commit/69bd360b8dbb83f4563fe6b7f14da33348d04f66))
+* revert part of latest stack ([75e55fd](https://github.com/graasp/graasp-deploy/commit/75e55fd1d86594037ec79d558c329d262991dfed))
+* set back previous versions ([2b5e6e3](https://github.com/graasp/graasp-deploy/commit/2b5e6e3c68456169f8320fbc067e81548d7bb402))
+
 ## [1.23.3](https://github.com/graasp/graasp-deploy/compare/v1.23.2...v1.23.3) (2024-03-01)
 
 
