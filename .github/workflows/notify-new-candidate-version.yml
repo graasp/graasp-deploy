@@ -12,7 +12,9 @@ jobs:
     name: Update candidate version
     runs-on: ubuntu-latest
     # ensure only one instance of the workflow runs at a time
-    concurrency: notify-new-candidate
+    concurrency: 
+      group: notify-new-candidate
+      cancel-in-progress: false
     env:
       # REPO: repository that will update current version.
       REPO: ${{ github.event.client_payload.repository }}
