@@ -1,6 +1,6 @@
 {
-  "graasp/graasp": "v1.48.0",
-  "graasp/graasp-auth": "v2.5.2",
+  "graasp/graasp": "v1.49.0",
+  "graasp/graasp-auth": "v2.6.0",
   "graasp/graasp-app-file-drop": "v3.0.3",
   "graasp/graasp-app-radiating-charge": "v0.3.0",
   "graasp/graasp-app-sticky-notes": "v1.1.0",
@@ -11,7 +11,7 @@
   "graasp/graasp-app-survey": "v0.1.1",
   "graasp/graasp-library": "v1.8.0",
   "graasp/graasp-app-sketchfab": "v1.3.0",
-  "graasp/graasp-builder": "v2.37.0",
+  "graasp/graasp-builder": "v2.38.0",
   "graasp/graasp-app-quiz": "v1.8.0",
   "graasp/graasp-player": "v2.18.0",
   "graasp/graasp-analytics": "v2.15.1",
