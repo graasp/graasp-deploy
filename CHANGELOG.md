@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.1](https://github.com/graasp/graasp-deploy/compare/v1.24.0...v1.24.1) (2024-10-04)
+
+
+### Bug Fixes
+
+* update-version cancels running workflows ([#268](https://github.com/graasp/graasp-deploy/issues/268)) ([df9464d](https://github.com/graasp/graasp-deploy/commit/df9464dd7077d9f27ba282f3f87791f5c0a807e0))
+
 ## 1.24.0 (2024-08-28)
 
 
