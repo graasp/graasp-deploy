@@ -31,5 +31,6 @@
   "graasp/graasp-unity-friction-box": "v1.0.2",
   "graasp/graasp-unity-circular-motion": "v1.0.1",
   "graasp/graasp-app-long-answer": "v1.1.1",
-  "graasp/graasp-app-botticelli": "v1.0.0"
+  "graasp/graasp-app-botticelli": "v1.0.0",
+  "graasp/graasp-app-name-the-frame": "v1.0.0"
 }
