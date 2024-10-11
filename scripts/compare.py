@@ -1,6 +1,8 @@
 import json
 import sys
 
+DIFF_FILENAME = "diff.json"
+
 new = sys.argv[1]
 current = sys.argv[2]
 output = {}
@@ -46,9 +48,9 @@ if len(all_changes.keys()) > 0:
     with open("output.txt", "w") as out_log:
         out_log.write(out_string)
     # New file
-    with open("diff.json", "w") as output_file:
+    with open(DIFF_FILENAME, "w") as output_file:
         json.dump(output, output_file)
 else:
     print("No differences")
-    with open("no_diff.txt", "w") as out_log:
-        out_log.write("poop")
+    with open(DIFF_FILENAME, "w") as output_file:
+        json.dump({}, output_file)

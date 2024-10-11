@@ -14,3 +14,7 @@
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# output from ci
+diff.json
+output.txt
