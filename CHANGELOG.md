@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.25.0](https://github.com/graasp/graasp-deploy/compare/v1.24.1...v1.25.0) (2024-10-11)
+
+
+### Features
+
+* add hotfix tag for backend ([1c33cac](https://github.com/graasp/graasp-deploy/commit/1c33cac554246d6460368c660da9064a7d5a0ac5))
+* reset new stack ([8ccebcb](https://github.com/graasp/graasp-deploy/commit/8ccebcb692314af5cf4273e6da5c24e2ea827be3))
+
+
+### Bug Fixes
+
+* update the compare script to emit a file even when there is no differences ([#271](https://github.com/graasp/graasp-deploy/issues/271)) ([b95d2fd](https://github.com/graasp/graasp-deploy/commit/b95d2fdf6f2c40a29a6854834f21280de55f5cc3))
+
+
+### Reverts
+
+* set backend hotfix to be deployed on prod ([4fcb707](https://github.com/graasp/graasp-deploy/commit/4fcb70722717bb14e480c5f92f92673835f38df2))
+* update current staging stack ([849ad53](https://github.com/graasp/graasp-deploy/commit/849ad537b2dbf30e6cc1011c459f2a67dca58d61))
+
 ## [1.24.1](https://github.com/graasp/graasp-deploy/compare/v1.24.0...v1.24.1) (2024-10-04)
 
 
