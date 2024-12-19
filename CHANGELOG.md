@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.26.0](https://github.com/graasp/graasp-deploy/compare/v1.25.0...v1.26.0) (2024-12-12)
+
+
+### Features
+
+* bump graasp builder version 2.48.1 as candidate ([ea256cb](https://github.com/graasp/graasp-deploy/commit/ea256cbd461618e8de51e73c4a6128fbbe5380dd))
+
 ## [1.25.0](https://github.com/graasp/graasp-deploy/compare/v1.24.1...v1.25.0) (2024-10-11)
 
 
