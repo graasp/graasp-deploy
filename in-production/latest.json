@@ -1,5 +1,5 @@
 {
-  "graasp/graasp": "v1.59.0",
+  "graasp/graasp": "v1.60.0",
   "graasp/graasp-auth": "v2.7.5",
   "graasp/graasp-app-file-drop": "v3.0.3",
   "graasp/graasp-app-radiating-charge": "v0.4.1",
@@ -9,10 +9,10 @@
   "graasp/graasp-app-code-capsule": "v2.6.2",
   "graasp/graasp-app-calculator": "v1.4.1",
   "graasp/graasp-app-survey": "v0.1.1",
-  "graasp/graasp-library": "v1.11.0",
+  "graasp/graasp-library": "v1.12.0",
   "graasp/graasp-app-sketchfab": "v1.3.0",
-  "graasp/graasp-builder": "v2.48.1",
-  "graasp/graasp-app-quiz": "v1.10.1",
+  "graasp/graasp-builder": "v2.50.0",
+  "graasp/graasp-app-quiz": "v1.10.2",
   "graasp/graasp-player": "v2.21.2",
   "graasp/graasp-analytics": "v2.15.2",
   "graasp/graasp-app-text-analysis": "v1.4.2",
@@ -33,5 +33,5 @@
   "graasp/graasp-app-long-answer": "v1.1.1",
   "graasp/graasp-app-botticelli": "v1.0.0",
   "graasp/graasp-app-name-the-frame": "v1.0.1",
-  "graasp/client": "v2.17.0"
+  "graasp/client": "v2.18.0"
 }
