@@ -5,7 +5,7 @@ description: "PNPM install and cache modules"
 runs:
   using: "composite"
   steps:
-    - uses: pnpm/action-setup@v3
+    - uses: pnpm/action-setup@v4
       name: Install pnpm
       with:
         version: 9
