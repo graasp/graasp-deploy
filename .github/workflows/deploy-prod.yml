@@ -36,7 +36,7 @@ jobs:
 
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     # Install the python version needed
     - name: Setup python
@@ -107,7 +107,7 @@ jobs:
     environment: production
     steps:
     - name: Check out code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         ref: main
 
