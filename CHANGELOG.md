@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.26.1](https://github.com/graasp/graasp-deploy/compare/v1.26.0...v1.26.1) (2025-10-03)
+
+
+### Bug Fixes
+
+* add registry url in workflow ([1b76232](https://github.com/graasp/graasp-deploy/commit/1b76232e9ccddd5500151e4f4ff9acb48e2039fc))
+
 ## [1.26.0](https://github.com/graasp/graasp-deploy/compare/v1.25.0...v1.26.0) (2025-10-01)
 
 
