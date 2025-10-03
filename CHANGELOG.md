@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.26.0](https://github.com/graasp/graasp-deploy/compare/v1.25.0...v1.26.0) (2025-10-01)
+
+
+### Features
+
+* bump graasp builder version 2.48.1 as candidate ([ea256cb](https://github.com/graasp/graasp-deploy/commit/ea256cbd461618e8de51e73c4a6128fbbe5380dd))
+* upgrade client version to 2.22.1 ([147115e](https://github.com/graasp/graasp-deploy/commit/147115ed670978a5504e71787ceac9d965a3fd1a))
+
+
+### Bug Fixes
+
+* update pnpm composite workflow ([#280](https://github.com/graasp/graasp-deploy/issues/280)) ([6980aaa](https://github.com/graasp/graasp-deploy/commit/6980aaa98e7f469b426939cd26cd3279b904d48e))
+
 ## [1.25.0](https://github.com/graasp/graasp-deploy/compare/v1.24.1...v1.25.0) (2024-10-11)
 
 
