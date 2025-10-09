@@ -57,7 +57,7 @@ jobs:
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     # This step runs a single command to execute unitary testing
     - name: Test job
@@ -73,7 +73,7 @@ jobs:
     steps:
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     # Download and cache distribution of the requested Node.js version, and add it to the PATH
     - name: Setup node
