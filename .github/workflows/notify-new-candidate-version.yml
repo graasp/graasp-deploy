@@ -35,7 +35,7 @@ jobs:
 
     # Detect changed files during a Workflow run and commit and push them back to the GitHub repository
     - name: Commit updated file
-      uses: stefanzweifel/git-auto-commit-action@v5
+      uses: stefanzweifel/git-auto-commit-action@v6
       with:
          # Commit message for the created commit.
         commit_message: 'chore: update ${{ env.REPO}} candidate to ${{ env.TAG }}'
