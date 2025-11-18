@@ -20,7 +20,7 @@ inputs:
     description: AWS S3 bucket name
   build-folder:
     required: false
-    default: 'build'
+    default: "build"
     description: The folder to push to aws (build by default)
   path:
     required: false
@@ -30,11 +30,9 @@ inputs:
     required: true
     description: Cloudfront distribution ID
 
-
 runs:
   using: "composite"
   steps:
-
     # Configure AWS credential and region
     - name: Configure AWS Credentials
       id: configure-aws
@@ -49,7 +47,7 @@ runs:
     # Recursively copy new and updated files from the source directory to the destination
     - name: Sync files with AWS S3 Bucket
       id: sync-s3
-      run: aws s3 sync ${{ inputs.build-folder }} s3://${{ inputs.aws-s3-bucket-name }}${{ inputs.path }} --acl public-read --follow-symlinks --delete
+      run: aws s3 sync ${{ inputs.build-folder }} s3://${{ inputs.aws-s3-bucket-name }}${{ inputs.path }} --follow-symlinks --delete
       # --acl public-read makes files publicly readable
       # --follow-symlinks fixes some weird symbolic link problems that may come up
       # --delete permanently deletes files in the S3 bucket that are not present in the latest version of the repository/build.
