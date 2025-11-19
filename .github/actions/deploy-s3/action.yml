@@ -27,7 +27,8 @@ inputs:
     default: "/"
     description: Path in the bucket where files should be uploaded
   cloudfront-distribution-id:
-    required: true
+    required: false
+    default: ""
     description: Cloudfront distribution ID
 
 runs:
@@ -55,6 +56,7 @@ runs:
 
     # Create a new invalidation
     - name: Invalidate cloudfront distribution
+      if: inputs.cloudfront-distribution-id != ''
       id: invalidate-cloudfront
       run: aws cloudfront create-invalidation --distribution-id ${{ inputs.cloudfront-distribution-id }} --paths "${{ inputs.path }}*"
       shell: bash
