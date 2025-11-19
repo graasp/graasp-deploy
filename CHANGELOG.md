@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.26.1](https://github.com/graasp/graasp-deploy/compare/v1.26.0...v1.26.1) (2025-11-19)
+
+
+### Bug Fixes
+
+* add registry url in workflow ([1b76232](https://github.com/graasp/graasp-deploy/commit/1b76232e9ccddd5500151e4f4ff9acb48e2039fc))
+* remove usage of ACL in s3 upload command ([6ccf477](https://github.com/graasp/graasp-deploy/commit/6ccf47769e443dc6162ed1daedbd869c94e8ce27))
+* update deploy s3 script to not require the cf distribution id ([4c62357](https://github.com/graasp/graasp-deploy/commit/4c6235738596b9cfad72cd7fd4524e379a5b211a))
+
 ## [1.26.0](https://github.com/graasp/graasp-deploy/compare/v1.25.0...v1.26.0) (2025-10-01)
 
 
