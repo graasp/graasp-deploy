@@ -36,7 +36,7 @@ jobs:
 
     # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
     - name: Check out code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     # Install the python version needed
     - name: Setup python
@@ -109,7 +109,7 @@ jobs:
       commit-hash: ${{ steps.commit.outputs.commit_hash }}
     steps:
     - name: Check out code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         # checkout the latest commits of main -> this is where we will commit to
         ref: main
@@ -145,7 +145,7 @@ jobs:
       LATEST_FILE_NAME_STAGING: ${{ needs.generate-matrix.outputs.latest }}
     steps:
     - name: Check out code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         ref: ${{ needs.update-deployed-stack.outputs.commit-hash }}
 

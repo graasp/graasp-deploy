@@ -81,7 +81,7 @@ jobs:
     steps:
       # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # This step runs a single command to execute unitary testing
       - name: Test job
@@ -100,7 +100,7 @@ jobs:
     steps:
       # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # Set output variable tag with the current checked out ref
       - name: Set Tag Number
@@ -178,7 +178,7 @@ jobs:
     steps:
       # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # Configure AWS credential and region environment variables for use in next steps
       - name: Configure AWS credentials
