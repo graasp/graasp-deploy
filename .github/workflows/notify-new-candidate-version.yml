@@ -12,7 +12,7 @@ jobs:
     name: Update candidate version
     runs-on: ubuntu-latest
     # ensure only one instance of the workflow runs at a time
-    concurrency: 
+    concurrency:
       group: notify-new-candidate
       cancel-in-progress: false
     env:
@@ -22,26 +22,26 @@ jobs:
       TAG: ${{ github.event.client_payload.tag }}
 
     steps:
-    - name: Check out code
-      uses: actions/checkout@v4
-      with:
-        ref: main
+      - name: Check out code
+        uses: actions/checkout@v6
+        with:
+          ref: main
 
-    # Update the candidate-versions/latest.json file. Use jq to write to stdout and pipe output to a temporary file.
-    - name: Update candidate file
-      run: |
-        jq --arg repo "$REPO" --arg tag "$TAG" '.[$repo] = $tag' < candidate-versions/latest.json > ./candidate-versions/latest.tmp
-        mv ./candidate-versions/latest.tmp ./candidate-versions/latest.json
+      # Update the candidate-versions/latest.json file. Use jq to write to stdout and pipe output to a temporary file.
+      - name: Update candidate file
+        run: |
+          jq --arg repo "$REPO" --arg tag "$TAG" '.[$repo] = $tag' < candidate-versions/latest.json > ./candidate-versions/latest.tmp
+          mv ./candidate-versions/latest.tmp ./candidate-versions/latest.json
 
-    # Detect changed files during a Workflow run and commit and push them back to the GitHub repository
-    - name: Commit updated file
-      uses: stefanzweifel/git-auto-commit-action@v5
-      with:
-         # Commit message for the created commit.
-        commit_message: 'chore: update ${{ env.REPO}} candidate to ${{ env.TAG }}'
+      # Detect changed files during a Workflow run and commit and push them back to the GitHub repository
+      - name: Commit updated file
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          # Commit message for the created commit.
+          commit_message: "chore: update ${{ env.REPO}} candidate to ${{ env.TAG }}"
 
-    - name: Summary
-      run: |
-        LATEST_FILE_LINK="https://github.com/${{ github.repository }}/blob/main/candidate-versions/latest.json"
-        echo "### :postbox: Updated $REPO to ${{ github.event.client_payload.tag }}" >> $GITHUB_STEP_SUMMARY
-        echo "[Go to latest candidate version file]($LATEST_FILE_LINK)" >> $GITHUB_STEP_SUMMARY
+      - name: Summary
+        run: |
+          LATEST_FILE_LINK="https://github.com/${{ github.repository }}/blob/main/candidate-versions/latest.json"
+          echo "### :postbox: Updated $REPO to ${{ github.event.client_payload.tag }}" >> $GITHUB_STEP_SUMMARY
+          echo "[Go to latest candidate version file]($LATEST_FILE_LINK)" >> $GITHUB_STEP_SUMMARY

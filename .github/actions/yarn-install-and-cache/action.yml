@@ -2,10 +2,10 @@ name: Cache yarn and install
 
 description: "Yarn install and cache modules and cypress binaries"
 inputs:
-  cypress: 
+  cypress:
     required: false
-    type: string
-    default: false
+    default: "false"
+    description: "Whether to cache cypress binary"
 
 runs:
   using: "composite"
@@ -17,9 +17,9 @@ runs:
     # we don't use restore-keys because yarn lock might change, which prevent install to resume
     - name: Cache dependencies
       id: cache-node-modules
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
-        path: '**/node_modules'
+        path: "**/node_modules"
         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
         # restore-keys: |
         #     ${{ runner.os }}-modules-
@@ -31,12 +31,12 @@ runs:
     - name: Cache Cypress Binary
       id: cache-cypress-binary
       if: inputs.cypress == 'true'
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
-        path: '~/.cache/Cypress'
+        path: "~/.cache/Cypress"
         key: ${{ runner.os }}-cypress-binary-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
-            ${{ runner.os }}-cypress-binary-
+          ${{ runner.os }}-cypress-binary-
 
     # Install dependencies when the cache has not been retrieved
     - name: Install dependencies

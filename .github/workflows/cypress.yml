@@ -80,7 +80,7 @@ concurrency:
 # Set environment variables that are available to the steps of all jobs in the workflow
 env:
   # Allows to increase Node's max heap size
-  NODE_OPTIONS: '--max_old_space_size=8192'
+  NODE_OPTIONS: "--max_old_space_size=8192"
 
 jobs:
   install:
@@ -89,7 +89,7 @@ jobs:
     steps:
       # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Yarn Install and Cache
         uses: graasp/graasp-deploy/.github/actions/yarn-install-and-cache@v1
@@ -104,7 +104,7 @@ jobs:
     steps:
       # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Yarn install and Cache dependencies
         uses: graasp/graasp-deploy/.github/actions/yarn-install-and-cache@v1
@@ -121,7 +121,7 @@ jobs:
     steps:
       # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Yarn install and Cache dependencies
         uses: graasp/graasp-deploy/.github/actions/yarn-install-and-cache@v1
@@ -130,12 +130,12 @@ jobs:
 
       #  use the Cypress GitHub Action to run Cypress tests within the chrome browser
       - name: Cypress run
-        uses: cypress-io/github-action@v4
+        uses: cypress-io/github-action@v7
         with:
           install: false
           config: baseUrl=http://localhost:3000
           start: yarn start:ci
-          wait-on: 'http://localhost:3000'
+          wait-on: "http://localhost:3000"
           wait-on-timeout: 250
           browser: chrome
           quiet: true
@@ -165,7 +165,7 @@ jobs:
       # store any screenshots
       # NOTE: screenshots will be generated only if E2E test failed
       # thus we store screenshots only on failures
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: cypress-screenshots

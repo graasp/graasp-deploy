@@ -4,16 +4,16 @@ description: "Publish new package version to the NPM registry"
 
 inputs:
   npm-token:
-    description: 'NPM auth token'
+    description: "NPM auth token"
     required: true
 
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-node@v4
+    - uses: actions/setup-node@v6
       with:
-        node-version: 18
-        registry-url: 'https://registry.npmjs.org'
+        node-version: "22"
+        registry-url: "https://registry.npmjs.org"
 
     - name: Ensure clean install
       run: yarn install --immutable

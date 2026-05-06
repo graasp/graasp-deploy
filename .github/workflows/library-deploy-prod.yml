@@ -72,7 +72,7 @@ on:
 env:
   ECR_REPOSITORY: ${{ secrets.ecr-repository }}
   # Allows to increase Node's max heap size
-  NODE_OPTIONS: '--max_old_space_size=8192'
+  NODE_OPTIONS: "--max_old_space_size=8192"
 
 # This workflow is made up of one job called: build-deploy
 jobs:
@@ -89,7 +89,7 @@ jobs:
     steps:
       # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ inputs.tag }}
 
@@ -101,7 +101,7 @@ jobs:
       # Configure AWS credential and region environment variables for use in next steps
       - name: Configure AWS Credentials
         id: configure-aws
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           aws-access-key-id: ${{ secrets.aws-access-key-id }}
           aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
