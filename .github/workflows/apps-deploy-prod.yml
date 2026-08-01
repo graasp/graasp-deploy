@@ -68,7 +68,7 @@ jobs:
       # Download and cache distribution of the requested Node.js version, and add it to the PATH
       - name: Setup node
         id: setup-node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: "24"
           check-latest: true
